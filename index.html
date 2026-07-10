@@ -18,7 +18,6 @@
   </div>
 </header>
 <nav class="site-nav" id="site-nav"></nav>
-<p class="intro" id="t-intro"></p>
 <hr>
 
 <section class="daily">
@@ -40,7 +39,6 @@
 const UI = {
   en: {
     title: "bible study",
-    intro: "A small library of reading lists: prophecy and fulfilment, shadow and substance, four witnesses side by side. White paper, verse texts, links to biblia.sk.",
     daily: "Prophecy of the day",
     sections: "Sections",
     footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. The daily prophecy walks through all 351 in order — the same one the iPhone widget shows.",
@@ -49,7 +47,6 @@ const UI = {
   },
   sk: {
     title: "štúdium biblie",
-    intro: "Malá knižnica čítacích zoznamov: proroctvo a naplnenie, tieň a skutočnosť, štyria svedkovia vedľa seba. Biely papier, texty veršov, odkazy na biblia.sk.",
     daily: "Proroctvo dňa",
     sections: "Sekcie",
     footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Proroctvo dňa prechádza všetkých 351 po poradí — to isté ukazuje aj widget na iPhone.",
@@ -96,7 +93,6 @@ function render() {
   tMarkLang(lang);
   document.title = t.title;
   document.getElementById("t-title").textContent = t.title;
-  document.getElementById("t-intro").textContent = t.intro;
   document.getElementById("t-daily").textContent = t.daily;
   document.getElementById("t-sections").textContent = t.sections;
   document.getElementById("t-footer").textContent = t.footer;
