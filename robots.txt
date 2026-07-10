@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://proroctva.sk/sitemap.xml
