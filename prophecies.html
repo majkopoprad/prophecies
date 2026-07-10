@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>prophecies fulfilled</title>
+<style>
+  /* Palette — white paper, quiet grey ink, hairlines instead of boxes. */
+  :root {
+    --paper: #ffffff;
+    --ink: #666666;
+    --ink-strong: #000000;
+    --ink-faint: #aaaaaa;
+    --rule: #e5e5e5;
+    --select-bg: #f2f2f0;
+  }
+
+  @font-face {
+    font-family: 'Receipt';
+    src: url('Receipt.otf') format('opentype');
+    font-display: swap;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Receipt', Georgia, 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 48px 24px 96px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* ---- masthead ---- */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: normal;
+    color: var(--ink);
+    letter-spacing: 0.01em;
+  }
+
+  .head-right {
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+  }
+
+  .lang span {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: color 0.12s;
+  }
+  .lang span:hover { color: var(--ink-strong); }
+  .lang span.active { color: var(--ink-strong); }
+  .lang .sep { cursor: default; }
+  .lang .sep:hover { color: var(--ink-faint); }
+
+  .count {
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .site-nav {
+    margin-top: 12px;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .site-nav a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    margin-right: 18px;
+    transition: color 0.12s;
+  }
+  .site-nav a:hover { color: var(--ink-strong); }
+  .site-nav a.active { color: var(--ink-strong); }
+
+  .intro {
+    margin-top: 14px;
+    color: var(--ink-faint);
+    font-size: 13px;
+    max-width: 560px;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 22px 0 0;
+  }
+
+  /* ---- odds ---- */
+  .odds {
+    margin-top: 36px;
+  }
+
+  .odds h2 {
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .odds-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+  }
+
+  .odds-cell {
+    padding: 18px 18px 16px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .odds-cell:hover .odds-figure { color: var(--ink-strong); }
+
+  .odds-label {
+    font-size: 12px;
+    color: var(--ink-faint);
+    letter-spacing: 0.04em;
+  }
+
+  .odds-figure {
+    font-size: 26px;
+    color: var(--ink);
+    margin-top: 2px;
+    transition: color 0.12s;
+  }
+  .odds-figure sup { font-size: 14px; }
+
+  .odds-note {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    margin-top: 14px;
+    max-width: 640px;
+  }
+
+  @media (max-width: 620px) {
+    .odds-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ---- search ---- */
+  .search-wrap { margin: 26px 0 8px; }
+
+  #search {
+    width: 100%;
+    max-width: 340px;
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    background: var(--paper);
+    border: none;
+    border-bottom: 1px solid var(--rule);
+    padding: 6px 2px;
+    outline: none;
+  }
+  #search:focus { border-bottom-color: var(--ink); }
+  #search::placeholder { color: var(--ink-faint); }
+
+  /* ---- sections ---- */
+  section { margin-top: 44px; }
+
+  h2 {
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ---- prophecy rows ---- */
+  .row {
+    display: grid;
+    grid-template-columns: 38px 160px 1fr 180px;
+    gap: 16px;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+    cursor: pointer;
+  }
+  .row:hover { background: var(--select-bg); }
+  .row:hover .what { color: var(--ink-strong); }
+  .row:hover .f { color: var(--ink); }
+
+  .num {
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: right;
+  }
+
+  .p {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    white-space: nowrap;
+  }
+
+  .what {
+    color: var(--ink);
+    font-size: 14px;
+    transition: color 0.12s;
+  }
+
+  .f {
+    font-size: 12.5px;
+    color: var(--ink-faint);
+    text-align: right;
+  }
+
+  .hidden { display: none; }
+
+  /* ---- expanded verse comparison ---- */
+  .verses {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    padding: 14px 8px 18px 58px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--select-bg);
+  }
+  .verses.hidden { display: none; }
+
+  .q-ref {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .q-ref a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .q-ref a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+
+  .q-text {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  @media (max-width: 620px) {
+    .verses { grid-template-columns: 1fr; padding-left: 8px; }
+  }
+
+  /* ---- footer ---- */
+  footer {
+    margin-top: 64px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  #no-results {
+    padding: 32px 4px;
+    color: var(--ink-faint);
+    font-size: 13px;
+    display: none;
+  }
+
+  @media (max-width: 620px) {
+    .row { grid-template-columns: 26px 1fr; }
+    .p { grid-column: 2; }
+    .what { grid-column: 2; }
+    .f { grid-column: 2; text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<section class="odds">
+  <h2 id="t-odds"></h2>
+  <div class="odds-grid">
+    <div class="odds-cell">
+      <div class="odds-label" id="t-odds8"></div>
+      <div class="odds-figure"><span id="t-in1"></span> 10<sup>17</sup></div>
+    </div>
+    <div class="odds-cell">
+      <div class="odds-label" id="t-odds16"></div>
+      <div class="odds-figure"><span id="t-in2"></span> 10<sup>45</sup></div>
+    </div>
+    <div class="odds-cell">
+      <div class="odds-label" id="t-odds48"></div>
+      <div class="odds-figure"><span id="t-in3"></span> 10<sup>157</sup></div>
+    </div>
+  </div>
+  <p class="odds-note" id="t-note"></p>
+</section>
+
+<div class="search-wrap">
+  <input id="search" type="text" autocomplete="off">
+</div>
+
+<main id="list"></main>
+<p id="no-results"></p>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="prophecies-data.js"></script>
+<script src="theology.js"></script>
+<script>
+// ---- UI strings ------------------------------------------------------------
+const UI = {
+  en: {
+    title: "prophecies jesus fulfilled",
+    intro: "Old Testament prophecies concerning the Messiah, verse by verse, and their fulfilment in the New Testament — ordered by book, from Genesis to Malachi. Click a row to compare both passages.",
+    prophecy: "prophecy", fulfilment: "fulfilment",
+    odds: "The odds of fulfilment",
+    odds8: "just 8 prophecies", odds16: "16 prophecies", odds48: "48 prophecies",
+    oddsIn: "1 in",
+    note: "Mathematician Peter Stoner (<em>Science Speaks</em>, 1958) estimated the chance of one man fulfilling just eight of these prophecies at 1 in 10<sup>17</sup> — like covering the state of Texas two feet deep in silver dollars, marking one, and a blindfolded man picking the marked one on his first try. For 48 prophecies the number, 10<sup>157</sup>, exceeds the estimated count of atoms in the observable universe (~10<sup>80</sup>) — and this page lists {n}.",
+    search: "search prophecies, references…",
+    none: "nothing found.",
+    footer: "The classic verse-by-verse compilation of Old Testament messianic prophecies. Verse texts: King James Version. Psalm numbering follows the Hebrew text (in Vulgate-based translations, Psalm 22 = Psalm 21). Compiled as a reading list, not an argument — read both passages side by side.",
+    count: n => n + " prophecies",
+    countOf: (v, t) => v + " of " + t + " prophecies"
+  },
+  sk: {
+    title: "proroctvá, ktoré ježiš naplnil",
+    intro: "Starozákonné proroctvá o Mesiášovi, verš po verši, a ich naplnenie v Novom zákone — zoradené podľa kníh, od Genezis po Malachiáša. Klikni na riadok a porovnaj obe pasáže.",
+    prophecy: "proroctvo", fulfilment: "naplnenie",
+    odds: "Pravdepodobnosť naplnenia",
+    odds8: "len 8 proroctiev", odds16: "16 proroctiev", odds48: "48 proroctiev",
+    oddsIn: "1 z",
+    note: "Matematik Peter Stoner (<em>Science Speaks</em>, 1958) odhadol šancu, že jeden človek naplní čo i len osem z týchto proroctiev, na 1 z 10<sup>17</sup> — ako pokryť celý Texas striebornými dolármi do výšky pol metra, jeden označiť a so zaviazanými očami ho na prvý pokus vytiahnuť. Pri 48 proroctvách číslo 10<sup>157</sup> prevyšuje odhadovaný počet atómov v pozorovateľnom vesmíre (~10<sup>80</sup>) — a táto stránka ich uvádza {n}.",
+    search: "hľadaj proroctvá, odkazy…",
+    none: "nič sa nenašlo.",
+    footer: "Klasický zoznam starozákonných mesiášskych proroctiev verš po verši. Texty veršov: Slovenský ekumenický preklad (biblia.sk); chýbajúce verše doplnené z katolíckeho prekladu SSV alebo Roháčka. Odkazy vedú na biblia.sk. Zostavené ako čítací zoznam, nie argument — čítaj obe pasáže vedľa seba.",
+    count: n => n + " " + (n === 1 ? "proroctvo" : (n >= 2 && n <= 4 ? "proroctvá" : "proroctiev")),
+    countOf: (v, t) => v + " z " + t + " proroctiev"
+  }
+};
+
+// ---- section titles --------------------------------------------------------
+const SECTIONS_SK = {
+  "Genesis": "Genezis", "Exodus": "Exodus", "Leviticus": "Levitikus",
+  "Numbers": "Numeri", "Deuteronomy": "Deuteronómium",
+  "Ruth & Samuel": "Rút a Samuelove knihy",
+  "Kings & Chronicles": "Knihy kráľov a kroník",
+  "Job": "Jób", "Psalms": "Žalmy",
+  "Proverbs & Song of Solomon": "Príslovia a Pieseň piesní",
+  "Isaiah": "Izaiáš", "Jeremiah": "Jeremiáš", "Ezekiel": "Ezechiel",
+  "Daniel": "Daniel", "Minor Prophets": "Malí proroci",
+  "Zechariah": "Zachariáš", "Malachi": "Malachiáš"
+};
+
+// ---- Bible book names (longest first, word-boundary safe) -------------------
+const BOOKS_SK = [
+  ["Song of Solomon", "Pieseň piesní"],
+  ["1 Corinthians", "1. Korinťanom"], ["2 Corinthians", "2. Korinťanom"],
+  ["1 Chronicles", "1. Kroník"], ["Deuteronomy", "Deuteronómium"],
+  ["Philippians", "Filipanom"], ["Colossians", "Kolosanom"],
+  ["1 Timothy", "1. Timotejovi"], ["Revelation", "Zjavenie"],
+  ["Zechariah", "Zachariáš"], ["Ephesians", "Efezanom"],
+  ["Galatians", "Galaťanom"], ["Leviticus", "Levitikus"],
+  ["1 Samuel", "1. Samuelova"], ["2 Samuel", "2. Samuelova"],
+  ["Jeremiah", "Jeremiáš"], ["Proverbs", "Príslovia"],
+  ["2 Kings", "2. Kráľov"], ["1 Peter", "1. Petrov"], ["2 Peter", "2. Petrov"],
+  ["Genesis", "Genezis"], ["Numbers", "Numeri"], ["Ezekiel", "Ezechiel"],
+  ["Hebrews", "Hebrejom"], ["Matthew", "Matúš"], ["Malachi", "Malachiáš"],
+  ["Haggai", "Aggeus"], ["Romans", "Rimanom"], ["Exodus", "Exodus"],
+  ["1 John", "1. Jánov"], ["Isaiah", "Izaiáš"], ["Daniel", "Daniel"],
+  ["Hosea", "Ozeáš"], ["Micah", "Micheáš"], ["Jonah", "Jonáš"],
+  ["Titus", "Títovi"], ["Psalm", "Žalm"], ["Amos", "Ámos"],
+  ["Luke", "Lukáš"], ["Mark", "Marek"], ["John", "Ján"], ["Acts", "Skutky"],
+  ["Ruth", "Rút"], ["Joel", "Joel"], ["Job", "Jób"]
+];
+
+function refSK(text) {
+  let out = text;
+  for (const [en, sk] of BOOKS_SK) {
+    out = out.split(en).join(sk);
+  }
+  return out;
+}
+
+// biblia.sk reader abbreviations (verified against biblia.sk/citanie/seb/…)
+const BIBLIA_ABBR = [
+  ["Song of Solomon","vlp"],["1 Corinthians","1kor"],["2 Corinthians","2kor"],
+  ["1 Chronicles","1krn"],["Deuteronomy","dt"],["Philippians","flp"],
+  ["Colossians","kol"],["1 Timothy","1tim"],["Revelation","zj"],
+  ["Zechariah","zach"],["Ephesians","ef"],["Galatians","ga"],
+  ["Leviticus","lv"],["1 Samuel","1sam"],["2 Samuel","2sam"],
+  ["Jeremiah","jer"],["Proverbs","pris"],["2 Kings","2krl"],
+  ["1 Peter","1pt"],["2 Peter","2pt"],["Genesis","gn"],["Numbers","nm"],
+  ["Ezekiel","ez"],["Hebrews","heb"],["Matthew","mt"],["Malachi","mal"],
+  ["Haggai","ag"],["Romans","rim"],["Exodus","ex"],["1 John","1jn"],
+  ["Isaiah","iz"],["Daniel","dan"],["Hosea","oz"],["Micah","mich"],
+  ["Jonah","jon"],["Titus","tit"],["Psalm","z"],["Amos","am"],
+  ["Luke","lk"],["Mark","mk"],["John","jn"],["Acts","sk"],
+  ["Ruth","rut"],["Joel","joel"],["Job","job"]
+];
+
+function bibliaLink(ref) {
+  const seg = ref.split(";")[0].trim();
+  for (const [en, abbr] of BIBLIA_ABBR) {
+    if (seg.startsWith(en + " ")) {
+      const ch = parseInt(seg.slice(en.length).trim(), 10);
+      if (!isNaN(ch)) return "https://biblia.sk/citanie/seb/" + abbr + "/" + ch;
+      break;
+    }
+  }
+  return null;
+}
+
+// ---- data lives in prophecies-data.js (shared with biblia.html) ----------
+const DATA = PROPHECIES_DATA;
+
+// ---- rendering ---------------------------------------------------------------
+let lang = localStorage.getItem("prophecies-lang") || "en";
+const list = document.getElementById("list");
+const search = document.getElementById("search");
+const noResults = document.getElementById("no-results");
+let total = 0;
+
+function render() {
+  const t = UI[lang];
+  document.documentElement.lang = lang;
+  document.title = lang === "sk" ? "naplnené proroctvá" : "prophecies fulfilled";
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-odds").textContent = t.odds;
+  document.getElementById("t-odds8").textContent = t.odds8;
+  document.getElementById("t-odds16").textContent = t.odds16;
+  document.getElementById("t-odds48").textContent = t.odds48;
+  for (const id of ["t-in1", "t-in2", "t-in3"])
+    document.getElementById(id).textContent = t.oddsIn;
+  document.getElementById("t-footer").textContent = t.footer;
+  search.placeholder = t.search;
+  noResults.textContent = t.none;
+  document.getElementById("lang-en").className = lang === "en" ? "active" : "";
+  document.getElementById("lang-sk").className = lang === "sk" ? "active" : "";
+  document.getElementById("site-nav").innerHTML = tNavHTML("prophecies.html", lang);
+
+  list.innerHTML = "";
+  let n = 0;
+  total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+    for (const [ref, whatEN, whatSK, fulfilled] of items) {
+      n += 1; total += 1;
+      const row = document.createElement("div");
+      row.className = "row";
+      const refShown = lang === "sk" ? refSK(ref) : ref;
+      const fulShown = lang === "sk" ? refSK(fulfilled) : fulfilled;
+      const what = lang === "sk" ? whatSK : whatEN;
+      row.dataset.text = (ref + " " + refShown + " " + whatEN + " " + whatSK
+        + " " + fulfilled + " " + fulShown + " " + section).toLowerCase();
+      row.dataset.ot = ref;
+      row.dataset.nt = fulfilled;
+      row.innerHTML =
+        `<span class="num">${n}</span>` +
+        `<span class="p">${refShown}</span>` +
+        `<span class="what">${what}</span>` +
+        `<span class="f">${fulShown}</span>`;
+      row.addEventListener("click", () => toggleVerses(row));
+      sec.appendChild(row);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("t-note").innerHTML = t.note.replace("{n}", total);
+  applyFilter();
+}
+
+function quoteHTML(ref, label) {
+  const t = UI[lang];
+  const shown = lang === "sk" ? refSK(ref) : ref;
+  const v = (typeof VERSES !== "undefined" && VERSES[ref]) ? VERSES[ref][lang] : "";
+  const link = bibliaLink(ref);
+  const refHTML = link
+    ? `<a href="${link}" target="_blank" rel="noopener">${shown}</a>`
+    : shown;
+  return `<div class="q"><div class="q-ref">${refHTML} · ${label}</div>` +
+         `<div class="q-text">${v || "—"}</div></div>`;
+}
+
+function toggleVerses(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) {
+    next.remove();
+    return;
+  }
+  const t = UI[lang];
+  const panel = document.createElement("div");
+  panel.className = "verses";
+  panel.innerHTML = quoteHTML(row.dataset.ot, t.prophecy)
+                  + quoteHTML(row.dataset.nt, t.fulfilment);
+  row.after(panel);
+}
+
+function applyFilter() {
+  const t = UI[lang];
+  const q = search.value.trim().toLowerCase();
+  let visible = 0;
+  for (const sec of list.children) {
+    let secVisible = 0;
+    for (const row of sec.querySelectorAll(".row")) {
+      const hit = !q || row.dataset.text.includes(q);
+      row.classList.toggle("hidden", !hit);
+      const nx = row.nextElementSibling;
+      if (nx && nx.classList.contains("verses")) nx.classList.toggle("hidden", !hit);
+      if (hit) secVisible += 1;
+    }
+    sec.classList.toggle("hidden", secVisible === 0);
+    visible += secVisible;
+  }
+  noResults.style.display = visible ? "none" : "block";
+  document.getElementById("count").textContent =
+    q ? t.countOf(visible, total) : t.count(total);
+}
+
+function setLang(l) {
+  lang = l;
+  try { localStorage.setItem("prophecies-lang", l); } catch (e) {}
+  render();
+}
+
+document.getElementById("lang-en").addEventListener("click", () => setLang("en"));
+document.getElementById("lang-sk").addEventListener("click", () => setLang("sk"));
+search.addEventListener("input", applyFilter);
+
+render();
+</script>
+
+</body>
+</html>

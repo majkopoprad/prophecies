@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>harmónia evanjelií</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "harmony of the gospels",
+    intro: "The life of Jesus event by event, across the four gospels — one row, up to four witnesses. Passion Week is laid out day by day. Click a row to read every account side by side.",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. Only the feeding of the five thousand is recorded by all four evangelists. Long passages open with their first verses; the link leads to the full chapter.",
+    count: n => n + " events"
+  },
+  sk: {
+    title: "harmónia evanjelií",
+    intro: "Ježišov život udalosť po udalosti naprieč štyrmi evanjeliami — jeden riadok, až štyria svedkovia. Pašiový týždeň je rozpísaný deň po dni. Klikni na riadok a čítaj všetky záznamy vedľa seba.",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Iba nasýtenie piatich tisícov zaznamenali všetci štyria evanjelisti. Dlhšie pasáže sa otvárajú prvými veršami; odkaz vedie na celú kapitolu.",
+    count: n => n + " udalostí"
+  }
+};
+
+const SECTIONS_SK = {
+  "Birth and childhood": "Narodenie a detstvo",
+  "The beginning": "Začiatok služby",
+  "Ministry in Galilee": "Služba v Galilei",
+  "On the way to Jerusalem": "Na ceste do Jeruzalema",
+  "Passion Week — day by day": "Pašiový týždeň — deň po dni",
+  "Resurrection": "Vzkriesenie"
+};
+
+// [EN, SK, Matthew, Mark, Luke, John]  ("" = not recorded)
+const DATA = [
+["Birth and childhood", [
+["The Word became flesh","Slovo sa stalo telom","","","","John 1:1–14"],
+["The annunciation to Mary","Zvestovanie Márii","","","Luke 1:26–38",""],
+["The birth of Jesus","Narodenie Ježiša","Matthew 1:18–25","","Luke 2:1–7",""],
+["The shepherds","Pastieri pri Betleheme","","","Luke 2:8–20",""],
+["The magi","Mudrci od východu","Matthew 2:1–12","","",""],
+["The flight to Egypt","Útek do Egypta","Matthew 2:13–18","","",""],
+["The boy Jesus in the temple","Dvanásťročný v chráme","","","Luke 2:41–52",""]
+]],
+["The beginning", [
+["John the Baptist","Ján Krstiteľ","Matthew 3:1–12","Mark 1:1–8","Luke 3:1–18","John 1:19–28"],
+["The baptism of Jesus","Ježišov krst","Matthew 3:13–17","Mark 1:9–11","Luke 3:21–22",""],
+["The temptation","Pokúšanie na púšti","Matthew 4:1–11","Mark 1:12–13","Luke 4:1–13",""],
+["The first disciples","Prví učeníci","","","","John 1:35–51"],
+["The wedding at Cana","Svadba v Káne","","","","John 2:1–11"],
+["Nicodemus","Nikodém v noci","","","","John 3:1–21"],
+["The Samaritan woman","Samaritánka pri studni","","","","John 4:5–42"]
+]],
+["Ministry in Galilee", [
+["Rejected at Nazareth","Odmietnutý v Nazarete","","","Luke 4:16–30",""],
+["Calling the fishermen","Povolanie rybárov","Matthew 4:18–22","Mark 1:16–20","Luke 5:1–11",""],
+["The Sermon on the Mount","Reč na vrchu","Matthew 5:1–12","","Luke 6:20–36",""],
+["The centurion's servant","Stotníkov sluha","Matthew 8:5–13","","Luke 7:1–10",""],
+["Calming the storm","Utíšenie búrky","Matthew 8:23–27","Mark 4:35–41","Luke 8:22–25",""],
+["Jairus' daughter and the bleeding woman","Jairova dcéra a žena s krvotokom","Matthew 9:18–26","Mark 5:21–43","Luke 8:40–56",""],
+["Sending out the Twelve","Vyslanie Dvanástich","Matthew 10:1–15","Mark 6:7–13","Luke 9:1–6",""],
+["Feeding the five thousand","Nasýtenie piatich tisícov","Matthew 14:13–21","Mark 6:30–44","Luke 9:10–17","John 6:1–14"],
+["Walking on the water","Kráčanie po vode","Matthew 14:22–33","Mark 6:45–52","","John 6:15–21"],
+["Peter's confession","Petrovo vyznanie","Matthew 16:13–20","Mark 8:27–30","Luke 9:18–21",""],
+["The transfiguration","Premenenie na vrchu","Matthew 17:1–13","Mark 9:2–13","Luke 9:28–36",""]
+]],
+["On the way to Jerusalem", [
+["The good Samaritan","Milosrdný Samaritán","","","Luke 10:25–37",""],
+["The Lord's Prayer","Otčenáš","Matthew 6:9–13","","Luke 11:1–4",""],
+["The prodigal son","Márnotratný syn","","","Luke 15:11–32",""],
+["The raising of Lazarus","Vzkriesenie Lazára","","","","John 11:1–44"],
+["The ten lepers","Desať malomocných","","","Luke 17:11–19",""],
+["The rich young ruler","Bohatý mladík","Matthew 19:16–30","Mark 10:17–31","Luke 18:18–30",""],
+["Zacchaeus","Zachej","","","Luke 19:1–10",""],
+["Blind Bartimaeus","Slepý Bartimej","Matthew 20:29–34","Mark 10:46–52","Luke 18:35–43",""]
+]],
+["Passion Week — day by day", [
+["Sunday — the triumphal entry","Nedeľa — slávnostný vstup","Matthew 21:1–11","Mark 11:1–11","Luke 19:28–44","John 12:12–19"],
+["Monday — cleansing the temple","Pondelok — vyčistenie chrámu","Matthew 21:12–17","Mark 11:15–19","Luke 19:45–48",""],
+["Tuesday — the greatest commandment","Utorok — najväčšie prikázanie","Matthew 22:34–40","Mark 12:28–34","",""],
+["Tuesday — the widow's offering","Utorok — vdovin haliér","","Mark 12:41–44","Luke 21:1–4",""],
+["Tuesday — the Olivet discourse","Utorok — reč o konci vekov","Matthew 24:1–14","Mark 13:1–13","Luke 21:5–28",""],
+["Wednesday — the anointing and the betrayal","Streda — pomazanie v Betánii a zrada","Matthew 26:6–16","Mark 14:3–11","Luke 22:1–6","John 12:1–8"],
+["Thursday — the Last Supper","Štvrtok — Posledná večera","Matthew 26:17–30","Mark 14:12–26","Luke 22:7–23",""],
+["Thursday — washing the disciples' feet","Štvrtok — umývanie nôh","","","","John 13:1–17"],
+["Thursday — Gethsemane","Štvrtok — Getsemani","Matthew 26:36–46","Mark 14:32–42","Luke 22:39–46",""],
+["Thursday night — the arrest","Štvrtok v noci — zatknutie","Matthew 26:47–56","Mark 14:43–52","Luke 22:47–53","John 18:2–11"],
+["Friday — before the Sanhedrin","Piatok — pred veľradou","Matthew 26:57–68","Mark 14:53–65","Luke 22:63–71","John 18:19–24"],
+["Friday — Peter's denial","Piatok — Petrovo zapretie","Matthew 26:69–75","Mark 14:66–72","Luke 22:54–62","John 18:15–27"],
+["Friday — before Pilate","Piatok — pred Pilátom","Matthew 27:11–26","Mark 15:1–15","Luke 23:1–25","John 18:28–40"],
+["Friday — the crucifixion","Piatok — ukrižovanie","Matthew 27:32–56","Mark 15:21–41","Luke 23:26–49","John 19:16–37"],
+["Friday — the burial","Piatok — pohreb","Matthew 27:57–61","Mark 15:42–47","Luke 23:50–56","John 19:38–42"],
+["Saturday — the guard at the tomb","Sobota — stráž pri hrobe","Matthew 27:62–66","","",""]
+]],
+["Resurrection", [
+["The empty tomb","Prázdny hrob","Matthew 28:1–10","Mark 16:1–8","Luke 24:1–12","John 20:1–10"],
+["Mary Magdalene","Mária Magdaléna","","Mark 16:9–11","","John 20:11–18"],
+["The road to Emmaus","Cesta do Emauz","","Mark 16:12–13","Luke 24:13–35",""],
+["Appearing to the disciples","Zjavenie učeníkom","","","Luke 24:36–49","John 20:19–23"],
+["Thomas","Tomáš","","","","John 20:24–29"],
+["By the Sea of Galilee","Pri Tiberiadskom mori","","","","John 21:1–14"],
+["The Great Commission","Veľké poverenie","Matthew 28:16–20","","",""],
+["The ascension","Nanebovstúpenie","","Mark 16:19–20","Luke 24:50–53",""]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function shortRef(ref) {
+  // "Matthew 21:1–11" -> "21:1–11" for the column display
+  return ref ? ref.replace(/^[1-2]?\s?[A-Za-z]+\s/, "") : "·";
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("harmony.html", lang);
+
+  const gospels = lang === "sk" ? ["MT", "MK", "LK", "JN"] : ["MT", "MK", "LK", "JN"];
+  list.innerHTML = "";
+  let n = 0, total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+
+    const head = document.createElement("div");
+    head.className = "h-row h-head";
+    head.innerHTML = `<span></span><span></span>` +
+      gospels.map(g => `<span>${g}</span>`).join("");
+    sec.appendChild(head);
+
+    for (const [en, sk, mt, mk, lk, jn] of items) {
+      n += 1; total += 1;
+      const row = document.createElement("div");
+      row.className = "h-row";
+      row.dataset.refs = [mt, mk, lk, jn].filter(Boolean).join("|");
+      row.innerHTML =
+        `<span class="num">${n}</span>` +
+        `<span class="what">${lang === "sk" ? sk : en}</span>` +
+        [mt, mk, lk, jn].map(r => `<span class="h-ref">${shortRef(r)}</span>`).join("");
+      row.addEventListener("click", () => toggle(row));
+      sec.appendChild(row);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(total);
+}
+
+function toggle(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) { next.remove(); return; }
+  const refs = row.dataset.refs.split("|").filter(Boolean);
+  const panel = document.createElement("div");
+  panel.className = "verses" + (refs.length === 1 ? " single" : "");
+  panel.innerHTML = refs.map(r => `<div>${tQuote(r, "", lang)}</div>`).join("");
+  row.after(panel);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

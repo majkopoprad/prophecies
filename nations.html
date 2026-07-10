@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>proroctvá o národoch</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "prophecies about nations and cities",
+    intro: "Prophecies whose fulfilment is written not in the New Testament but in history books and archaeology — cities, empires and one nation that would not disappear. Click a row for the text and what happened.",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. Dates follow standard historical chronology; every fulfilment listed here is documented history, checkable in any encyclopedia.",
+    prophecy: "the prophecy", history: "what happened",
+    count: n => n + " prophecies"
+  },
+  sk: {
+    title: "proroctvá o národoch a mestách",
+    intro: "Proroctvá, ktorých naplnenie nie je zapísané v Novom zákone, ale v učebniciach dejín a v archeológii — mestá, ríše a jeden národ, ktorý nemal zaniknúť. Klikni na riadok — text proroctva a čo sa stalo.",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Dátumy podľa štandardnej historickej chronológie; každé uvedené naplnenie je zdokumentovaná história overiteľná v ktorejkoľvek encyklopédii.",
+    prophecy: "proroctvo", history: "čo sa stalo",
+    count: n => n + " proroctiev"
+  }
+};
+
+const SECTIONS_SK = {
+  "Cities": "Mestá", "Empires": "Ríše", "Israel": "Izrael"
+};
+
+// [ref, title EN, title SK, history EN, history SK]
+const DATA = [
+["Cities", [
+["Ezekiel 26:4–5, 12, 14",
+ "Tyre — scraped bare as a rock, its stones thrown into the sea, a place for drying nets, never rebuilt",
+ "Týrus — zoškrabaný na holú skalu, kamene hodené do mora, miesto na sušenie sietí, už nebude vybudovaný",
+ "Prophesied c. 590 BC. Nebuchadnezzar besieged mainland Tyre for 13 years (586–573 BC). In 332 BC Alexander the Great scraped the old city's ruins — stones, timber, rubble — into the sea to build a causeway to the island, exactly as written. The site of old Tyre remains bare rock where fishermen spread their nets.",
+ "Predpovedané okolo r. 590 pred Kr. Nabuchodonozor obliehal pevninský Týrus 13 rokov (586–573 pred Kr.). V roku 332 pred Kr. Alexander Veľký zhrnul trosky starého mesta — kamene, drevo, sutinu — do mora ako násyp k ostrovu, presne ako je napísané. Miesto starého Týru je dodnes holá skala, kde rybári rozprestierajú siete."],
+["Isaiah 13:19–21; Jeremiah 51:37",
+ "Babylon — overthrown like Sodom, never to be inhabited again, a heap of ruins",
+ "Babylon — vyvrátený ako Sodoma, už nikdy nebude obývaný, hromada rozvalín",
+ "At its height the largest city on earth. Taken by Cyrus in 539 BC without a battle for the city itself, it declined steadily; by the early centuries AD it was abandoned. For some 1,500 years the site has been an uninhabited mound of ruins by the Euphrates — never rebuilt as a living city.",
+ "Na vrchole najväčšie mesto sveta. Kýros ho dobyl v roku 539 pred Kr., mesto postupne upadalo; v prvých storočiach po Kr. bolo opustené. Už okolo 1 500 rokov je to neobývaná kopa rozvalín pri Eufrate — nikdy nebol znovu vybudovaný ako živé mesto."],
+["Nahum 1:8; 2:6; 3:11",
+ "Nineveh — the river gates opened, the palace dissolved, the city hidden",
+ "Ninive — riečne brány otvorené, palác sa rozplynie, mesto sa skryje",
+ "Nineveh fell in 612 BC to the Babylonians and Medes; ancient accounts record that flooding of the rivers breached the walls. The city was erased so completely that for centuries sceptics doubted it had existed — until Layard excavated it in 1845–1847 across the Tigris from Mosul.",
+ "Ninive padlo v roku 612 pred Kr. pod náporom Babylončanov a Médov; staroveké správy uvádzajú, že hradby prelomila povodeň riek. Mesto bolo vymazané tak dokonale, že skeptici stáročia pochybovali o jeho existencii — kým ho Layard v rokoch 1845–1847 nevykopal oproti Mosulu."],
+["Obadiah 1:3–4, 18; Jeremiah 49:16–18",
+ "Edom — the pride of those who dwell in the rock brought down, the land desolate, no survivors of Esau",
+ "Edom — pýcha obyvateľov skál zrazená, krajina spustošená, z Ezauovho domu nezostane nik",
+ "Edom's capital Petra was carved into the rock cliffs — 'though you soar like the eagle'. The Nabateans displaced the Edomites; after the Roman era the region fell silent and Petra lay forgotten until Burckhardt reached it in 1812. The Edomite nation vanished from history after the 1st century AD.",
+ "Hlavné mesto Edomu, Petra, bolo vytesané do skalných stien — „hoci by si lietal ako orol“. Nabatejci Edomčanov vytlačili; po rímskej ére kraj stíchol a Petra ležala zabudnutá, kým k nej v roku 1812 neprišiel Burckhardt. Edomský národ po 1. storočí po Kr. zmizol z dejín."],
+["Micah 1:6",
+ "Samaria — a heap of rubble in an open field, a place for planting vineyards",
+ "Samária — hromada rozvalín na poli, miesto na vysádzanie viníc",
+ "Samaria was destroyed by Assyria in 722 BC and repeatedly afterwards. Its stones were literally poured down the hillside into the valley; travellers through the centuries described terraced fields, gardens and vineyards planted over the ruins of the once-royal city.",
+ "Samáriu zničila Asýria v roku 722 pred Kr. a potom ešte opakovane. Jej kamene boli doslova zosypané dolu svahom do údolia; cestovatelia po stáročia opisovali terasovité polia, záhrady a vinice vysadené na rozvalinách kedysi kráľovského mesta."],
+["Matthew 24:1–2",
+ "The temple in Jerusalem — not one stone left upon another",
+ "Jeruzalemský chrám — nezostane kameň na kameni",
+ "Spoken c. AD 30, while the magnificent Herodian temple was still being finished. In AD 70 Titus' legions burned and dismantled it completely; the Western Wall that stands today is the platform's retaining wall, not the temple itself. It was never rebuilt.",
+ "Vyslovené okolo r. 30 po Kr., kým sa veľkolepý Herodesov chrám ešte dokončoval. V roku 70 po Kr. ho Titove légie vypálili a rozobrali do základov; dnešný Múr nárekov je oporný múr plošiny, nie samotný chrám. Nikdy nebol znovu postavený."]
+]],
+["Empires", [
+["Isaiah 44:28; 45:1",
+ "Cyrus — named as the liberator about 150 years before his birth",
+ "Kýros — menovaný ako osloboditeľ približne 150 rokov pred narodením",
+ "Isaiah (8th century BC) names Cyrus as the shepherd who would order Jerusalem rebuilt. Cyrus the Great took Babylon in 539 BC and in 538 BC issued the decree letting the Jews return and rebuild the temple (Ezra 1) — the Cyrus Cylinder in the British Museum documents his repatriation policy.",
+ "Izaiáš (8. storočie pred Kr.) menuje Kýra ako pastiera, ktorý prikáže znovu vybudovať Jeruzalem. Kýros Veľký dobyl Babylon v roku 539 pred Kr. a v roku 538 vydal dekrét o návrate Židov a obnove chrámu (Ezdráš 1) — Kýrov valec v Britskom múzeu dokumentuje jeho politiku návratov."],
+["Daniel 2:31–35, 44",
+ "Four empires in succession — then a kingdom that will never be destroyed",
+ "Štyri ríše po sebe — potom kráľovstvo, ktoré nebude nikdy zničené",
+ "The statue's gold, silver, bronze and iron correspond to the succession every history book records: Babylon, Medo-Persia (539 BC), Greece (331 BC), Rome. In the days of the fourth empire, the kingdom of God arrived — and outlasted Rome itself.",
+ "Zlato, striebro, bronz a železo sochy zodpovedajú postupnosti, ktorú uvádza každá učebnica dejepisu: Babylon, Médo-Perzia (539 pred Kr.), Grécko (331 pred Kr.), Rím. Za dní štvrtej ríše prišlo Božie kráľovstvo — a pretrvalo aj samotný Rím."],
+["Daniel 8:5–8, 21",
+ "The he-goat from the west — Greece defeats Persia at furious speed, then the great horn is broken",
+ "Cap od západu — Grécko poráža Perziu závratnou rýchlosťou, potom sa veľký roh zlomí",
+ "Daniel names the goat explicitly: 'the king of Greece'. Alexander crossed into Asia in 334 BC and destroyed the Persian empire in under four years, dying at 32 in 323 BC — the great horn broken at the height of power, his empire split among four generals, as the vision continues.",
+ "Daniel capa menuje výslovne: „kráľ Grécka“. Alexander prekročil do Ázie v roku 334 pred Kr. a za necelé štyri roky zničil perzskú ríšu; zomrel 32-ročný v roku 323 pred Kr. — veľký roh zlomený na vrchole moci a ríša rozdelená medzi štyroch generálov, ako videnie pokračuje."],
+["Ezekiel 29:14–15",
+ "Egypt — would continue, but as a lowly kingdom that never again rules the nations",
+ "Egypt — bude ďalej existovať, ale ako ponížené kráľovstvo, ktoré už nikdy nebude vládnuť národom",
+ "A precise, two-sided prophecy: unlike Babylon, Egypt was not to vanish — but the empire of the pharaohs never returned. Since the Persian conquest (525 BC) Egypt was ruled by Persians, Greeks, Romans, Arabs, Mamluks, Ottomans and the British; it exists to this day, and has never again been an imperial power.",
+ "Presné, dvojstranné proroctvo: na rozdiel od Babylonu Egypt nemal zaniknúť — ale ríša faraónov sa už nevrátila. Od perzského dobytia (525 pred Kr.) Egyptu vládli Peržania, Gréci, Rimania, Arabi, mamlúci, Osmani aj Briti; existuje dodnes a už nikdy nebol imperiálnou mocnosťou."]
+]],
+["Israel", [
+["Deuteronomy 28:64–66",
+ "Scattered among all nations — no rest, living in dread, sold as slaves",
+ "Rozptýlení medzi všetky národy — bez odpočinku, v ustavičnom strachu",
+ "After the revolts of AD 70 and 132–135 Rome destroyed Jerusalem, sold survivors into slavery and renamed the land. For eighteen centuries Jews lived dispersed on every continent, repeatedly expelled and persecuted — history's most documented diaspora.",
+ "Po povstaniach v rokoch 70 a 132–135 po Kr. Rím zničil Jeruzalem, preživších predal do otroctva a krajinu premenoval. Osemnásť storočí žili Židia rozptýlení na všetkých kontinentoch, opakovane vyháňaní a prenasledovaní — najzdokumentovanejšia diaspóra dejín."],
+["Jeremiah 31:35–37",
+ "Yet the nation would never cease to exist — as fixed as the laws of sun and stars",
+ "A predsa národ nikdy neprestane existovať — tak isto, ako platia zákony slnka a hviezd",
+ "Every other ancient people deported and dispersed (Edomites, Philistines, Moabites, Ammonites…) melted away. Israel alone kept its identity, language and scriptures through eighteen centuries without a land — a survival historians themselves call unparalleled.",
+ "Každý iný staroveký národ, ktorý bol deportovaný a rozptýlený (Edomčania, Filištínci, Moábčania, Amónčania…), sa rozplynul. Jedine Izrael si udržal identitu, jazyk a Písma osemnásť storočí bez vlastnej krajiny — prežitie, ktoré aj historici označujú za bezprecedentné."],
+["Isaiah 66:8",
+ "A nation born in one day",
+ "Národ zrodený v jednom dni",
+ "On 14 May 1948 the State of Israel was proclaimed and came into legal existence in a single day, recognised within hours — the return of a dispersed people to statehood after eighteen centuries, without parallel in history.",
+ "14. mája 1948 bol vyhlásený Štát Izrael a právne vznikol v jedinom dni, uznaný v priebehu hodín — návrat rozptýleného národa k štátnosti po osemnástich storočiach, bez obdoby v dejinách."]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("nations.html", lang);
+
+  list.innerHTML = "";
+  let n = 0, total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+    for (const [ref, en, sk, histEN, histSK] of items) {
+      n += 1; total += 1;
+      const row = document.createElement("div");
+      row.className = "row";
+      row.dataset.ref = ref;
+      row.dataset.hist = lang === "sk" ? histSK : histEN;
+      const refShown = lang === "sk" ? tRefSK(ref) : ref;
+      row.innerHTML =
+        `<span class="num">${n}</span>` +
+        `<span class="p">${refShown.split(";")[0]}</span>` +
+        `<span class="what">${lang === "sk" ? sk : en}</span>`;
+      row.style.gridTemplateColumns = "38px 160px 1fr";
+      row.addEventListener("click", () => toggle(row));
+      sec.appendChild(row);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(total);
+}
+
+function toggle(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) { next.remove(); return; }
+  const t = UI[lang];
+  const panel = document.createElement("div");
+  panel.className = "verses";
+  panel.innerHTML =
+    `<div>${tQuote(row.dataset.ref, t.prophecy, lang)}</div>` +
+    `<div class="q"><div class="q-ref">${t.history}</div>` +
+    `<div class="q-hist">${row.dataset.hist}</div></div>`;
+  row.after(panel);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

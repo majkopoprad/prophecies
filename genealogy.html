@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rodokmeň adam — ježiš</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "genealogy — adam to jesus",
+    intro: "One unbroken line through the whole of Scripture: Genesis 5, Genesis 11 and Matthew 1. The marked names are the knots where God tied a promise. Matthew counts three times fourteen generations; Luke traces the same line back — through Nathan rather than Solomon — all the way to “Adam, son of God.”",
+    footer: "Names follow the Slovak Ecumenical Translation; Matthew's list (Matthew 1:2–16) descends Abraham → Jesus, Genesis 5 and 11 carry the line Adam → Abraham. Four women are named in Matthew's genealogy: Tamar, Rahab, Ruth and the wife of Uriah.",
+    count: n => n + " names"
+  },
+  sk: {
+    title: "rodokmeň — od adama po ježiša",
+    intro: "Jedna neprerušená línia naprieč celým Písmom: Genezis 5, Genezis 11 a Matúš 1. Zvýraznené mená sú uzly, kde Boh uviazal prisľúbenie. Matúš počíta trikrát štrnásť pokolení; Lukáš vedie tú istú líniu späť — cez Nátana namiesto Šalamúna — až po „Adama, Božieho syna“.",
+    footer: "Mená podľa Slovenského ekumenického prekladu; Matúšov zoznam (Matúš 1:2–16) klesá od Abraháma k Ježišovi, Genezis 5 a 11 nesú líniu od Adama k Abrahámovi. V Matúšovom rodokmeni sú menované štyri ženy: Támar, Rachab, Rút a Uriášova žena.",
+    count: n => n + " mien"
+  }
+};
+
+// eras: [era EN, era SK, ref, names: [sk, en, note_sk, note_en] (notes only on key nodes)]
+const ERAS = [
+["Before the flood — Genesis 5", "Pred potopou — Genezis 5", "Genesis 5:3–32", [
+  ["Adam","Adam","prvý človek; prvé prisľúbenie o potomstve ženy (Genezis 3:15)","the first man; the first promise of the woman's seed (Genesis 3:15)"],
+  ["Set","Seth","",""],
+  ["Enoš","Enosh","",""],
+  ["Kénan","Kenan","",""],
+  ["Mahalalel","Mahalalel","",""],
+  ["Jered","Jared","",""],
+  ["Henoch","Enoch","chodil s Bohom a nebolo ho — vzatý bez smrti","walked with God and was not — taken without death"],
+  ["Matuzalem","Methuselah","najdlhší zaznamenaný život: 969 rokov","the longest recorded life: 969 years"],
+  ["Lemech","Lamech","",""],
+  ["Noach","Noah","zmluva po potope; záchrana v korábe","the covenant after the flood; salvation in the ark"]
+]],
+["After the flood — Genesis 11", "Po potope — Genezis 11", "Genesis 11:10–26", [
+  ["Sem","Shem","",""],
+  ["Arpachšad","Arphaxad","",""],
+  ["Šelach","Shelah","",""],
+  ["Éber","Eber","",""],
+  ["Peleg","Peleg","za jeho čias bola zem rozdelená","in his days the earth was divided"],
+  ["Reú","Reu","",""],
+  ["Serúg","Serug","",""],
+  ["Nachor","Nahor","",""],
+  ["Terach","Terah","",""]
+]],
+["Patriarchs to David — Matthew 1:2–6", "Patriarchovia po Dávida — Matúš 1:2–6", "Matthew 1:2–6", [
+  ["Abrahám","Abraham","v tebe budú požehnané všetky národy (Genezis 12:3)","in you all nations will be blessed (Genesis 12:3)"],
+  ["Izák","Isaac","syn prisľúbenia","the son of promise"],
+  ["Jákob","Jacob","",""],
+  ["Júda","Judah","žezlo neodíde od Júdu (Genezis 49:10) — s Támar","the sceptre shall not depart from Judah (Genesis 49:10) — with Tamar"],
+  ["Perec","Perez","",""],
+  ["Checrón","Hezron","",""],
+  ["Rám","Ram","",""],
+  ["Amínadab","Amminadab","",""],
+  ["Nachšón","Nahshon","",""],
+  ["Salmón","Salmon","s Rachab z Jericha","with Rahab of Jericho"],
+  ["Bóaz","Boaz","príbuzný vykupiteľ — s Moábčankou Rút","the kinsman-redeemer — with Ruth the Moabitess"],
+  ["Obéd","Obed","",""],
+  ["Izaj","Jesse","prút z Izajovho kmeňa (Izaiáš 11:1)","a shoot from the stump of Jesse (Isaiah 11:1)"],
+  ["Dávid","David","zmluva o večnom tróne (2. Samuelova 7:12–16)","the covenant of an everlasting throne (2 Samuel 7:12–16)"]
+]],
+["Kings — Matthew 1:6–11", "Králi — Matúš 1:6–11", "Matthew 1:6–11", [
+  ["Šalamún","Solomon","staviteľ chrámu","builder of the temple"],
+  ["Rechabeám","Rehoboam","",""],
+  ["Abija","Abijah","",""],
+  ["Ása","Asa","",""],
+  ["Jóšafat","Jehoshaphat","",""],
+  ["Jorám","Joram","",""],
+  ["Uzija","Uzziah","",""],
+  ["Jótam","Jotham","",""],
+  ["Acház","Ahaz","jemu bolo dané znamenie o panne (Izaiáš 7:14)","to him the sign of the virgin was given (Isaiah 7:14)"],
+  ["Chizkija","Hezekiah","",""],
+  ["Menašše","Manasseh","",""],
+  ["Ámon","Amon","",""],
+  ["Jošija","Josiah","",""],
+  ["Jechonja","Jeconiah","babylonské zajatie — a predsa línia pokračuje","the Babylonian exile — and yet the line continues"]
+]],
+["After the exile — Matthew 1:12–16", "Po zajatí — Matúš 1:12–16", "Matthew 1:12–16", [
+  ["Šealtíel","Shealtiel","",""],
+  ["Zorobábel","Zerubbabel","viedol návrat a obnovu chrámu (Aggeus 2:23)","led the return and the temple's rebuilding (Haggai 2:23)"],
+  ["Abiúd","Abiud","",""],
+  ["Eljakim","Eliakim","",""],
+  ["Azór","Azor","",""],
+  ["Sádok","Zadok","",""],
+  ["Achim","Achim","",""],
+  ["Eliúd","Eliud","",""],
+  ["Eleazár","Eleazar","",""],
+  ["Mattán","Matthan","",""],
+  ["Jákob","Jacob","",""],
+  ["Jozef","Joseph","muž Márie, z ktorej sa narodil Ježiš","the husband of Mary, of whom Jesus was born"],
+  ["JEŽIŠ","JESUS","nazývaný Kristus — cieľ celej línie","who is called Christ — the goal of the whole line"]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("genealogy.html", lang);
+  document.getElementById("count").textContent =
+    t.count(ERAS.reduce((s, e) => s + e[3].length, 0));
+
+  list.innerHTML = "";
+  for (const [eraEN, eraSK, ref, names] of ERAS) {
+    const era = document.createElement("div");
+    era.className = "gen-era";
+    era.textContent = lang === "sk" ? eraSK : eraEN;
+    list.appendChild(era);
+
+    const refLine = document.createElement("div");
+    refLine.className = "gen-ref";
+    const shown = lang === "sk" ? tRefSK(ref) : ref;
+    const link = tBibliaLink(ref);
+    refLine.innerHTML = link
+      ? `<a href="${link}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)">${shown}</a>`
+      : shown;
+    list.appendChild(refLine);
+
+    const line = document.createElement("div");
+    line.className = "gen-line";
+    for (const [sk, en, noteSK, noteEN] of names) {
+      const div = document.createElement("div");
+      const note = lang === "sk" ? noteSK : noteEN;
+      div.className = "gen-name" + (note ? " key" : "");
+      div.innerHTML = (lang === "sk" ? sk : en) +
+        (note ? `<span class="gen-note">${note}</span>` : "");
+      line.appendChild(div);
+    }
+    list.appendChild(line);
+  }
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

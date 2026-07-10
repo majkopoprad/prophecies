@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ja som — výroky a tituly</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "i am — sayings and titles",
+    intro: "The seven I AM sayings of John's gospel — each echoing the name revealed at the burning bush (Exodus 3:14) — and the titles the Scriptures give to Jesus. Click a row to read the verse.",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. In John 8:58 the claim is explicit — 'before Abraham was, I am' — and the hearers reached for stones, because they understood exactly what was said.",
+    count: n => n + " entries"
+  },
+  sk: {
+    title: "ja som — výroky a tituly",
+    intro: "Sedem výrokov JA SOM z Jánovho evanjelia — každý je ozvenou mena zjaveného pri horiacom kre (Exodus 3:14) — a tituly, ktoré Písmo dáva Ježišovi. Klikni na riadok a čítaj verš.",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. V Jánovi 8:58 je nárok vyslovený otvorene — „skôr ako bol Abrahám, Ja som“ — a poslucháči siahli po kameňoch, lebo presne rozumeli, čo bolo povedané.",
+    count: n => n + " položiek"
+  }
+};
+
+const SECTIONS_SK = {
+  "The name": "Meno",
+  "The seven I AM sayings": "Sedem výrokov JA SOM",
+  "Titles": "Tituly"
+};
+
+// [ref, EN, SK]
+const DATA = [
+["The name", [
+["Exodus 3:14","I AM WHO I AM — the name revealed to Moses","JA SOM, KTORÝ SOM — meno zjavené Mojžišovi"],
+["John 8:58","“Before Abraham was, I am.”","„Skôr ako bol Abrahám, Ja som.“"]
+]],
+["The seven I AM sayings", [
+["John 6:35","I am the bread of life","Ja som chlieb života"],
+["John 8:12","I am the light of the world","Ja som svetlo sveta"],
+["John 10:9","I am the door","Ja som brána"],
+["John 10:11","I am the good shepherd","Ja som dobrý pastier"],
+["John 11:25","I am the resurrection and the life","Ja som vzkriesenie a život"],
+["John 14:6","I am the way, the truth and the life","Ja som cesta, pravda a život"],
+["John 15:1","I am the true vine","Ja som pravý vinič"]
+]],
+["Titles", [
+["John 1:29","The Lamb of God","Baránok Boží"],
+["John 1:1","The Word","Slovo"],
+["Daniel 7:13–14","The Son of Man","Syn človeka"],
+["Matthew 1:23","Immanuel — God with us","Emanuel — Boh s nami"],
+["Matthew 21:9","The Son of David","Syn Dávidov"],
+["Revelation 22:13","The Alpha and the Omega","Alfa a Omega"],
+["Revelation 19:16","King of kings and Lord of lords","Kráľ kráľov a Pán pánov"],
+["Revelation 5:5","The Lion of the tribe of Judah","Lev z Júdovho kmeňa"],
+["1 Peter 2:6","The cornerstone","Uholný kameň"],
+["Hebrews 4:14","The great high priest","Veľký veľkňaz"],
+["1 Timothy 2:5","The mediator between God and men","Prostredník medzi Bohom a ľuďmi"],
+["1 John 2:1","The advocate with the Father","Zástanca u Otca"],
+["Matthew 9:15","The bridegroom","Ženích"],
+["1 Corinthians 15:45","The last Adam","Posledný Adam"],
+["Colossians 1:15","The firstborn over all creation","Prvorodený všetkého stvorenia"],
+["Ephesians 1:22","The head of the church","Hlava cirkvi"],
+["Acts 10:42","The judge of the living and the dead","Sudca živých a mŕtvych"],
+["Job 19:25","My Redeemer lives","Môj Vykupiteľ žije"],
+["Isaiah 9:6","Prince of Peace","Knieža pokoja"],
+["Revelation 1:5","The faithful witness","Verný svedok"]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("iam.html", lang);
+
+  list.innerHTML = "";
+  let n = 0, total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+    for (const [ref, en, sk] of items) {
+      n += 1; total += 1;
+      const row = document.createElement("div");
+      row.className = "row";
+      row.dataset.ref = ref;
+      const refShown = lang === "sk" ? tRefSK(ref) : ref;
+      row.innerHTML =
+        `<span class="num">${n}</span>` +
+        `<span class="p">${refShown}</span>` +
+        `<span class="what">${lang === "sk" ? sk : en}</span>`;
+      row.style.gridTemplateColumns = "38px 160px 1fr";
+      row.addEventListener("click", () => toggle(row));
+      sec.appendChild(row);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(total);
+}
+
+function toggle(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) { next.remove(); return; }
+  const panel = document.createElement("div");
+  panel.className = "verses single";
+  panel.innerHTML = `<div>${tQuote(row.dataset.ref, "", lang)}</div>`;
+  row.after(panel);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

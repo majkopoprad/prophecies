@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>podobenstvá a zázraky</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "parables and miracles",
+    intro: "Every parable with its point in one line, and every recorded miracle — where each stands in the gospels. Click a row to read the passage.",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. Counts follow the traditional lists; where gospels overlap, all parallel references are given.",
+    count: (p, m) => p + " parables · " + m + " miracles"
+  },
+  sk: {
+    title: "podobenstvá a zázraky",
+    intro: "Každé podobenstvo s posolstvom v jednej vete a každý zaznamenaný zázrak — kde v evanjeliách stoja. Klikni na riadok a čítaj pasáž.",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Počty podľa tradičných zoznamov; kde sa evanjeliá prekrývajú, sú uvedené všetky paralelné odkazy.",
+    count: (p, m) => p + " podobenstiev · " + m + " zázrakov"
+  }
+};
+
+// Parables: [EN name, SK name, EN point, SK point, refs]
+const PARABLES = [
+["The sower","Rozsievač","Four soils — four responses to the word","Štyri pôdy — štyri odpovede na Božie slovo","Matthew 13:3–9; Mark 4:3–9; Luke 8:5–8"],
+["The weeds","Kúkoľ medzi pšenicou","Judgment belongs to God, at the end of the age","Súd patrí Bohu, na konci veku","Matthew 13:24–30"],
+["The mustard seed","Horčičné zrnko","The kingdom grows from the smallest beginning","Kráľovstvo rastie z najmenšieho začiatku","Matthew 13:31–32; Mark 4:30–32; Luke 13:18–19"],
+["The leaven","Kvas","The kingdom quietly permeates everything","Kráľovstvo potichu prenikne všetko","Matthew 13:33; Luke 13:20–21"],
+["The hidden treasure","Poklad v poli","The kingdom is worth everything you have","Kráľovstvo stojí za všetko, čo máš","Matthew 13:44"],
+["The pearl of great price","Vzácna perla","One thing of supreme worth","Jediná vec zvrchovanej hodnoty","Matthew 13:45–46"],
+["The net","Rybárska sieť","The final separation of good and bad","Konečné oddelenie dobrých a zlých","Matthew 13:47–50"],
+["The unmerciful servant","Nemilosrdný sluha","Forgiven people must forgive","Komu bolo odpustené, musí odpúšťať","Matthew 18:23–35"],
+["Workers in the vineyard","Robotníci vo vinici","Grace is not calculated by hours","Milosť sa nepočíta na hodiny","Matthew 20:1–16"],
+["The two sons","Dvaja synovia","Doing the will matters more than saying yes","Konať vôľu je viac než povedať áno","Matthew 21:28–32"],
+["The wicked tenants","Zlí vinohradníci","Israel's leaders reject the son of the owner","Vodcovia zabíjajú syna majiteľa vinice","Matthew 21:33–44; Mark 12:1–11; Luke 20:9–18"],
+["The wedding banquet","Svadobná hostina","The invitation passes to whoever will come","Pozvanie prechádza na tých, ktorí prídu","Matthew 22:1–14"],
+["The ten virgins","Desať panien","Be ready — the bridegroom may delay","Buď pripravený — ženích môže meškať","Matthew 25:1–13"],
+["The talents","Talenty","What was entrusted must bear fruit","Zverené má niesť úžitok","Matthew 25:14–30"],
+["The sheep and the goats","Ovce a capy","What you did to the least, you did to Him","Čo ste urobili najmenším, urobili ste jemu","Matthew 25:31–46"],
+["The growing seed","Rastúce semeno","God gives the growth, silently","Rast dáva Boh, potichu","Mark 4:26–29"],
+["The two debtors","Dvaja dlžníci","Who is forgiven much, loves much","Komu sa veľa odpustilo, veľa miluje","Luke 7:41–43"],
+["The good Samaritan","Milosrdný Samaritán","Your neighbour is whoever needs you","Blížny je ten, kto ťa potrebuje","Luke 10:30–37"],
+["The friend at midnight","Naliehavý priateľ o polnoci","Keep asking — boldness is welcome","Pros vytrvalo — smelosť je vítaná","Luke 11:5–8"],
+["The rich fool","Bohatý blázon","A life measured in barns ends tonight","Život meraný sýpkami sa končí dnes v noci","Luke 12:16–21"],
+["The barren fig tree","Neúrodný figovník","One more year of patience — then fruit","Ešte rok trpezlivosti — potom ovocie","Luke 13:6–9"],
+["The great banquet","Veľká večera","The excuses of the invited, the joy of the poor","Výhovorky pozvaných, radosť chudobných","Luke 14:16–24"],
+["The lost sheep","Stratená ovca","Heaven rejoices over one who returns","Nebo sa raduje z jedného, ktorý sa vráti","Matthew 18:12–14; Luke 15:4–7"],
+["The lost coin","Stratená minca","Searched for until found","Hľadá sa, kým sa nenájde","Luke 15:8–10"],
+["The prodigal son","Márnotratný syn","The father runs to meet the returning son","Otec beží v ústrety vracajúcemu sa synovi","Luke 15:11–32"],
+["The shrewd manager","Nepoctivý správca","Use money for what outlasts it","Používaj peniaze na to, čo ich pretrvá","Luke 16:1–9"],
+["The rich man and Lazarus","Boháč a Lazár","After death the roles are fixed","Po smrti sú úlohy nezvratné","Luke 16:19–31"],
+["The persistent widow","Neodbytná vdova","Pray always and do not give up","Modli sa stále a nevzdávaj sa","Luke 18:1–8"],
+["The Pharisee and the tax collector","Farizej a mýtnik","The humbled one goes home justified","Ospravedlnený odchádza ten, kto sa ponížil","Luke 18:9–14"],
+["The ten minas","Desať mín","Faithfulness now, authority then","Vernosť teraz, právomoc potom","Luke 19:11–27"],
+["The wise and foolish builders","Dom na skale","Hearing without doing collapses in the storm","Počúvať bez konania sa zrúti v búrke","Matthew 7:24–27; Luke 6:47–49"],
+["New wine in old wineskins","Nové víno v starých mechoch","The new life needs new forms","Nový život potrebuje nové formy","Matthew 9:16–17; Mark 2:21–22; Luke 5:36–39"]
+];
+
+// Miracles: [EN, SK, category EN, category SK, refs]
+const MIRACLES = [
+["Water into wine","Voda na víno","nature","príroda","John 2:1–11"],
+["The official's son","Syn kráľovského úradníka","healing","uzdravenie","John 4:46–54"],
+["The demoniac in the synagogue","Posadnutý v synagóge","deliverance","vyslobodenie","Mark 1:23–26; Luke 4:33–35"],
+["Peter's mother-in-law","Petrova svokra","healing","uzdravenie","Matthew 8:14–15; Mark 1:30–31; Luke 4:38–39"],
+["The first catch of fish","Zázračný rybolov","nature","príroda","Luke 5:1–11"],
+["A leper","Malomocný","healing","uzdravenie","Matthew 8:2–4; Mark 1:40–42; Luke 5:12–13"],
+["The paralytic through the roof","Ochrnutý spustený cez strechu","healing","uzdravenie","Matthew 9:2–8; Mark 2:3–12; Luke 5:18–25"],
+["The invalid at Bethesda","Chorý pri rybníku Betezda","healing","uzdravenie","John 5:1–9"],
+["The withered hand","Vyschnutá ruka","healing","uzdravenie","Matthew 12:10–13; Mark 3:1–5; Luke 6:6–10"],
+["The centurion's servant","Stotníkov sluha","healing","uzdravenie","Matthew 8:5–13; Luke 7:1–10"],
+["The widow's son at Nain","Syn naimskej vdovy","resurrection","vzkriesenie","Luke 7:11–15"],
+["Calming the storm","Utíšenie búrky","nature","príroda","Matthew 8:23–27; Mark 4:37–41; Luke 8:22–25"],
+["The Gerasene demoniac","Posadnutý z Gerasy","deliverance","vyslobodenie","Matthew 8:28–34; Mark 5:1–15; Luke 8:27–35"],
+["The woman with bleeding","Žena s krvotokom","healing","uzdravenie","Matthew 9:20–22; Mark 5:25–34; Luke 8:43–48"],
+["Jairus' daughter","Jairova dcéra","resurrection","vzkriesenie","Matthew 9:18–26; Mark 5:35–43; Luke 8:49–56"],
+["Two blind men","Dvaja slepci","healing","uzdravenie","Matthew 9:27–31"],
+["The mute demoniac","Nemý posadnutý","deliverance","vyslobodenie","Matthew 9:32–33"],
+["Feeding the five thousand","Nasýtenie piatich tisícov","nature","príroda","Matthew 14:13–21; Mark 6:30–44; Luke 9:10–17; John 6:1–14"],
+["Walking on the water","Kráčanie po vode","nature","príroda","Matthew 14:22–33; Mark 6:45–52; John 6:15–21"],
+["The Canaanite woman's daughter","Dcéra Kanaánčanky","deliverance","vyslobodenie","Matthew 15:21–28; Mark 7:24–30"],
+["The deaf and mute man","Hluchonemý","healing","uzdravenie","Mark 7:31–37"],
+["Feeding the four thousand","Nasýtenie štyroch tisícov","nature","príroda","Matthew 15:32–38; Mark 8:1–9"],
+["The blind man at Bethsaida","Slepý v Betsaide","healing","uzdravenie","Mark 8:22–26"],
+["The boy with a demon","Posadnutý chlapec","deliverance","vyslobodenie","Matthew 17:14–18; Mark 9:17–27; Luke 9:38–42"],
+["The coin in the fish's mouth","Minca v rybej tlame","nature","príroda","Matthew 17:24–27"],
+["The man born blind","Slepý od narodenia","healing","uzdravenie","John 9:1–7"],
+["The crippled woman","Zhrbená žena","healing","uzdravenie","Luke 13:11–13"],
+["The man with dropsy","Muž s vodnatieľkou","healing","uzdravenie","Luke 14:1–4"],
+["The ten lepers","Desať malomocných","healing","uzdravenie","Luke 17:11–19"],
+["Lazarus","Lazár","resurrection","vzkriesenie","John 11:38–44"],
+["Bartimaeus","Bartimej","healing","uzdravenie","Matthew 20:29–34; Mark 10:46–52; Luke 18:35–43"],
+["The withered fig tree","Uschnutý figovník","nature","príroda","Matthew 21:18–22; Mark 11:12–14"],
+["Malchus' ear","Malchovo ucho","healing","uzdravenie","Luke 22:50–51"],
+["The second catch of fish","Druhý zázračný rybolov","nature","príroda","John 21:1–11"]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function addRows(sec, items, isParable, startN) {
+  let n = startN;
+  for (const item of items) {
+    n += 1;
+    const row = document.createElement("div");
+    row.className = "row";
+    const refs = item[4];
+    row.dataset.refs = refs;
+    const firstRef = refs.split(";")[0].trim();
+    const refShown = lang === "sk" ? tRefSK(firstRef) : firstRef;
+    const name = lang === "sk" ? item[1] : item[0];
+    const detail = lang === "sk" ? item[3] : item[2];
+    row.innerHTML =
+      `<span class="num">${n}</span>` +
+      `<span class="p">${refShown}</span>` +
+      `<span class="what">${name}</span>` +
+      `<span class="f">${detail}</span>`;
+    row.addEventListener("click", () => toggle(row));
+    sec.appendChild(row);
+  }
+  return n;
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("parables.html", lang);
+
+  list.innerHTML = "";
+  let sec = document.createElement("section");
+  let h = document.createElement("h2");
+  h.textContent = lang === "sk" ? "Podobenstvá" : "Parables";
+  sec.appendChild(h);
+  let n = addRows(sec, PARABLES, true, 0);
+  list.appendChild(sec);
+
+  sec = document.createElement("section");
+  h = document.createElement("h2");
+  h.textContent = lang === "sk" ? "Zázraky" : "Miracles";
+  sec.appendChild(h);
+  addRows(sec, MIRACLES, false, 0);
+  list.appendChild(sec);
+
+  document.getElementById("count").textContent = t.count(PARABLES.length, MIRACLES.length);
+}
+
+function toggle(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) { next.remove(); return; }
+  const refs = row.dataset.refs.split(";").map(s => s.trim()).filter(Boolean);
+  const panel = document.createElement("div");
+  panel.className = "verses" + (refs.length === 1 ? " single" : "");
+  panel.innerHTML = refs.map(r => `<div>${tQuote(r, "", lang)}</div>`).join("");
+  row.after(panel);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

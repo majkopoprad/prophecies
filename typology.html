@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>predobrazy krista</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "types of christ",
+    intro: "Persons, events and institutions of the Old Testament that prefigure Christ — not predictions in words, but patterns in things. Click a row to compare the shadow with the substance (Colossians 2:17).",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. A type is a divinely intended pattern; the New Testament itself names most of these (Romans 5:14, 1 Corinthians 10:4, Hebrews 8–10).",
+    type: "the pattern", fulfilment: "the fulfilment",
+    count: n => n + " types"
+  },
+  sk: {
+    title: "predobrazy krista",
+    intro: "Osoby, udalosti a ustanovizne Starého zákona, ktoré vopred zobrazujú Krista — nie predpovede slovami, ale obrazmi. Klikni na riadok a porovnaj tieň so skutočnosťou (Kolosanom 2:17).",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Predobraz je Bohom zamýšľaný vzor; väčšinu z nich pomenúva sám Nový zákon (Rimanom 5:14, 1. Korinťanom 10:4, Hebrejom 8–10).",
+    type: "predobraz", fulfilment: "naplnenie",
+    count: n => n + " predobrazov"
+  }
+};
+
+const SECTIONS_SK = {
+  "Persons": "Osoby", "Events": "Udalosti",
+  "The sanctuary and its offerings": "Svätyňa a obete"
+};
+
+// [OT ref, EN, SK, NT ref]
+const DATA = [
+["Persons", [
+["Genesis 2:7","Adam — the first man, a pattern of the One to come","Adam — prvý človek, predobraz toho, ktorý mal prísť","Romans 5:14; 1 Corinthians 15:45"],
+["Genesis 4:8, 10","Abel — innocent blood crying out from the ground","Ábel — nevinná krv volajúca zo zeme","Hebrews 12:24"],
+["Genesis 14:18–20","Melchizedek — king of righteousness and peace, priest without genealogy","Melchizedech — kráľ spravodlivosti a pokoja, kňaz bez rodokmeňa","Hebrews 7:1–3, 15–17"],
+["Genesis 22:2, 9–13","Isaac — the beloved son carries the wood and is offered","Izák — milovaný syn nesie drevo a je obetovaný","John 3:16; Hebrews 11:17–19"],
+["Genesis 37:26–28","Joseph — sold by his brothers for pieces of silver","Jozef — predaný vlastnými bratmi za striebro","Matthew 26:14–16"],
+["Genesis 45:4–8","Joseph — the rejected brother becomes their saviour","Jozef — odmietnutý brat sa stáva ich záchrancom","Acts 7:9–14"],
+["Exodus 2:10; Deuteronomy 18:15","Moses — rescued from death to deliver his people","Mojžiš — zachránený pred smrťou, aby vyslobodil svoj ľud","Acts 3:20–22"],
+["Joshua 1:1–2","Joshua — the same name as Jesus, leads into the promised inheritance","Jozua — rovnaké meno ako Ježiš, vovádza do zasľúbeného dedičstva","Hebrews 4:8–10"],
+["Ruth 4:9–10","Boaz — the kinsman-redeemer buys back the lost inheritance","Bóaz — príbuzný vykupiteľ kupuje späť stratené dedičstvo","Ephesians 1:7"],
+["2 Samuel 7:12–13","David — the shepherd who became king","Dávid — pastier, ktorý sa stal kráľom","John 10:11; Revelation 22:16"],
+["Jonah 1:17","Jonah — three days in the deep, then the nations repent","Jonáš — tri dni v hlbine, potom pokánie národov","Matthew 12:40–41"]
+]],
+["Events", [
+["Genesis 7:1, 7","Noah's ark — salvation through judgment for all who are inside","Noachov koráb — záchrana cez súd pre všetkých, čo sú vnútri","1 Peter 3:20–21"],
+["Genesis 28:12","Jacob's ladder — heaven opened over the Son of Man","Jakubov rebrík — otvorené nebo nad Synom človeka","John 1:51"],
+["Exodus 12:5–7, 13","The Passover lamb — blood on the doorposts turns judgment away","Veľkonočný baránok — krv na verajach odvracia súd","1 Corinthians 5:7; John 1:29"],
+["Exodus 14:21–22","Crossing the Red Sea — baptised into a new life","Prechod Červeným morom — krst do nového života","1 Corinthians 10:1–2"],
+["Exodus 16:14–15","Manna — bread from heaven for every day","Manna — chlieb z neba na každý deň","John 6:31–35"],
+["Exodus 17:6","The struck rock — water for the thirsty","Udretá skala — voda pre smädných","1 Corinthians 10:4; John 7:37–38"],
+["Numbers 21:8–9","The bronze serpent lifted up — look and live","Medený had vyzdvihnutý na žrdi — pozri a ži","John 3:14–15"],
+["Genesis 2:2–3","The seventh-day rest — rest completed in Him","Odpočinok siedmeho dňa — odpočinutie zavŕšené v ňom","Hebrews 4:9–10; Matthew 11:28"]
+]],
+["The sanctuary and its offerings", [
+["Exodus 25:8–9","The tabernacle — God dwelling in the midst of His people","Svätostánok — Boh prebývajúci uprostred svojho ľudu","John 1:14"],
+["Exodus 26:33","The veil — the barrier before the Holiest, torn at His death","Opona — prekážka pred svätyňou svätých, roztrhnutá pri jeho smrti","Matthew 27:51; Hebrews 10:19–20"],
+["Exodus 25:17, 21–22","The mercy seat — the meeting place above the blood","Zľutovnica — miesto stretnutia nad krvou","Romans 3:25; Hebrews 9:5"],
+["Exodus 25:30","The bread of the Presence — bread before God's face","Chleby predloženia — chlieb pred Božou tvárou","John 6:35"],
+["Exodus 25:31","The golden lampstand — light in the holy place","Zlatý svietnik — svetlo vo svätyni","John 8:12"],
+["Leviticus 1:3–4","The burnt offering — a life wholly given up","Spaľovaná obeta — život celý odovzdaný","Ephesians 5:2; Hebrews 10:10"],
+["Leviticus 16:15–16","The Day of Atonement — blood carried into the Holiest once a year","Deň zmierenia — krv vnesená do svätyne raz do roka","Hebrews 9:11–12, 24–26"],
+["Leviticus 16:21–22","The scapegoat — sins carried away, outside the camp","Cap pre Azázela — hriechy odnesené preč, za tábor","Hebrews 13:11–12"],
+["Exodus 28:29","The high priest — carrying the names of the people on his heart","Veľkňaz — nesie mená ľudu na svojom srdci","Hebrews 7:24–25"],
+["Numbers 35:11–12","The cities of refuge — safety from the avenger","Útočiskové mestá — bezpečie pred pomstiteľom","Hebrews 6:18"],
+["Leviticus 23:10–11","The firstfruits — the first sheaf of the harvest lifted up","Prvotiny — prvý snop žatvy pozdvihnutý pred Hospodinom","1 Corinthians 15:20, 23"],
+["1 Kings 8:10–11","The temple — the glory of the Lord filling the house","Chrám — Hospodinova sláva napĺňajúca dom","John 2:19–21"]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+let total = 0;
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("typology.html", lang);
+
+  list.innerHTML = "";
+  let n = 0; total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+    for (const [ot, en, sk, nt] of items) {
+      n += 1; total += 1;
+      const row = document.createElement("div");
+      row.className = "row";
+      row.dataset.ot = ot;
+      row.dataset.nt = nt;
+      const refShown = lang === "sk" ? tRefSK(ot) : ot;
+      const fulShown = lang === "sk" ? tRefSK(nt) : nt;
+      row.innerHTML =
+        `<span class="num">${n}</span>` +
+        `<span class="p">${refShown}</span>` +
+        `<span class="what">${lang === "sk" ? sk : en}</span>` +
+        `<span class="f">${fulShown}</span>`;
+      row.addEventListener("click", () => toggle(row));
+      sec.appendChild(row);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(total);
+}
+
+function toggle(row) {
+  const next = row.nextElementSibling;
+  if (next && next.classList.contains("verses")) { next.remove(); return; }
+  const t = UI[lang];
+  const panel = document.createElement("div");
+  panel.className = "verses";
+  panel.innerHTML =
+    `<div>${tQuote(row.dataset.ot, t.type, lang)}</div>` +
+    `<div>${tQuote(row.dataset.nt, t.fulfilment, lang)}</div>`;
+  row.after(panel);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

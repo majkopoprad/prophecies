@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>biblia — štúdium</title>
+<link rel="stylesheet" href="theology.css">
+</head>
+<body>
+
+<header>
+  <h1 id="t-title"></h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<section class="daily">
+  <h2 id="t-daily"></h2>
+  <div id="daily-body"></div>
+</section>
+
+<section>
+  <h2 id="t-sections"></h2>
+  <div class="cards" id="cards"></div>
+</section>
+
+<footer id="t-footer"></footer>
+
+<script src="verses.js"></script>
+<script src="prophecies-data.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "bible study",
+    intro: "A small library of reading lists: prophecy and fulfilment, shadow and substance, four witnesses side by side. White paper, verse texts, links to biblia.sk.",
+    daily: "Prophecy of the day",
+    sections: "Sections",
+    footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. The daily prophecy walks through all 351 in order — the same one the iPhone widget shows.",
+    prophecy: "prophecy", fulfilment: "fulfilment",
+    count: ""
+  },
+  sk: {
+    title: "štúdium biblie",
+    intro: "Malá knižnica čítacích zoznamov: proroctvo a naplnenie, tieň a skutočnosť, štyria svedkovia vedľa seba. Biely papier, texty veršov, odkazy na biblia.sk.",
+    daily: "Proroctvo dňa",
+    sections: "Sekcie",
+    footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Proroctvo dňa prechádza všetkých 351 po poradí — to isté ukazuje aj widget na iPhone.",
+    prophecy: "proroctvo", fulfilment: "naplnenie",
+    count: ""
+  }
+};
+
+const CARDS = [
+  ["prophecies.html",
+   "Prophecies Jesus fulfilled", "Proroctvá, ktoré Ježiš naplnil",
+   "Verse by verse, Genesis to Malachi, with the odds of fulfilment", "Verš po verši, od Genezis po Malachiáša, s pravdepodobnosťou naplnenia",
+   "351"],
+  ["typology.html",
+   "Types of Christ", "Predobrazy Krista",
+   "Persons, events and the sanctuary — the shadow and the substance", "Osoby, udalosti a svätyňa — tieň a skutočnosť",
+   "31"],
+  ["nations.html",
+   "Nations and cities", "Národy a mestá",
+   "Prophecies fulfilled in history books and archaeology", "Proroctvá naplnené v učebniciach dejín a archeológii",
+   "13"],
+  ["harmony.html",
+   "Harmony of the gospels", "Harmónia evanjelií",
+   "One life, four witnesses; Passion Week day by day", "Jeden život, štyria svedkovia; pašiový týždeň deň po dni",
+   "57"],
+  ["parables.html",
+   "Parables and miracles", "Podobenstvá a zázraky",
+   "Every parable with its point, every recorded miracle", "Každé podobenstvo s posolstvom, každý zaznamenaný zázrak",
+   "32 + 34"],
+  ["iam.html",
+   "I AM — sayings and titles", "JA SOM — výroky a tituly",
+   "Seven sayings echoing the burning bush, and the names of Jesus", "Sedem výrokov ako ozvena horiaceho kra a Ježišove mená",
+   "29"],
+  ["genealogy.html",
+   "Genealogy Adam → Jesus", "Rodokmeň Adam → Ježiš",
+   "One unbroken line through the whole of Scripture", "Jedna neprerušená línia naprieč celým Písmom",
+   "60"]
+];
+
+let lang = tGetLang();
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.title = t.title;
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-daily").textContent = t.daily;
+  document.getElementById("t-sections").textContent = t.sections;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("index.html", lang);
+
+  // ---- daily prophecy (same arithmetic as the iPhone widget) ----
+  const rows = [];
+  for (const [, items] of PROPHECIES_DATA) for (const it of items) rows.push(it);
+  const now = new Date();
+  const dayN = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / 86400000);
+  const idx = ((dayN % rows.length) + rows.length) % rows.length;
+  const [ot, whatEN, whatSK, nt] = rows[idx];
+  document.getElementById("count").textContent = (idx + 1) + " / " + rows.length;
+  document.getElementById("daily-body").innerHTML =
+    `<div class="daily-what">${lang === "sk" ? whatSK : whatEN}</div>` +
+    `<div class="daily-grid">` +
+    `<div>${tQuote(ot, t.prophecy, lang)}</div>` +
+    `<div>${tQuote(nt, t.fulfilment, lang)}</div>` +
+    `</div>`;
+
+  // ---- section cards ----
+  document.getElementById("cards").innerHTML = CARDS.map(
+    ([file, tEN, tSK, dEN, dSK, count]) =>
+      `<a class="card" href="${file}">` +
+      `<span><span class="card-title">${lang === "sk" ? tSK : tEN}</span>` +
+      `<span class="card-desc">${lang === "sk" ? dSK : dEN}</span></span>` +
+      `<span class="card-count">${count}</span></a>`
+  ).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
