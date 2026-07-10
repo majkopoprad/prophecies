@@ -146,7 +146,7 @@ function render() {
     for (const [ref, en, sk, histEN, histSK] of items) {
       n += 1; total += 1;
       const row = document.createElement("div");
-      row.className = "row";
+      row.className = "row row-3";
       row.dataset.ref = ref;
       row.dataset.hist = lang === "sk" ? histSK : histEN;
       const refShown = lang === "sk" ? tRefSK(ref) : ref;
@@ -154,7 +154,6 @@ function render() {
         `<span class="num">${n}</span>` +
         `<span class="p">${refShown.split(";")[0]}</span>` +
         `<span class="what">${lang === "sk" ? sk : en}</span>`;
-      row.style.gridTemplateColumns = "38px 160px 1fr";
       row.addEventListener("click", () => toggle(row));
       sec.appendChild(row);
     }

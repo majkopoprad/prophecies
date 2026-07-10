@@ -110,14 +110,13 @@ function render() {
     for (const [ref, en, sk] of items) {
       n += 1; total += 1;
       const row = document.createElement("div");
-      row.className = "row";
+      row.className = "row row-3";
       row.dataset.ref = ref;
       const refShown = lang === "sk" ? tRefSK(ref) : ref;
       row.innerHTML =
         `<span class="num">${n}</span>` +
         `<span class="p">${refShown}</span>` +
         `<span class="what">${lang === "sk" ? sk : en}</span>`;
-      row.style.gridTemplateColumns = "38px 160px 1fr";
       row.addEventListener("click", () => toggle(row));
       sec.appendChild(row);
     }

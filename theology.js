@@ -101,7 +101,7 @@ const T_NAV = [
 function tNavHTML(activeFile, lang) {
   return T_NAV.map(([file, sk, en]) =>
     `<a href="${file}"${file === activeFile ? ' class="active"' : ""}>` +
-    (lang === "sk" ? sk : en) + `</a>`).join("");
+    (lang === "sk" ? sk : en) + `</a>`).join(" ");
 }
 
 function tLangSwitcher(onChange) {
