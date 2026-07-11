@@ -95,7 +95,8 @@ const T_NAV = [
   ["harmony.html", "Harmónia", "Harmony"],
   ["parables.html", "Podobenstvá", "Parables"],
   ["iam.html", "Ja som", "I AM"],
-  ["genealogy.html", "Rodokmeň", "Genealogy"]
+  ["genealogy.html", "Rodokmeň", "Genealogy"],
+  ["widget.html", "Widget", "Widget"]
 ];
 
 function tNavHTML(activeFile, lang) {

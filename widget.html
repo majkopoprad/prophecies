@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Widget Proroctvo dňa pre iPhone – inštalácia | Proroctva.sk</title>
+<meta name="description" content="Bezplatný iPhone widget s proroctvom dňa – jedno mesiášske proroctvo a jeho naplnenie denne, offline, v Slovenskom ekumenickom preklade. Postup inštalácie cez Scriptable.">
+<link rel="canonical" href="https://proroctva.sk/widget.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Widget Proroctvo dňa pre iPhone – inštalácia | Proroctva.sk">
+<meta property="og:description" content="Bezplatný iPhone widget s proroctvom dňa – jedno mesiášske proroctvo a jeho naplnenie denne, offline, v Slovenskom ekumenickom preklade.">
+<meta property="og:url" content="https://proroctva.sk/widget.html">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .step {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 16px;
+    padding: 16px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .step-title { color: var(--ink-strong); font-size: 15px; }
+  .step-body { color: var(--ink); font-size: 13.5px; margin-top: 3px; line-height: 1.7; }
+  .step-body a { color: var(--ink); border-bottom: 1px solid var(--rule); text-decoration: none; }
+  .step-body a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  .dl {
+    display: grid;
+    grid-template-columns: 1fr 160px;
+    gap: 16px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .dl:hover { background: var(--select-bg); }
+  .dl:hover .dl-name { color: var(--ink-strong); }
+  .dl-name { color: var(--ink); font-size: 15px; transition: color 0.12s; }
+  .dl-desc { display: block; font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
+  .dl-hint { font-size: 12px; color: var(--ink-faint); text-align: right; }
+  .note { font-size: 12.5px; color: var(--ink-faint); margin-top: 14px; max-width: 640px; }
+  @media (max-width: 620px) {
+    .dl { grid-template-columns: 1fr; }
+    .dl-hint { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">widget — proroctvo dňa</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<section>
+  <h2 id="t-dl"></h2>
+  <div id="downloads"></div>
+</section>
+
+<section>
+  <h2 id="t-steps"></h2>
+  <div id="steps"></div>
+  <p class="note" id="t-note"></p>
+</section>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const SCRIPT_URL = "Denne%20proroctvo.js";
+const FONT_URL = "Receipt.otf";
+const SCRIPTABLE_URL = "https://apps.apple.com/app/scriptable/id1405459188";
+const FONTCASE_URL = "https://apps.apple.com/app/fontcase-manage-your-type/id1205990992";
+
+const UI = {
+  en: {
+    title: "widget — prophecy of the day",
+    intro: "A free iPhone home-screen widget: one messianic prophecy and its fulfilment every day — the same one this site shows on its home page. Works offline, verses from the Slovak Ecumenical Translation, tap opens proroctva.sk.",
+    dl: "Downloads",
+    steps: "Installation",
+    note: "The widget refreshes after midnight and walks through all 351 prophecies in order, so a full cycle takes almost a year. Everything is embedded in the script — no internet needed after installation. If the Receipt font is not installed, iOS quietly falls back to the system font.",
+    footer: "The widget is a Scriptable script. Scriptable is a free app by Simon B. Støvring; the font step is optional.",
+    count: "iOS 14+",
+    downloads: [
+      [null, "Scriptable (App Store)", "The free app that runs the widget", "step 1"],
+      ["script", "Denne proroctvo.js", "The widget script — all 351 prophecies with verse texts embedded", "step 2"],
+      [null, "Fontcase (App Store)", "Free font installer — only for the optional Receipt font", "step 3"],
+      ["font", "Receipt.otf", "The site's typeface, for the widget to match", "step 3"]
+    ],
+    list: [
+      ["Install Scriptable",
+       'Download the free <a href="' + SCRIPTABLE_URL + '" target="_blank" rel="noopener">Scriptable</a> app from the App Store. It runs small JavaScript programs and can display them as home-screen widgets.'],
+      ["Add the script",
+       'Open <a href="' + SCRIPT_URL + '" target="_blank">Denne proroctvo.js</a> in Safari, select all the text and copy it. In Scriptable tap <b>+</b> to create a new script, paste, and rename it to <b>Denne proroctvo</b> (tap the name at the top).'],
+      ["Optional: install the Receipt font",
+       'For the widget to use this site\'s typeface, download <a href="' + FONT_URL + '">Receipt.otf</a>, open it in <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (or AnyFont) and follow the profile installation (Settings → Profile Downloaded → Install). Without it the widget uses the system font.'],
+      ["Add the widget to your home screen",
+       "Long-press the home screen → <b>+</b> in the corner → search for <b>Scriptable</b> → choose a size (large shows both passages) → Add."],
+      ["Point it to the script",
+       "While the home screen is still jiggling, tap the new widget → <b>Script: Denne proroctvo</b>. Done — tomorrow it moves to the next prophecy by itself."]
+    ]
+  },
+  sk: {
+    title: "widget — proroctvo dňa",
+    intro: "Bezplatný widget na plochu iPhonu: každý deň jedno mesiášske proroctvo a jeho naplnenie — to isté, ktoré ukazuje hlavná stránka tohto webu. Funguje offline, verše sú zo Slovenského ekumenického prekladu, ťuknutie otvorí proroctva.sk.",
+    dl: "Na stiahnutie",
+    steps: "Postup inštalácie",
+    note: "Widget sa obnovuje po polnoci a prechádza všetkých 351 proroctiev po poradí — celý cyklus trvá takmer rok. Všetko je zabudované priamo v skripte, po inštalácii nepotrebuje internet. Ak font Receipt nainštalovaný nie je, iOS potichu použije systémové písmo.",
+    footer: "Widget je skript pre Scriptable. Scriptable je bezplatná aplikácia od Simona B. Støvringa; krok s fontom je voliteľný.",
+    count: "iOS 14+",
+    downloads: [
+      [null, "Scriptable (App Store)", "Bezplatná aplikácia, v ktorej widget beží", "krok 1"],
+      ["script", "Denne proroctvo.js", "Skript widgetu — všetkých 351 proroctiev s textami veršov v sebe", "krok 2"],
+      [null, "Fontcase (App Store)", "Bezplatný inštalátor fontov — len pre voliteľný font Receipt", "krok 3"],
+      ["font", "Receipt.otf", "Písmo tohto webu, aby widget ladil", "krok 3"]
+    ],
+    list: [
+      ["Nainštaluj Scriptable",
+       'Stiahni si z App Store bezplatnú aplikáciu <a href="' + SCRIPTABLE_URL + '" target="_blank" rel="noopener">Scriptable</a>. Spúšťa malé JavaScript programy a vie ich zobraziť ako widgety na ploche.'],
+      ["Pridaj skript",
+       'Otvor v Safari <a href="' + SCRIPT_URL + '" target="_blank">Denne proroctvo.js</a>, označ celý text a skopíruj ho. V Scriptable ťukni na <b>+</b> (nový skript), prilep a premenuj ho na <b>Denne proroctvo</b> (ťuknutím na názov hore).'],
+      ["Voliteľné: nainštaluj font Receipt",
+       'Aby widget používal písmo tohto webu, stiahni <a href="' + FONT_URL + '">Receipt.otf</a>, otvor ho v aplikácii <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (alebo AnyFont) a dokonči inštaláciu profilu (Nastavenia → Stiahnutý profil → Inštalovať). Bez neho widget použije systémové písmo.'],
+      ["Pridaj widget na plochu",
+       "Podrž prst na ploche → <b>+</b> v rohu → vyhľadaj <b>Scriptable</b> → vyber veľkosť (veľký ukáže obe pasáže) → Pridať."],
+      ["Nasmeruj ho na skript",
+       "Kým sa plocha ešte trasie, ťukni na nový widget → <b>Script: Denne proroctvo</b>. Hotovo — zajtra sa sám posunie na ďalšie proroctvo."]
+    ]
+  }
+};
+
+let lang = tGetLang();
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-dl").textContent = t.dl;
+  document.getElementById("t-steps").textContent = t.steps;
+  document.getElementById("t-note").textContent = t.note;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("widget.html", lang);
+
+  const urls = { script: SCRIPT_URL, font: FONT_URL };
+  const ext = { 0: SCRIPTABLE_URL, 2: FONTCASE_URL };
+  document.getElementById("downloads").innerHTML = t.downloads.map(([kind, name, desc, hint], i) => {
+    const href = kind ? urls[kind] : ext[i];
+    const attrs = kind ? "" : ' target="_blank" rel="noopener"';
+    return `<a class="dl" href="${href}"${attrs}>` +
+      `<span><span class="dl-name">${name}</span>` +
+      `<span class="dl-desc">${desc}</span></span>` +
+      `<span class="dl-hint">${hint}</span></a>`;
+  }).join("");
+
+  document.getElementById("steps").innerHTML = t.list.map(([title, body], i) =>
+    `<div class="step"><span class="num">${i + 1}</span>` +
+    `<span><span class="step-title">${title}</span>` +
+    `<span class="step-body">${body}</span></span></div>`
+  ).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
