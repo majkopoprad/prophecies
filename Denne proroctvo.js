@@ -30,7 +30,7 @@ function trim(t, max) {
 function makeWidget(size) {
   const w = new ListWidget();
   w.backgroundColor = PAPER;
-  w.url = url;
+  w.url = "https://proroctva.sk/";
   w.setPadding(14, 16, 14, 16);
   // obnoviť po polnoci
   const tomorrow = new Date(today);
