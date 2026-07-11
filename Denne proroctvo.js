@@ -20,8 +20,10 @@ const dayN = Math.floor((today.getTime() - today.getTimezoneOffset() * 60000) / 
 const idx = ((dayN % DATA.length) + DATA.length) % DATA.length;
 const [otRef, what, ntRef, otText, ntText, url] = DATA[idx];
 
-const serif = (size) => new Font("Georgia", size);
-const small = (size) => new Font("Georgia", size);
+// Receipt font, ak je v iOS nainstalovany (AnyFont/Fontcase);
+// inak iOS potichu pouzije systemove pismo.
+const serif = (size) => new Font("FakeReceipt-Regular", size);
+const small = (size) => new Font("FakeReceipt-Regular", size);
 
 function trim(t, max) {
   return t.length > max ? t.slice(0, max - 1).trimEnd() + "…" : t;
