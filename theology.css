@@ -282,3 +282,78 @@ footer {
   .h-row .h-ref { grid-column: 2; }
   .daily-grid { grid-template-columns: 1fr; }
 }
+
+/* ---- feast calendar ---- */
+.cal-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.cal-nav { display: flex; align-items: baseline; gap: 14px; }
+
+.cal-btn {
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 16px;
+  transition: color 0.12s;
+  user-select: none;
+}
+.cal-btn:hover { color: var(--ink-strong); }
+
+.cal-month { font-size: 13px; color: var(--ink); min-width: 130px; text-align: center; }
+
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-top: 12px;
+  border-top: 1px solid var(--rule);
+}
+
+.cal-dow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 8px 0 6px;
+}
+
+.cal-day {
+  text-align: center;
+  padding: 7px 0 9px;
+  font-size: 13px;
+  color: var(--ink);
+  position: relative;
+}
+.cal-day.out { color: var(--rule); }
+.cal-day.feast { color: var(--ink-strong); }
+.cal-day.feast::after {
+  content: "";
+  position: absolute;
+  left: 50%; bottom: 3px;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: var(--ink-strong);
+  transform: translateX(-50%);
+}
+.cal-day.today {
+  outline: 1px solid var(--ink);
+  outline-offset: -4px;
+}
+
+.cal-list { margin-top: 10px; }
+.cal-item {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  gap: 14px;
+  padding: 7px 4px;
+  border-bottom: 1px solid var(--rule);
+  font-size: 13px;
+}
+.cal-item .d { color: var(--ink-faint); white-space: nowrap; }
+.cal-item .n { color: var(--ink); }
+.cal-empty { padding: 14px 4px; font-size: 12.5px; color: var(--ink-faint); }

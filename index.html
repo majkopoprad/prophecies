@@ -45,6 +45,22 @@
 </section>
 
 <section>
+  <h2 id="t-cal"></h2>
+  <div class="cal-controls">
+    <nav class="lang">
+      <span id="trad-w"></span><span class="sep"> · </span><span id="trad-o"></span>
+    </nav>
+    <div class="cal-nav">
+      <span class="cal-btn" id="cal-prev">‹</span>
+      <span class="cal-month" id="cal-month"></span>
+      <span class="cal-btn" id="cal-next">›</span>
+    </div>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+  <div class="cal-list" id="cal-list"></div>
+</section>
+
+<section>
   <h2 id="t-sections"></h2>
   <div class="cards" id="cards"></div>
 </section>
@@ -59,6 +75,9 @@ const UI = {
   en: {
     title: "bible study",
     daily: "Prophecy of the day",
+    cal: "Feast calendar",
+    tradW: "western", tradO: "orthodox",
+    noFeasts: "no feasts this month.",
     sections: "Sections",
     footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. The daily prophecy walks through all 351 in order — the same one the iPhone widget shows.",
     prophecy: "prophecy", fulfilment: "fulfilment",
@@ -67,6 +86,9 @@ const UI = {
   sk: {
     title: "štúdium biblie",
     daily: "Proroctvo dňa",
+    cal: "Kalendár sviatkov",
+    tradW: "západný", tradO: "pravoslávny",
+    noFeasts: "v tomto mesiaci nie sú žiadne sviatky.",
     sections: "Sekcie",
     footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Proroctvo dňa prechádza všetkých 351 po poradí — to isté ukazuje aj widget na iPhone.",
     prophecy: "proroctvo", fulfilment: "naplnenie",
@@ -145,8 +167,182 @@ function render() {
   ).join("");
 }
 
-tLangSwitcher(l => { lang = l; render(); });
+// ---- feast calendar -------------------------------------------------------
+const MONTHS = {
+  en: ["January","February","March","April","May","June","July","August","September","October","November","December"],
+  sk: ["Január","Február","Marec","Apríl","Máj","Jún","Júl","August","September","Október","November","December"]
+};
+const DOWS = {
+  en: ["Mo","Tu","We","Th","Fr","Sa","Su"],
+  sk: ["Po","Ut","St","Št","Pi","So","Ne"]
+};
+
+// Gregorian (western) Easter — anonymous computus
+function easterWest(y) {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100,
+        d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25),
+        g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30,
+        i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7,
+        m = Math.floor((a + 11 * h + 22 * l) / 451);
+  return new Date(y, Math.floor((h + l - 7 * m + 114) / 31) - 1,
+                  ((h + l - 7 * m + 114) % 31) + 1);
+}
+
+// Julian computus + 13-day shift to civil dates (valid 1900–2099)
+function easterOrthodox(y) {
+  const a = y % 4, b = y % 7, c = y % 19,
+        d = (19 * c + 15) % 30, e = (2 * a + 4 * b - d + 34) % 7;
+  const dt = new Date(y, Math.floor((d + e + 114) / 31) - 1,
+                      ((d + e + 114) % 31) + 1);
+  dt.setDate(dt.getDate() + 13);
+  return dt;
+}
+
+// fixed feasts: [month, day, sk, en]
+const FIXED_W = [
+[1,1,"Slávnosť Bohorodičky Panny Márie (Nový rok)","Mary, Mother of God (New Year)"],
+[1,6,"Zjavenie Pána (Traja králi)","Epiphany"],
+[2,2,"Obetovanie Pána (Hromnice)","Presentation of the Lord (Candlemas)"],
+[3,25,"Zvestovanie Pána","Annunciation"],
+[6,24,"Narodenie sv. Jána Krstiteľa","Nativity of John the Baptist"],
+[6,29,"Sv. Peter a Pavol","Saints Peter and Paul"],
+[7,5,"Sv. Cyril a Metod","Saints Cyril and Methodius"],
+[8,6,"Premenenie Pána","Transfiguration"],
+[8,15,"Nanebovzatie Panny Márie","Assumption of Mary"],
+[9,14,"Povýšenie Svätého kríža","Exaltation of the Holy Cross"],
+[9,15,"Sedembolestná Panna Mária, patrónka Slovenska","Our Lady of Sorrows"],
+[11,1,"Všetkých svätých","All Saints"],
+[11,2,"Pamiatka zosnulých (Dušičky)","All Souls"],
+[12,8,"Nepoškvrnené počatie Panny Márie","Immaculate Conception"],
+[12,24,"Štedrý deň","Christmas Eve"],
+[12,25,"Narodenie Pána (Vianoce)","Christmas Day"],
+[12,26,"Sv. Štefan","Saint Stephen"]
+];
+
+// Julian-calendar feasts on civil (Gregorian) dates, valid 1900–2099
+const FIXED_O = [
+[1,6,"Predvečer Narodenia Pána","Christmas Eve"],
+[1,7,"Narodenie Pána (Vianoce)","Nativity of the Lord (Christmas)"],
+[1,14,"Obrezanie Pána; sv. Bazil Veľký","Circumcision of the Lord"],
+[1,19,"Bohozjavenie — Krst Pána","Theophany — Baptism of the Lord"],
+[2,15,"Stretnutie Pána (Hromnice)","Meeting of the Lord"],
+[4,7,"Zvestovanie Presvätej Bohorodičke","Annunciation"],
+[7,7,"Narodenie sv. Jána Krstiteľa","Nativity of John the Baptist"],
+[7,12,"Sv. Peter a Pavol","Saints Peter and Paul"],
+[8,19,"Premenenie Pána","Transfiguration"],
+[8,28,"Zosnutie Presvätej Bohorodičky","Dormition of the Theotokos"],
+[9,11,"Sťatie sv. Jána Krstiteľa","Beheading of John the Baptist"],
+[9,21,"Narodenie Presvätej Bohorodičky","Nativity of the Theotokos"],
+[9,27,"Povýšenie Svätého kríža","Exaltation of the Cross"],
+[12,4,"Uvedenie Bohorodičky do chrámu","Entry of the Theotokos"],
+[12,19,"Sv. Mikuláš","Saint Nicholas"]
+];
+
+// movable feasts: [offset from Easter in days, sk, en]
+const MOVABLE_W = [
+[-46,"Popolcová streda","Ash Wednesday"],
+[-7,"Kvetná nedeľa","Palm Sunday"],
+[-3,"Zelený štvrtok","Maundy Thursday"],
+[-2,"Veľký piatok","Good Friday"],
+[0,"Veľkonočná nedeľa","Easter Sunday"],
+[1,"Veľkonočný pondelok","Easter Monday"],
+[39,"Nanebovstúpenie Pána","Ascension"],
+[49,"Zoslanie Ducha Svätého (Turíce)","Pentecost"],
+[56,"Najsvätejšej Trojice","Trinity Sunday"],
+[60,"Božie telo","Corpus Christi"]
+];
+
+const MOVABLE_O = [
+[-48,"Začiatok Veľkého pôstu (Čistý pondelok)","Beginning of Great Lent"],
+[-8,"Lazarova sobota","Lazarus Saturday"],
+[-7,"Kvetná nedeľa","Palm Sunday"],
+[-2,"Veľký piatok","Good Friday"],
+[0,"Pascha — Vzkriesenie Pána","Pascha — Easter"],
+[1,"Svetlý pondelok","Bright Monday"],
+[39,"Nanebovstúpenie Pána","Ascension"],
+[49,"Päťdesiatnica (Turíce)","Pentecost"]
+];
+
+let tradition = "w";
+try { tradition = localStorage.getItem("cal-tradition") || "w"; } catch (e) {}
+const _today = new Date();
+let calY = _today.getFullYear(), calM = _today.getMonth();
+
+function feastsFor(year, trad) {
+  const map = {};
+  const add = (m, d, sk, en) => {
+    const key = m + "-" + d;
+    (map[key] = map[key] || []).push(lang === "sk" ? sk : en);
+  };
+  for (const [m, d, sk, en] of (trad === "w" ? FIXED_W : FIXED_O)) add(m, d, sk, en);
+  const easter = trad === "w" ? easterWest(year) : easterOrthodox(year);
+  for (const [off, sk, en] of (trad === "w" ? MOVABLE_W : MOVABLE_O)) {
+    const dt = new Date(easter);
+    dt.setDate(dt.getDate() + off);
+    if (dt.getFullYear() === year) add(dt.getMonth() + 1, dt.getDate(), sk, en);
+  }
+  if (trad === "w") { // first Sunday of Advent
+    const xmas = new Date(year, 11, 25);
+    const back = xmas.getDay() === 0 ? 7 : xmas.getDay();
+    const advent = new Date(year, 11, 25 - back - 21);
+    add(advent.getMonth() + 1, advent.getDate(), "1. adventná nedeľa", "First Sunday of Advent");
+  }
+  return map;
+}
+
+function renderCalendar() {
+  const t = UI[lang];
+  document.getElementById("t-cal").textContent = t.cal;
+  document.getElementById("trad-w").textContent = t.tradW;
+  document.getElementById("trad-o").textContent = t.tradO;
+  document.getElementById("trad-w").className = tradition === "w" ? "active" : "";
+  document.getElementById("trad-o").className = tradition === "o" ? "active" : "";
+  document.getElementById("cal-month").textContent = MONTHS[lang][calM] + " " + calY;
+
+  const feasts = feastsFor(calY, tradition);
+  const first = new Date(calY, calM, 1);
+  const lead = (first.getDay() + 6) % 7;           // Monday-first offset
+  const daysIn = new Date(calY, calM + 1, 0).getDate();
+  const cells = [];
+  for (const dw of DOWS[lang]) cells.push(`<span class="cal-dow">${dw}</span>`);
+  for (let i = 0; i < lead; i++) cells.push(`<span class="cal-day out"></span>`);
+  for (let d = 1; d <= daysIn; d++) {
+    const isFeast = feasts[(calM + 1) + "-" + d];
+    const isToday = calY === _today.getFullYear() && calM === _today.getMonth()
+                    && d === _today.getDate();
+    cells.push(`<span class="cal-day${isFeast ? " feast" : ""}${isToday ? " today" : ""}">${d}</span>`);
+  }
+  document.getElementById("cal-grid").innerHTML = cells.join("");
+
+  const items = [];
+  for (let d = 1; d <= daysIn; d++) {
+    const names = feasts[(calM + 1) + "-" + d];
+    if (names) for (const n of names) {
+      items.push(`<div class="cal-item"><span class="d">${d}. ${calM + 1}.</span><span class="n">${n}</span></div>`);
+    }
+  }
+  document.getElementById("cal-list").innerHTML =
+    items.length ? items.join("") : `<div class="cal-empty">${t.noFeasts}</div>`;
+}
+
+function setTradition(tr) {
+  tradition = tr;
+  try { localStorage.setItem("cal-tradition", tr); } catch (e) {}
+  renderCalendar();
+}
+
+document.getElementById("trad-w").addEventListener("click", () => setTradition("w"));
+document.getElementById("trad-o").addEventListener("click", () => setTradition("o"));
+document.getElementById("cal-prev").addEventListener("click", () => {
+  calM -= 1; if (calM < 0) { calM = 11; calY -= 1; } renderCalendar();
+});
+document.getElementById("cal-next").addEventListener("click", () => {
+  calM += 1; if (calM > 11) { calM = 0; calY += 1; } renderCalendar();
+});
+
+tLangSwitcher(l => { lang = l; render(); renderCalendar(); });
 render();
+renderCalendar();
 </script>
 
 </body>
