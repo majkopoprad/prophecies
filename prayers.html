@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modlitby – základné kresťanské modlitby | Proroctva.sk</title>
+<meta name="description" content="Základné kresťanské modlitby v slovenčine: Otčenáš, Zdravas Mária, Verím v Boha, Anjel Pána, ranné a večerné modlitby, ruženec a Korunka Božieho milosrdenstva.">
+<link rel="canonical" href="https://proroctva.sk/prayers.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Modlitby – základné kresťanské modlitby | Proroctva.sk">
+<meta property="og:description" content="Otčenáš, Zdravas Mária, Verím v Boha, Anjel Pána, ranné a večerné modlitby, ruženec a Korunka Božieho milosrdenstva.">
+<meta property="og:url" content="https://proroctva.sk/prayers.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .pr-row {
+    padding: 12px 4px;
+    border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .pr-row:hover { background: var(--select-bg); }
+  .pr-name { color: var(--ink); font-size: 15px; transition: color 0.12s; }
+  .pr-row:hover .pr-name { color: var(--ink-strong); }
+  .pr-hint { font-size: 12px; color: var(--ink-faint); margin-left: 10px; }
+  .pr-text {
+    white-space: pre-line;
+    font-size: 14.5px;
+    color: var(--ink);
+    line-height: 1.85;
+    padding: 6px 4px 16px;
+    border-bottom: 1px solid var(--rule);
+    background: var(--select-bg);
+    max-width: 640px;
+  }
+  .pr-text.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">modlitby</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "prayers",
+    intro: "Basic Christian prayers. Tap a title to open the full text.",
+    footer: "Slovak wording follows common Catholic usage; the universal prayers (Our Father, Hail Mary, Glory Be, the Creed) are shared across the Church.",
+    count: n => n + " prayers"
+  },
+  sk: {
+    title: "modlitby",
+    intro: "Základné kresťanské modlitby. Ťuknutím na názov otvoríš celé znenie.",
+    footer: "Slovenské znenie podľa bežného katolíckeho úzu; univerzálne modlitby (Otčenáš, Zdravas, Sláva Otcu, vyznanie viery) sú spoločné celej Cirkvi.",
+    count: n => n + " modlitieb"
+  }
+};
+
+const SECTIONS_SK = {
+  "Basic": "Základné modlitby",
+  "Marian": "Mariánske modlitby",
+  "Morning and evening": "Ranné a večerné",
+  "At meals": "Pri jedle",
+  "Rosary and Chaplet": "Ruženec a Korunka"
+};
+
+// [id, sk title, en title, sk text, en text (optional)]
+const DATA = [
+["Basic", [
+["oc","Otčenáš","The Lord's Prayer",
+`Otče náš, ktorý si na nebesiach,
+posväť sa meno tvoje,
+príď kráľovstvo tvoje,
+buď vôľa tvoja ako v nebi, tak i na zemi.
+Chlieb náš každodenný daj nám dnes
+a odpusť nám naše viny,
+ako i my odpúšťame svojim vinníkom,
+a neuveď nás do pokušenia,
+ale zbav nás Zlého. Amen.`,
+`Our Father, who art in heaven,
+hallowed be thy name;
+thy kingdom come,
+thy will be done, on earth as it is in heaven.
+Give us this day our daily bread,
+and forgive us our trespasses,
+as we forgive those who trespass against us;
+and lead us not into temptation,
+but deliver us from evil. Amen.`],
+["sl","Sláva Otcu","Glory Be",
+`Sláva Otcu i Synu i Duchu Svätému,
+ako bolo na počiatku, tak nech je i teraz i vždycky
+i na veky vekov. Amen.`,
+`Glory be to the Father, and to the Son, and to the Holy Spirit,
+as it was in the beginning, is now, and ever shall be,
+world without end. Amen.`],
+["vb","Verím v Boha (Apoštolské vyznanie)","The Apostles' Creed",
+`Verím v Boha, Otca všemohúceho,
+Stvoriteľa neba i zeme,
+i v Ježiša Krista, jeho jediného Syna, nášho Pána,
+ktorý sa počal z Ducha Svätého, narodil sa z Márie Panny,
+trpel za vlády Poncia Piláta, bol ukrižovaný, umrel a bol pochovaný.
+Zostúpil k zosnulým, tretieho dňa vstal z mŕtvych,
+vystúpil na nebesia, sedí po pravici Boha Otca všemohúceho.
+Odtiaľ príde súdiť živých i mŕtvych.
+Verím v Ducha Svätého, v svätú Cirkev katolícku,
+v spoločenstvo svätých, v odpustenie hriechov,
+vo vzkriesenie tela a v život večný. Amen.`,
+`I believe in God, the Father almighty, Creator of heaven and earth,
+and in Jesus Christ, his only Son, our Lord,
+who was conceived by the Holy Spirit, born of the Virgin Mary,
+suffered under Pontius Pilate, was crucified, died and was buried;
+he descended into hell; on the third day he rose again from the dead;
+he ascended into heaven, and is seated at the right hand of God the Father almighty;
+from there he will come to judge the living and the dead.
+I believe in the Holy Spirit, the holy catholic Church,
+the communion of saints, the forgiveness of sins,
+the resurrection of the body, and life everlasting. Amen.`],
+["al","Akt ľútosti","Act of Contrition",
+`Bože môj, celým srdcom ľutujem, že som ťa hriechmi urazil.
+Že som konal zle a dobré zanedbával,
+zhrešil som proti tebe, ktorého milujem nadovšetko.
+Pevne si zaumieňujem, že sa polepším a viac nezhreším.
+Bože, buď milostivý mne hriešnemu. Amen.`,""]
+]],
+["Marian", [
+["zm","Zdravas', Mária","Hail Mary",
+`Zdravas', Mária, milosti plná, Pán s tebou.
+Požehnaná si medzi ženami
+a požehnaný je plod života tvojho, Ježiš.
+Svätá Mária, Matka Božia,
+pros za nás hriešnych teraz i v hodinu smrti našej. Amen.`,
+`Hail Mary, full of grace, the Lord is with thee;
+blessed art thou amongst women,
+and blessed is the fruit of thy womb, Jesus.
+Holy Mary, Mother of God,
+pray for us sinners, now and at the hour of our death. Amen.`],
+["ap","Anjel Pána","The Angelus",
+`Anjel Pána zvestoval Panne Márii
+a ona počala z Ducha Svätého. — Zdravas', Mária...
+
+Hľa, služobnica Pána,
+nech sa mi stane podľa tvojho slova. — Zdravas', Mária...
+
+A Slovo sa telom stalo
+a prebývalo medzi nami. — Zdravas', Mária...
+
+Oroduj za nás, svätá Božia Rodička.
+Aby sme sa stali hodní Kristových prisľúbení.
+
+Modlime sa: Prosíme ťa, Pane, vlej nám do duše svoju milosť,
+aby sme, ktorí sme skrze anjelovo zvestovanie
+poznali vtelenie Krista, tvojho Syna,
+jeho umučením a krížom boli privedení k sláve vzkriesenia.
+Skrze Krista, nášho Pána. Amen.`,""],
+["pto","Pod tvoju ochranu","Sub tuum praesidium",
+`Pod tvoju ochranu sa utiekame, svätá Božia Rodička.
+Neodvracaj zrak od našich prosieb, keď sme v núdzi,
+ale vysloboď nás vždy od všetkých nebezpečenstiev,
+ó, slávna a požehnaná Panna. Amen.`,""]
+]],
+["Morning and evening", [
+["ranna","Ranná modlitba","Morning offering",
+`Klaniam sa ti, Bože môj, a milujem ťa celým srdcom.
+Ďakujem ti, že si ma stvoril, že si ma urobil kresťanom
+a že si ma tejto noci ochránil.
+Obetujem ti svoje modlitby, práce a utrpenia tohto dňa.
+Daj, aby boli podľa tvojej vôle, na tvoju česť a slávu.
+Chráň ma, aby som ťa dnes neurazil nijakým hriechom. Amen.`,""],
+["vecerna","Večerná modlitba","Evening prayer",
+`Ďakujem ti, Bože, za všetky dobrodenia tohto dňa.
+Odpusť mi všetko, čím som sa dnes previnil,
+a chráň ma tejto noci.
+Do tvojich rúk porúčam svojho ducha. Amen.`,""],
+["anjel","Anjel Boží (strážca)","Guardian Angel prayer",
+`Anjel Boží, strážca môj,
+prosím ťa, vždy pri mne stoj.
+Pomocnú mi ruku daj,
+vo všetkom mi pomáhaj,
+aby som vždy dobre robil
+a hriechom sa nezarmútil.
+Svätý anjel, chráň ma stále,
+veď ma k Bohu, k jeho chvále. Amen.`,""]
+]],
+["At meals", [
+["pred","Modlitba pred jedlom","Grace before meals",
+`Požehnaj nás, Bože, a tieto dary,
+ktoré z tvojej štedrosti prijímame.
+Skrze Krista, nášho Pána. Amen.`,
+`Bless us, O Lord, and these thy gifts,
+which we are about to receive from thy bounty.
+Through Christ our Lord. Amen.`],
+["po","Modlitba po jedle","Grace after meals",
+`Ďakujeme ti, všemohúci Bože, za všetky tvoje dobrodenia,
+ktorý žiješ a kraľuješ na veky vekov. Amen.`,""]
+]],
+["Rosary and Chaplet", [
+["ruzenec","Svätý ruženec — ako sa modlí","The Holy Rosary — how to pray",
+`Na kríži: Verím v Boha.
+Na prvom veľkom zrnku: Otče náš.
+Na troch malých zrnkách: 3× Zdravas' (viera, nádej, láska).
+Sláva Otcu.
+
+Potom päť desiatkov. Pri každom:
+Otče náš — 10× Zdravas' (s tajomstvom) — Sláva Otcu.
+
+Tajomstvá:
+• Radostné (pondelok, sobota)
+• Bolestné (utorok, piatok)
+• Slávnostné (streda, nedeľa)
+• Svetla (štvrtok)`,""],
+["korunka","Korunka Božieho milosrdenstva","Chaplet of Divine Mercy",
+`Na začiatku: Otče náš, Zdravas', Verím v Boha.
+
+Na veľkých zrnkách:
+Večný Otče, obetujem ti telo a krv, dušu i božstvo
+tvojho najmilšieho Syna a nášho Pána Ježiša Krista
+na odčinenie našich hriechov i hriechov celého sveta.
+
+Na malých zrnkách (10×):
+Pre jeho bolestné umučenie
+maj milosrdenstvo s nami i s celým svetom.
+
+Na záver (3×):
+Svätý Bože, svätý Mocný, svätý Nesmrteľný,
+zmiluj sa nad nami i nad celým svetom.`,""]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("prayers.html", lang);
+
+  list.innerHTML = "";
+  let total = 0;
+  for (const [section, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? (SECTIONS_SK[section] || section) : section;
+    sec.appendChild(h);
+    for (const [id, sk, en, tsk, ten] of items) {
+      total += 1;
+      const row = document.createElement("div");
+      row.className = "pr-row";
+      row.innerHTML = `<span class="pr-name">${lang === "sk" ? sk : en}</span>`;
+      const panel = document.createElement("div");
+      panel.className = "pr-text hidden";
+      panel.textContent = (lang === "en" && ten) ? ten : tsk;
+      row.addEventListener("click", () => panel.classList.toggle("hidden"));
+      sec.appendChild(row);
+      sec.appendChild(panel);
+    }
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(total);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

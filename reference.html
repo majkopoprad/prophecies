@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desatoro, Blahoslavenstvá a ďalšie zoznamy | Proroctva.sk</title>
+<meta name="description" content="Prehľadné kresťanské zoznamy: Desatoro, Blahoslavenstvá, dvojprikázanie lásky, sedem sviatostí, božské a kardinálne čnosti, dary Ducha Svätého, hlavné hriechy a skutky milosrdenstva.">
+<link rel="canonical" href="https://proroctva.sk/reference.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Desatoro, Blahoslavenstvá a ďalšie zoznamy | Proroctva.sk">
+<meta property="og:description" content="Desatoro, Blahoslavenstvá, sviatosti, čnosti, dary Ducha Svätého, hlavné hriechy a skutky milosrdenstva.">
+<meta property="og:url" content="https://proroctva.sk/reference.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .ref-ref {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    margin: 6px 0 2px;
+  }
+  .ref-ref a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .ref-ref a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  .ref-item {
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 12px;
+    padding: 8px 4px;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .ref-item:hover { background: var(--select-bg); }
+  .ref-num { font-size: 11px; color: var(--ink-faint); text-align: right; }
+  .ref-text { font-size: 14.5px; color: var(--ink); line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">zoznamy</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "reference lists",
+    intro: "The short lists every catechism returns to — commandments, beatitudes, virtues, gifts and works of mercy.",
+    footer: "Catholic catechetical formulations. Scripture references link to the Bible reader.",
+    count: n => n + " lists"
+  },
+  sk: {
+    title: "zoznamy",
+    intro: "Krátke zoznamy, ku ktorým sa vracia každý katechizmus — prikázania, blahoslavenstvá, čnosti, dary a skutky milosrdenstva.",
+    footer: "Katolícke katechetické znenie. Odkazy na Písmo vedú do čítačky Biblie.",
+    count: n => n + " zoznamov"
+  }
+};
+
+// [sk title, en title, ref (bible.html hash or null), sk ref label, items: [[sk,en], ...]]
+const DATA = [
+["Desatoro","The Ten Commandments","bible.html?b=2&c=20","Exodus 20",[
+ ["Ja som Pán, tvoj Boh! Nebudeš mať okrem mňa iných bohov, ktorým by si sa klaňal.","I am the Lord your God: you shall not have strange gods before me."],
+ ["Nevezmeš Božie meno nadarmo.","You shall not take the name of the Lord your God in vain."],
+ ["Pamätaj, že máš svätiť sviatočné dni.","Remember to keep holy the Lord's Day."],
+ ["Cti svojho otca a svoju matku.","Honour your father and your mother."],
+ ["Nezabiješ.","You shall not kill."],
+ ["Nezosmilníš.","You shall not commit adultery."],
+ ["Nepokradneš.","You shall not steal."],
+ ["Nebudeš krivo svedčiť proti svojmu blížnemu.","You shall not bear false witness against your neighbour."],
+ ["Nebudeš žiadostivo túžiť po manželke svojho blížneho.","You shall not covet your neighbour's wife."],
+ ["Nebudeš túžiť po majetku svojho blížneho.","You shall not covet your neighbour's goods."]
+]],
+["Dvojprikázanie lásky","The Great Commandment","bible.html?b=40&c=22","Matúš 22:37–39",[
+ ["Milovať budeš Pána, svojho Boha, celým svojím srdcom, celou svojou dušou a celou svojou mysľou.","You shall love the Lord your God with all your heart, with all your soul, and with all your mind."],
+ ["Milovať budeš svojho blížneho ako seba samého.","You shall love your neighbour as yourself."]
+]],
+["Blahoslavenstvá","The Beatitudes","bible.html?b=40&c=5","Matúš 5:3–10",[
+ ["Blahoslavení chudobní v duchu, lebo ich je nebeské kráľovstvo.","Blessed are the poor in spirit, for theirs is the kingdom of heaven."],
+ ["Blahoslavení plačúci, lebo oni budú potešení.","Blessed are they who mourn, for they shall be comforted."],
+ ["Blahoslavení tichí, lebo oni budú dedičmi zeme.","Blessed are the meek, for they shall inherit the earth."],
+ ["Blahoslavení lační a smädní po spravodlivosti, lebo oni budú nasýtení.","Blessed are they who hunger and thirst for righteousness, for they shall be satisfied."],
+ ["Blahoslavení milosrdní, lebo oni dosiahnu milosrdenstvo.","Blessed are the merciful, for they shall obtain mercy."],
+ ["Blahoslavení čistého srdca, lebo oni uvidia Boha.","Blessed are the pure of heart, for they shall see God."],
+ ["Blahoslavení tvorcovia pokoja, lebo ich budú volať Božími synmi.","Blessed are the peacemakers, for they shall be called children of God."],
+ ["Blahoslavení prenasledovaní pre spravodlivosť, lebo ich je nebeské kráľovstvo.","Blessed are they who are persecuted for righteousness' sake, for theirs is the kingdom of heaven."]
+]],
+["Sedem sviatostí","The Seven Sacraments",null,null,[
+ ["Krst","Baptism"],["Birmovanie","Confirmation"],["Eucharistia","the Eucharist"],
+ ["Sviatosť zmierenia (pokánie)","Penance (Reconciliation)"],
+ ["Pomazanie chorých","Anointing of the Sick"],
+ ["Posvätný stav (kňazstvo)","Holy Orders"],["Manželstvo","Matrimony"]
+]],
+["Pätoro cirkevných prikázaní","The Precepts of the Church",null,null,[
+ ["Svätiť nedele a prikázané sviatky účasťou na svätej omši a zdržať sa prác, ktoré tomu prekážajú.","Attend Mass on Sundays and holy days and rest from servile labour."],
+ ["Aspoň raz do roka sa vyspovedať.","Confess your sins at least once a year."],
+ ["Prijať Eucharistiu aspoň vo Veľkonočnom období.","Receive the Eucharist at least during the Easter season."],
+ ["Zachovávať prikázané dni pokánia a pôstu.","Observe the days of fasting and abstinence."],
+ ["Podľa svojich možností prispievať na potreby Cirkvi.","Provide for the needs of the Church."]
+]],
+["Božské čnosti","The Theological Virtues","bible.html?b=46&c=13","1. Korinťanom 13:13",[
+ ["Viera","Faith"],["Nádej","Hope"],["Láska","Charity (Love)"]
+]],
+["Kardinálne čnosti","The Cardinal Virtues",null,null,[
+ ["Rozvážnosť","Prudence"],["Spravodlivosť","Justice"],
+ ["Mravná sila (statočnosť)","Fortitude"],["Miernosť","Temperance"]
+]],
+["Sedem darov Ducha Svätého","The Seven Gifts of the Holy Spirit","bible.html?b=23&c=11","Izaiáš 11:2–3",[
+ ["Múdrosť","Wisdom"],["Rozum","Understanding"],["Rada","Counsel"],["Sila","Fortitude"],
+ ["Poznanie","Knowledge"],["Nábožnosť","Piety"],["Bázeň voči Bohu","Fear of the Lord"]
+]],
+["Sedem hlavných hriechov","The Seven Capital Sins",null,null,[
+ ["Pýcha","Pride"],["Lakomstvo","Greed"],["Závisť","Envy"],["Hnev","Wrath"],
+ ["Smilstvo","Lust"],["Obžerstvo","Gluttony"],["Lenivosť","Sloth"]
+]],
+["Skutky telesného milosrdenstva","Corporal Works of Mercy",null,null,[
+ ["Dávať jesť hladným.","Feed the hungry."],["Dávať piť smädným.","Give drink to the thirsty."],
+ ["Prijímať pocestných bez prístrešia.","Shelter the homeless."],["Odievať nahých.","Clothe the naked."],
+ ["Navštevovať chorých.","Visit the sick."],["Poskytovať pomoc väzňom.","Visit the imprisoned."],
+ ["Pochovávať mŕtvych.","Bury the dead."]
+]],
+["Skutky duchovného milosrdenstva","Spiritual Works of Mercy",null,null,[
+ ["Napomínať hriešnikov.","Admonish sinners."],["Poúčať nevedomých.","Instruct the ignorant."],
+ ["Dobre radiť pochybujúcim.","Counsel the doubtful."],["Tešiť zarmútených.","Comfort the sorrowful."],
+ ["Trpezlivo znášať krivdy.","Bear wrongs patiently."],["Odpúšťať ubližujúcim.","Forgive offences."],
+ ["Modliť sa za živých i mŕtvych.","Pray for the living and the dead."]
+]]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("reference.html", lang);
+
+  list.innerHTML = "";
+  for (const [sk, en, ref, refLabel, items] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = lang === "sk" ? sk : en;
+    sec.appendChild(h);
+    if (ref && refLabel) {
+      const r = document.createElement("div");
+      r.className = "ref-ref";
+      r.innerHTML = `<a href="${ref}">${refLabel}</a>`;
+      sec.appendChild(r);
+    }
+    items.forEach(([isk, ien], i) => {
+      const row = document.createElement("div");
+      row.className = "ref-item";
+      row.innerHTML = `<span class="ref-num">${i + 1}</span>` +
+        `<span class="ref-text">${lang === "sk" ? isk : ien}</span>`;
+      sec.appendChild(row);
+    });
+    list.appendChild(sec);
+  }
+  document.getElementById("count").textContent = t.count(DATA.length);
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

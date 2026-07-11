@@ -88,14 +88,18 @@ function tQuote(ref, label, lang) {
 }
 
 const T_NAV = [
-  ["index.html", "Biblia", "Home"],
+  ["index.html", "Domov", "Home"],
+  ["bible.html", "Biblia", "Bible"],
   ["prophecies.html", "Proroctvá", "Prophecies"],
-  ["typology.html", "Predobrazy", "Types of Christ"],
+  ["typology.html", "Predobrazy", "Types"],
   ["nations.html", "Národy", "Nations"],
   ["harmony.html", "Harmónia", "Harmony"],
   ["parables.html", "Podobenstvá", "Parables"],
   ["iam.html", "Ja som", "I AM"],
   ["genealogy.html", "Rodokmeň", "Genealogy"],
+  ["readings.html", "Čítania", "Readings"],
+  ["prayers.html", "Modlitby", "Prayers"],
+  ["reference.html", "Zoznamy", "Lists"],
   ["widget.html", "Widget", "Widget"],
   ["encyclical.html", "Encyklika", "Encyclical"]
 ];
@@ -119,4 +123,11 @@ function tMarkLang(lang) {
   document.documentElement.lang = lang;
   document.getElementById("lang-en").className = lang === "en" ? "active" : "";
   document.getElementById("lang-sk").className = lang === "sk" ? "active" : "";
+}
+
+// ---- progressive web app: register the service worker (offline + install) ---
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
 }
