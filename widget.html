@@ -101,9 +101,9 @@ const UI = {
       ["Install Scriptable",
        'Download the free <a href="' + SCRIPTABLE_URL + '" target="_blank" rel="noopener">Scriptable</a> app from the App Store. It runs small JavaScript programs and can display them as home-screen widgets.'],
       ["Add the script",
-       'Open <a href="' + SCRIPT_URL + '" target="_blank">Denne proroctvo.js</a> in Safari, select all the text and copy it. In Scriptable tap <b>+</b> to create a new script, paste, and rename it to <b>Denne proroctvo</b> (tap the name at the top).'],
+       'Tap <a href="' + SCRIPT_URL + '" download>Denne proroctvo.js</a> — Safari saves it to your downloads. Open the <b>Files</b> app and move the file to <b>iCloud Drive → Scriptable</b>. Scriptable picks it up immediately as the <b>Denne proroctvo</b> script.'],
       ["Optional: install the Receipt font",
-       'For the widget to use this site\'s typeface, download <a href="' + FONT_URL + '">Receipt.otf</a>, open it in <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (or AnyFont) and follow the profile installation (Settings → Profile Downloaded → Install). Without it the widget uses the system font.'],
+       'For the widget to use this site\'s typeface, download <a href="' + FONT_URL + '" download>Receipt.otf</a>, open it in <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (or AnyFont) and follow the profile installation (Settings → Profile Downloaded → Install). Without it the widget uses the system font.'],
       ["Add the widget to your home screen",
        "Long-press the home screen → <b>+</b> in the corner → search for <b>Scriptable</b> → choose a size (large shows both passages) → Add."],
       ["Point it to the script",
@@ -128,9 +128,9 @@ const UI = {
       ["Nainštaluj Scriptable",
        'Stiahni si z App Store bezplatnú aplikáciu <a href="' + SCRIPTABLE_URL + '" target="_blank" rel="noopener">Scriptable</a>. Spúšťa malé JavaScript programy a vie ich zobraziť ako widgety na ploche.'],
       ["Pridaj skript",
-       'Otvor v Safari <a href="' + SCRIPT_URL + '" target="_blank">Denne proroctvo.js</a>, označ celý text a skopíruj ho. V Scriptable ťukni na <b>+</b> (nový skript), prilep a premenuj ho na <b>Denne proroctvo</b> (ťuknutím na názov hore).'],
+       'Ťukni na <a href="' + SCRIPT_URL + '" download>Denne proroctvo.js</a> — Safari ho uloží do stiahnutých. Otvor aplikáciu <b>Súbory</b> a presuň súbor do <b>iCloud Drive → Scriptable</b>. Scriptable ho hneď zobrazí ako skript <b>Denne proroctvo</b>.'],
       ["Voliteľné: nainštaluj font Receipt",
-       'Aby widget používal písmo tohto webu, stiahni <a href="' + FONT_URL + '">Receipt.otf</a>, otvor ho v aplikácii <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (alebo AnyFont) a dokonči inštaláciu profilu (Nastavenia → Stiahnutý profil → Inštalovať). Bez neho widget použije systémové písmo.'],
+       'Aby widget používal písmo tohto webu, stiahni <a href="' + FONT_URL + '" download>Receipt.otf</a>, otvor ho v aplikácii <a href="' + FONTCASE_URL + '" target="_blank" rel="noopener">Fontcase</a> (alebo AnyFont) a dokonči inštaláciu profilu (Nastavenia → Stiahnutý profil → Inštalovať). Bez neho widget použije systémové písmo.'],
       ["Pridaj widget na plochu",
        "Podrž prst na ploche → <b>+</b> v rohu → vyhľadaj <b>Scriptable</b> → vyber veľkosť (veľký ukáže obe pasáže) → Pridať."],
       ["Nasmeruj ho na skript",
@@ -157,7 +157,7 @@ function render() {
   const ext = { 0: SCRIPTABLE_URL, 2: FONTCASE_URL };
   document.getElementById("downloads").innerHTML = t.downloads.map(([kind, name, desc, hint], i) => {
     const href = kind ? urls[kind] : ext[i];
-    const attrs = kind ? "" : ' target="_blank" rel="noopener"';
+    const attrs = kind ? " download" : ' target="_blank" rel="noopener"';
     return `<a class="dl" href="${href}"${attrs}>` +
       `<span><span class="dl-name">${name}</span>` +
       `<span class="dl-desc">${desc}</span></span>` +

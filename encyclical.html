@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magnifica humanitas – prvá encyklika Leva XIV. | Proroctva.sk</title>
+<meta name="description" content="Magnifica humanitas – prvá encyklika pápeža Leva XIV. o ochrane ľudskej osoby v čase umelej inteligencie. Prehľad piatich kapitol a odkazy na plné znenie.">
+<link rel="canonical" href="https://proroctva.sk/encyclical.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Magnifica humanitas – prvá encyklika Leva XIV. | Proroctva.sk">
+<meta property="og:description" content="Prvá encyklika pápeža Leva XIV. o ochrane ľudskej osoby v čase umelej inteligencie. Prehľad piatich kapitol a odkazy na plné znenie.">
+<meta property="og:url" content="https://proroctva.sk/encyclical.html">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .step {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 16px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .step-title { color: var(--ink-strong); font-size: 15px; }
+  .dl {
+    display: grid;
+    grid-template-columns: 1fr 170px;
+    gap: 16px;
+    padding: 14px 4px;
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    align-items: baseline;
+  }
+  .dl:hover { background: var(--select-bg); }
+  .dl:hover .dl-name { color: var(--ink-strong); }
+  .dl-name { color: var(--ink); font-size: 15px; transition: color 0.12s; }
+  .dl-desc { display: block; font-size: 12.5px; color: var(--ink-faint); margin-top: 2px; }
+  .dl-hint { font-size: 12px; color: var(--ink-faint); text-align: right; }
+  .quote {
+    margin-top: 18px;
+    padding-left: 18px;
+    border-left: 1px solid var(--ink);
+    max-width: 620px;
+  }
+  .quote-text { font-size: 15px; color: var(--ink-strong); line-height: 1.8; }
+  .quote-src { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); margin-top: 6px; }
+  .about { font-size: 13.5px; color: var(--ink); line-height: 1.8; max-width: 640px; margin-top: 14px; }
+  @media (max-width: 620px) {
+    .dl { grid-template-columns: 1fr; }
+    .dl-hint { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">magnifica humanitas</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<section>
+  <h2 id="t-about"></h2>
+  <p class="about" id="about"></p>
+  <div class="quote">
+    <div class="quote-text" id="quote"></div>
+    <div class="quote-src" id="quote-src"></div>
+  </div>
+</section>
+
+<section>
+  <h2 id="t-chapters"></h2>
+  <div id="chapters"></div>
+</section>
+
+<section>
+  <h2 id="t-links"></h2>
+  <div id="links"></div>
+</section>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "magnifica humanitas",
+    intro: "The first encyclical of Pope Leo XIV — on safeguarding the human person in the time of artificial intelligence. Signed 15 May 2026, on the 135th anniversary of Leo XIII's Rerum novarum; published 25 May 2026.",
+    about: "About the encyclical",
+    aboutText: "By taking the name Leo, the pope pointed back to Leo XIII, whose Rerum novarum (1891) answered the upheavals of the industrial revolution. Magnifica humanitas reads the upheaval of our own day — artificial intelligence — through the same social doctrine: technology is not to be rejected but ordered toward the grandeur of the human person, who alone experiences, loves and answers to God. The five chapters move from the Gospel and the principles of the Church's social teaching to technology and power, and end with the civilization of love.",
+    quote: "“When efficiency becomes the ultimate measure of value, human beings are tempted to see themselves as a project to be optimized rather than as persons called to relationship and communion.”",
+    quoteSrc: "Leo XIV, Magnifica humanitas (2026)",
+    chapters: "The five chapters",
+    links: "Read it",
+    footer: "Chapter titles follow the official text; the Slovak links are news coverage by the Slovak Bishops' Conference and Vatican News until the official Slovak translation is published.",
+    count: "25 May 2026",
+    list: [
+      "A dynamic approach faithful to the Gospel",
+      "Foundations and principles of the social doctrine of the Church",
+      "Technology and dominance — the grandeur of humanity in light of the promises of AI",
+      "Safeguarding humanity at a time of transformation: truth, work, freedom",
+      "The culture of power and the civilization of love"
+    ],
+    linkList: [
+      ["https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html",
+       "Full text (vatican.va)", "The complete encyclical in English", "english"],
+      ["https://www.vaticannews.va/sk/papez/news/2026-05/magnifica-humanitas-prva-encyklika-leva-xiv-vyjde-25-maja.html",
+       "Vatican News", "Slovak coverage of the encyclical", "slovensky"],
+      ["https://www.tkkbs.sk/view.php?cisloclanku=20260525011",
+       "TK KBS", "Press service of the Slovak Bishops' Conference", "slovensky"]
+    ]
+  },
+  sk: {
+    title: "magnifica humanitas",
+    intro: "Prvá encyklika pápeža Leva XIV. — o ochrane ľudskej osoby v čase umelej inteligencie. Podpísaná 15. mája 2026, na 135. výročie encykliky Rerum novarum Leva XIII.; zverejnená 25. mája 2026.",
+    about: "O encyklike",
+    aboutText: "Voľbou mena Lev pápež ukázal na Leva XIII., ktorého Rerum novarum (1891) odpovedala na otrasy priemyselnej revolúcie. Magnifica humanitas číta otras našej doby — umelú inteligenciu — cez tú istú sociálnu náuku: technológiu netreba odmietať, ale usporiadať smerom k veľkosti ľudskej osoby, ktorá jediná zakusuje, miluje a zodpovedá sa Bohu. Päť kapitol vedie od evanjelia a princípov sociálnej náuky Cirkvi cez technológiu a moc až k civilizácii lásky.",
+    quote: "„Keď sa efektivita stane najvyššou mierou hodnoty, človek je v pokušení vidieť sám seba ako projekt na optimalizáciu, a nie ako osobu povolanú k vzťahu a spoločenstvu.“",
+    quoteSrc: "Lev XIV., Magnifica humanitas (2026)",
+    chapters: "Päť kapitol",
+    links: "Čítaj",
+    footer: "Názvy kapitol podľa oficiálneho textu; slovenské odkazy sú spravodajstvo TK KBS a Vatican News, kým nevyjde oficiálny slovenský preklad.",
+    count: "25. máj 2026",
+    list: [
+      "Dynamický prístup verný evanjeliu",
+      "Základy a princípy sociálnej náuky Cirkvi",
+      "Technológia a nadvláda — veľkosť človeka vo svetle prísľubov umelej inteligencie",
+      "Ochrana ľudskosti v čase premeny: pravda, práca, sloboda",
+      "Kultúra moci a civilizácia lásky"
+    ],
+    linkList: [
+      ["https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html",
+       "Plné znenie (vatican.va)", "Kompletná encyklika v angličtine", "english"],
+      ["https://www.vaticannews.va/sk/papez/news/2026-05/magnifica-humanitas-prva-encyklika-leva-xiv-vyjde-25-maja.html",
+       "Vatican News", "Slovenské spravodajstvo o encyklike", "slovensky"],
+      ["https://www.tkkbs.sk/view.php?cisloclanku=20260525011",
+       "TK KBS", "Tlačová kancelária Konferencie biskupov Slovenska", "slovensky"]
+    ]
+  }
+};
+
+let lang = tGetLang();
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-about").textContent = t.about;
+  document.getElementById("about").textContent = t.aboutText;
+  document.getElementById("quote").textContent = t.quote;
+  document.getElementById("quote-src").textContent = t.quoteSrc;
+  document.getElementById("t-chapters").textContent = t.chapters;
+  document.getElementById("t-links").textContent = t.links;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("encyclical.html", lang);
+
+  document.getElementById("chapters").innerHTML = t.list.map((title, i) =>
+    `<div class="step"><span class="num">${i + 1}</span>` +
+    `<span class="step-title">${title}</span></div>`).join("");
+
+  document.getElementById("links").innerHTML = t.linkList.map(([href, name, desc, hint]) =>
+    `<a class="dl" href="${href}" target="_blank" rel="noopener">` +
+    `<span><span class="dl-name">${name}</span>` +
+    `<span class="dl-desc">${desc}</span></span>` +
+    `<span class="dl-hint">${hint}</span></a>`).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
