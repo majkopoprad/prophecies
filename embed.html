@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Widget „proroctvo dňa" pre váš web | Proroctva.sk</title>
+<meta name="description" content="Vložte na svoj web (napr. farskú stránku) widget s proroctvom dňa jedným riadkom kódu. Zdarma, bez reklám, v štýle proroctva.sk.">
+<link rel="canonical" href="https://proroctva.sk/embed.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Widget „proroctvo dňa" pre váš web | Proroctva.sk">
+<meta property="og:description" content="Vložte na svoj web widget s proroctvom dňa jedným riadkom kódu. Zdarma, bez reklám.">
+<meta property="og:url" content="https://proroctva.sk/embed.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .embed-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; margin-top: 22px; }
+  .code-box {
+    position: relative;
+    background: var(--select-bg);
+    border: 1px solid var(--rule);
+    padding: 14px 16px;
+    font-family: 'Menlo', 'Consolas', monospace;
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .copy-btn {
+    display: inline-block; margin-top: 12px;
+    font-size: 13px; color: var(--ink); cursor: pointer;
+    border-bottom: 1px solid var(--ink-faint);
+  }
+  .copy-btn:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  .preview-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin-bottom: 8px; }
+  .preview-frame { width: 100%; max-width: 360px; height: 300px; border: 1px solid var(--rule); border-radius: 4px; }
+  .step { padding: 12px 4px; border-bottom: 1px solid var(--rule); }
+  .step-title { color: var(--ink-strong); font-size: 15px; }
+  .step-body { font-size: 13.5px; color: var(--ink); margin-top: 3px; line-height: 1.65; }
+  .opts { margin-top: 20px; font-size: 13px; color: var(--ink-faint); line-height: 1.7; }
+  .opts code { background: var(--select-bg); padding: 1px 5px; color: var(--ink); }
+  @media (max-width: 720px) { .embed-grid { grid-template-columns: 1fr; gap: 24px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">widget pre váš web</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="embed-grid">
+  <div>
+    <div class="code-box" id="code"></div>
+    <span class="copy-btn" id="copy"></span>
+    <div class="opts" id="opts"></div>
+  </div>
+  <div>
+    <div class="preview-label" id="prev-label"></div>
+    <iframe class="preview-frame" src="embed-widget.html" title="Proroctvo dňa" loading="lazy"></iframe>
+  </div>
+</div>
+
+<section>
+  <h2 id="t-steps"></h2>
+  <div id="steps"></div>
+</section>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const SNIPPET =
+`<iframe src="https://proroctva.sk/embed-widget.html"
+        style="width:100%;max-width:360px;height:300px;border:1px solid #e5e5e5;border-radius:4px"
+        loading="lazy" title="Proroctvo dňa"></iframe>`;
+
+const UI = {
+  en: {
+    title: "a widget for your website",
+    intro: "Put the prophecy of the day on your parish or personal website with one line of code. Free, no ads, no tracking — it updates itself every day and matches the style of this site.",
+    copy: "copy the code", copied: "copied ✓",
+    prevLabel: "live preview",
+    opts: "Adjust <code>max-width</code> and <code>height</code> to fit your layout. The widget has a transparent background, so it blends into any page. It loads only a small data file and needs nothing else.",
+    steps: "How to add it",
+    footer: "The widget shows the same prophecy of the day as the home page. If your site has a content editor, paste the code into an HTML / “embed” block.",
+    count: "free",
+    list: [
+      ["Copy the code", "Use the copy button above."],
+      ["Paste it into your page", "In your website editor, add an HTML or “embed / code” block and paste the snippet where you want the widget to appear."],
+      ["That's it", "The prophecy changes on its own each day. Nothing to maintain."]
+    ]
+  },
+  sk: {
+    title: "widget pre váš web",
+    intro: "Vložte na svoju farskú alebo osobnú stránku proroctvo dňa jedným riadkom kódu. Zdarma, bez reklám, bez sledovania — obnovuje sa samo každý deň a ladí so štýlom tohto webu.",
+    copy: "kopírovať kód", copied: "skopírované ✓",
+    prevLabel: "živý náhľad",
+    opts: "Uprav <code>max-width</code> a <code>height</code> podľa svojho rozloženia. Widget má priehľadné pozadie, takže zapadne do každej stránky. Načíta len malý dátový súbor a nič iné nepotrebuje.",
+    steps: "Ako ho pridať",
+    footer: "Widget ukazuje to isté proroctvo dňa ako hlavná stránka. Ak má váš web editor obsahu, vlož kód do HTML / „embed“ bloku.",
+    count: "zdarma",
+    list: [
+      ["Skopíruj kód", "Použi tlačidlo kopírovať vyššie."],
+      ["Vlož ho na stránku", "V editore svojho webu pridaj HTML alebo „embed / kód“ blok a vlož úryvok tam, kde chceš widget zobraziť."],
+      ["Hotovo", "Proroctvo sa každý deň zmení samo. Netreba nič udržiavať."]
+    ]
+  }
+};
+
+let lang = tGetLang();
+
+function esc(s) { return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("t-steps").textContent = t.steps;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("prev-label").textContent = t.prevLabel;
+  document.getElementById("opts").innerHTML = t.opts;
+  document.getElementById("code").textContent = SNIPPET;
+  document.getElementById("copy").textContent = t.copy;
+  document.getElementById("site-nav").innerHTML = tNavHTML("embed.html", lang);
+  document.getElementById("steps").innerHTML = t.list.map(([ti, bo]) =>
+    `<div class="step"><span class="step-title">${ti}</span><div class="step-body">${bo}</div></div>`
+  ).join("");
+}
+
+document.getElementById("copy").addEventListener("click", () => {
+  navigator.clipboard.writeText(SNIPPET).then(() => {
+    document.getElementById("copy").textContent = UI[lang].copied;
+    setTimeout(() => { document.getElementById("copy").textContent = UI[lang].copy; }, 1800);
+  }).catch(() => {});
+});
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

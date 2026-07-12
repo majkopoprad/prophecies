@@ -302,6 +302,15 @@
     .what { grid-column: 2; }
     .f { grid-column: 2; text-align: left; }
   }
+
+  .cat-pills { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 20px 0 0; }
+  .cat-pills span {
+    font-size: 12px; letter-spacing: 0.04em; color: var(--ink-faint);
+    cursor: pointer; transition: color 0.12s;
+  }
+  .cat-pills span:hover { color: var(--ink-strong); }
+  .cat-pills span.active { color: var(--ink-strong); }
+  .unf-note { font-size: 12.5px; color: var(--ink-faint); margin: 2px 0 6px; max-width: 640px; }
 </style>
 </head>
 <body>
@@ -338,6 +347,8 @@
   <p class="odds-note" id="t-note"></p>
 </section>
 
+<nav class="cat-pills" id="cat-pills"></nav>
+
 <div class="search-wrap">
   <input id="search" type="text" autocomplete="off">
 </div>
@@ -349,6 +360,7 @@
 
 <script src="verses.js"></script>
 <script src="prophecies-data.js"></script>
+<script src="prophecies-unfulfilled.js"></script>
 <script src="theology.js"></script>
 <script>
 // ---- UI strings ------------------------------------------------------------
@@ -365,7 +377,12 @@ const UI = {
     none: "nothing found.",
     footer: "The classic verse-by-verse compilation of Old Testament messianic prophecies. Verse texts: King James Version. Psalm numbering follows the Hebrew text (in Vulgate-based translations, Psalm 22 = Psalm 21). Compiled as a reading list, not an argument — read both passages side by side.",
     count: n => n + " prophecies",
-    countOf: (v, t) => v + " of " + t + " prophecies"
+    countOf: (v, t) => v + " of " + t + " prophecies",
+    cats: { all: "all", birth: "birth", ministry: "ministry", suffering: "suffering", resurrection: "resurrection", future: "awaiting" },
+    catsHint: "grouped by where in Jesus' life each prophecy was fulfilled",
+    unfHead: "Awaiting fulfilment — the second coming",
+    unfNote: "Prophecies that, in the Christian tradition, are not yet fulfilled — they await Christ's return. Shown honestly alongside the rest.",
+    expectation: "the expectation"
   },
   sk: {
     title: "proroctvá, ktoré ježiš naplnil",
@@ -379,7 +396,12 @@ const UI = {
     none: "nič sa nenašlo.",
     footer: "Klasický zoznam starozákonných mesiášskych proroctiev verš po verši. Texty veršov: Slovenský ekumenický preklad (biblia.sk); chýbajúce verše doplnené z katolíckeho prekladu SSV alebo Roháčka. Odkazy vedú na biblia.sk. Zostavené ako čítací zoznam, nie argument — čítaj obe pasáže vedľa seba.",
     count: n => n + " " + (n === 1 ? "proroctvo" : (n >= 2 && n <= 4 ? "proroctvá" : "proroctiev")),
-    countOf: (v, t) => v + " z " + t + " proroctiev"
+    countOf: (v, t) => v + " z " + t + " proroctiev",
+    cats: { all: "všetko", birth: "narodenie", ministry: "účinkovanie", suffering: "utrpenie", resurrection: "vzkriesenie", future: "ešte nenaplnené" },
+    catsHint: "podľa toho, v ktorej časti Ježišovho života sa proroctvo naplnilo",
+    unfHead: "Ešte nenaplnené — druhý príchod",
+    unfNote: "Proroctvá, ktoré podľa kresťanskej tradície ešte nie sú naplnené — čakajú na Kristov návrat. Uvedené poctivo popri ostatných.",
+    expectation: "očakávanie"
   }
 };
 
@@ -458,8 +480,24 @@ function bibliaLink(ref) {
 // ---- data lives in prophecies-data.js (shared with biblia.html) ----------
 const DATA = PROPHECIES_DATA;
 
+// ---- category: which part of Jesus' life the prophecy was fulfilled in ------
+const CATS_ORDER = ["all", "birth", "ministry", "suffering", "resurrection", "future"];
+function categoryOf(nt) {
+  const seg = nt.split(";")[0].trim();
+  const m = seg.match(/^([1-3]?\s?[A-Za-z ]+?)\s(\d+)/);
+  if (!m) return "ministry";
+  const book = m[1].trim(), ch = +m[2];
+  if ((book === "Matthew" && ch <= 2) || (book === "Luke" && ch <= 2) || book === "Galatians") return "birth";
+  if ((book === "Matthew" && ch >= 26 && ch <= 27) || (book === "Mark" && ch >= 14 && ch <= 15) ||
+      (book === "Luke" && ch >= 22 && ch <= 23) || (book === "John" && (ch === 18 || ch === 19))) return "suffering";
+  if ((book === "Matthew" && ch === 28) || (book === "Mark" && ch === 16) || (book === "Luke" && ch === 24) ||
+      (book === "John" && (ch === 20 || ch === 21)) || (book === "Acts" && ch <= 2)) return "resurrection";
+  return "ministry";
+}
+
 // ---- rendering ---------------------------------------------------------------
 let lang = localStorage.getItem("prophecies-lang") || "en";
+let activeCat = "all";
 const list = document.getElementById("list");
 const search = document.getElementById("search");
 const noResults = document.getElementById("no-results");
@@ -502,6 +540,7 @@ function render() {
         + " " + fulfilled + " " + fulShown + " " + section).toLowerCase();
       row.dataset.ot = ref;
       row.dataset.nt = fulfilled;
+      row.dataset.cat = categoryOf(fulfilled);
       row.innerHTML =
         `<span class="num">${n}</span>` +
         `<span class="p">${refShown}</span>` +
@@ -512,6 +551,46 @@ function render() {
     }
     list.appendChild(sec);
   }
+
+  // ---- awaiting fulfilment (kept separate from the 351) ----
+  if (typeof PROPHECIES_UNFULFILLED !== "undefined") {
+    const usec = document.createElement("section");
+    const uh = document.createElement("h2");
+    uh.textContent = t.unfHead;
+    usec.appendChild(uh);
+    const un = document.createElement("p");
+    un.className = "unf-note";
+    un.textContent = t.unfNote;
+    usec.appendChild(un);
+    let un_n = 0;
+    for (const [ref, whatEN, whatSK, fulfilled] of PROPHECIES_UNFULFILLED) {
+      un_n += 1;
+      const row = document.createElement("div");
+      row.className = "row";
+      const refShown = lang === "sk" ? refSK(ref) : ref;
+      const fulShown = lang === "sk" ? refSK(fulfilled) : fulfilled;
+      const what = lang === "sk" ? whatSK : whatEN;
+      row.dataset.text = (ref + " " + refShown + " " + whatEN + " " + whatSK + " " + fulfilled + " " + fulShown).toLowerCase();
+      row.dataset.ot = ref; row.dataset.nt = fulfilled; row.dataset.cat = "future";
+      row.innerHTML =
+        `<span class="num">${un_n}</span>` +
+        `<span class="p">${refShown}</span>` +
+        `<span class="what">${what}</span>` +
+        `<span class="f">${fulShown}</span>`;
+      row.addEventListener("click", () => toggleVerses(row));
+      usec.appendChild(row);
+    }
+    list.appendChild(usec);
+  }
+
+  // ---- category pills ----
+  document.getElementById("cat-pills").innerHTML = CATS_ORDER.map(c =>
+    `<span data-cat="${c}" class="${c === activeCat ? "active" : ""}">${t.cats[c]}</span>`
+  ).join("");
+  document.querySelectorAll("#cat-pills span").forEach(el => {
+    el.addEventListener("click", () => { activeCat = el.dataset.cat; render(); });
+  });
+
   document.getElementById("t-note").innerHTML = t.note.replace("{n}", total);
   applyFilter();
 }
@@ -535,10 +614,11 @@ function toggleVerses(row) {
     return;
   }
   const t = UI[lang];
+  const secondLabel = row.dataset.cat === "future" ? t.expectation : t.fulfilment;
   const panel = document.createElement("div");
   panel.className = "verses";
   panel.innerHTML = quoteHTML(row.dataset.ot, t.prophecy)
-                  + quoteHTML(row.dataset.nt, t.fulfilment);
+                  + quoteHTML(row.dataset.nt, secondLabel);
   row.after(panel);
 }
 
@@ -549,7 +629,8 @@ function applyFilter() {
   for (const sec of list.children) {
     let secVisible = 0;
     for (const row of sec.querySelectorAll(".row")) {
-      const hit = !q || row.dataset.text.includes(q);
+      const hit = (!q || row.dataset.text.includes(q)) &&
+                  (activeCat === "all" || row.dataset.cat === activeCat);
       row.classList.toggle("hidden", !hit);
       const nx = row.nextElementSibling;
       if (nx && nx.classList.contains("verses")) nx.classList.toggle("hidden", !hit);
@@ -560,7 +641,7 @@ function applyFilter() {
   }
   noResults.style.display = visible ? "none" : "block";
   document.getElementById("count").textContent =
-    q ? t.countOf(visible, total) : t.count(total);
+    (q || activeCat !== "all") ? t.countOf(visible, total) : t.count(total);
 }
 
 function setLang(l) {

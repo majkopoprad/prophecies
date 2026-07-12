@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rodokmeň Adam → Ježiš – interaktívny strom | Proroctva.sk</title>
-<meta name="description" content="Rodokmeň od Adama po Ježiša ako interaktívny strom – ťahaj, približuj a klikni na osobu: vyskočí jej verš, roky a súvisiace proroctvo.">
+<title>Rodokmeň od Adama po Ježiša | Proroctva.sk</title>
+<meta name="description" content="60 mien v jednej neprerušenej línii cez Genezis 5, Genezis 11 a Matúša 1 – uzly Božích prisľúbení od Adama po Krista.">
 <link rel="canonical" href="https://proroctva.sk/genealogy.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Proroctva.sk">
 <meta property="og:locale" content="sk_SK">
-<meta property="og:title" content="Rodokmeň Adam → Ježiš – interaktívny strom | Proroctva.sk">
-<meta property="og:description" content="Rodokmeň od Adama po Ježiša ako interaktívny strom – klikni na osobu a vyskočí jej verš, roky a proroctvo.">
+<meta property="og:title" content="Rodokmeň od Adama po Ježiša | Proroctva.sk">
+<meta property="og:description" content="60 mien v jednej neprerušenej línii cez Genezis 5, Genezis 11 a Matúša 1 – uzly Božích prisľúbení od Adama po Krista.">
 <meta property="og:url" content="https://proroctva.sk/genealogy.html">
 <meta property="og:image" content="https://proroctva.sk/og.png">
 <meta name="twitter:card" content="summary">
@@ -23,69 +23,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Proroctva">
 <link rel="stylesheet" href="theology.css">
-<style>
-  .tree-controls { display: flex; align-items: baseline; gap: 16px; margin-top: 14px; }
-  .tree-controls .cal-btn { font-size: 18px; }
-  .tree-hint { font-size: 12px; color: var(--ink-faint); }
-  .tree-viewport {
-    position: relative;
-    height: 70vh; min-height: 440px;
-    margin-top: 10px;
-    border-top: 1px solid var(--rule);
-    border-bottom: 1px solid var(--rule);
-    overflow: hidden;
-    cursor: grab;
-    touch-action: none;
-    background:
-      radial-gradient(circle, var(--rule) 0.5px, transparent 0.5px) 0 0 / 22px 22px;
-    background-color: var(--paper);
-  }
-  .tree-viewport.grabbing { cursor: grabbing; }
-  .tree-stage { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
-  .tree-conn { position: absolute; width: 1px; background: var(--rule); }
-  .node {
-    position: absolute;
-    box-sizing: border-box;
-    padding: 5px 12px;
-    background: var(--paper);
-    border: 1px solid var(--rule);
-    font-size: 13px;
-    color: var(--ink);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: color 0.12s, border-color 0.12s;
-    text-align: center;
-  }
-  .node:hover { color: var(--ink-strong); border-color: var(--ink-faint); }
-  .node.key { color: var(--ink-strong); border-color: var(--ink-faint); }
-  .node.jesus { border-color: var(--ink-strong); font-weight: normal; letter-spacing: 0.04em; }
-  .node.sel { border-color: var(--ink-strong); background: var(--select-bg); }
-  .era-label {
-    position: absolute;
-    font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--ink-faint);
-    white-space: nowrap;
-  }
-
-  .person-card {
-    margin-top: 16px;
-    padding: 16px 4px 4px;
-    border-top: 1px solid var(--rule);
-    min-height: 60px;
-  }
-  .person-card.empty { color: var(--ink-faint); font-size: 13px; }
-  .pc-name { font-size: 20px; color: var(--ink-strong); }
-  .pc-date { font-size: 12px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; margin-top: 3px; }
-  .pc-note { font-size: 14px; color: var(--ink); line-height: 1.65; margin-top: 8px; max-width: 620px; }
-  .pc-links { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 18px; }
-  .pc-links a { font-size: 13px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
-  .pc-links a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
-</style>
 </head>
 <body>
 
 <header>
-  <h1 id="t-title">rodokmeň</h1>
+  <h1 id="t-title">rodokmeň — od adama po ježiša</h1>
   <div class="head-right">
     <nav class="lang">
       <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
@@ -95,255 +37,106 @@
 </header>
 <nav class="site-nav" id="site-nav"></nav>
 <p class="intro" id="t-intro"></p>
+<hr>
 
-<div class="tree-controls">
-  <span class="cal-btn" id="zoom-out">−</span>
-  <span class="cal-btn" id="zoom-in">+</span>
-  <span class="cal-btn" id="zoom-reset" style="font-size:13px" ></span>
-  <span class="tree-hint" id="tree-hint"></span>
-</div>
-
-<div class="tree-viewport" id="viewport">
-  <div class="tree-stage" id="stage"></div>
-</div>
-
-<div class="person-card empty" id="card"></div>
+<main id="list"></main>
 
 <footer id="t-footer"></footer>
 
+<script src="verses.js"></script>
 <script src="theology.js"></script>
 <script>
 const UI = {
   en: {
-    title: "genealogy — a family tree",
-    intro: "The line from Adam to Jesus as a tree you can walk. Drag to move, scroll or use +/− to zoom, and tap a person to open their verse, dates and any promise tied to them.",
-    footer: "Names follow the Slovak Ecumenical Translation. The trunk is Matthew's line (Solomon); Luke traces the same descent through Nathan. Four women are named in Matthew's genealogy: Tamar, Rahab, Ruth and the wife of Uriah.",
-    hint: "ťahaj · približuj · klikni na osobu",
-    hintEN: "drag · zoom · tap a person",
-    reset: "reset",
-    readVerse: "read the verse",
-    prophecy: "related prophecy",
-    empty: "Tap a name to see their verse, dates and promise.",
+    title: "genealogy — adam to jesus",
+    intro: "One unbroken line through the whole of Scripture: Genesis 5, Genesis 11 and Matthew 1. The marked names are the knots where God tied a promise. Matthew counts three times fourteen generations; Luke traces the same line back — through Nathan rather than Solomon — all the way to “Adam, son of God.”",
+    footer: "Names follow the Slovak Ecumenical Translation; Matthew's list (Matthew 1:2–16) descends Abraham → Jesus, Genesis 5 and 11 carry the line Adam → Abraham. Four women are named in Matthew's genealogy: Tamar, Rahab, Ruth and the wife of Uriah.",
     count: n => n + " names"
   },
   sk: {
-    title: "rodokmeň — rodinný strom",
-    intro: "Línia od Adama po Ježiša ako strom, ktorým sa dá prejsť. Ťahaním posúvaš, kolieskom alebo +/− približuješ, a ťuknutím na osobu otvoríš jej verš, roky a prípadné prisľúbenie.",
-    footer: "Mená podľa Slovenského ekumenického prekladu. Kmeň je Matúšova línia (cez Šalamúna); Lukáš vedie ten istý rod cez Nátana. V Matúšovom rodokmeni sú menované štyri ženy: Támar, Rachab, Rút a Uriášova žena.",
-    hint: "ťahaj · približuj · klikni na osobu",
-    reset: "vycentrovať",
-    readVerse: "čítaj verš",
-    prophecy: "súvisiace proroctvo",
-    empty: "Ťukni na meno a uvidíš jeho verš, roky a prisľúbenie.",
+    title: "rodokmeň — od adama po ježiša",
+    intro: "Jedna neprerušená línia naprieč celým Písmom: Genezis 5, Genezis 11 a Matúš 1. Zvýraznené mená sú uzly, kde Boh uviazal prisľúbenie. Matúš počíta trikrát štrnásť pokolení; Lukáš vedie tú istú líniu späť — cez Nátana namiesto Šalamúna — až po „Adama, Božieho syna“.",
+    footer: "Mená podľa Slovenského ekumenického prekladu; Matúšov zoznam (Matúš 1:2–16) klesá od Abraháma k Ježišovi, Genezis 5 a 11 nesú líniu od Adama k Abrahámovi. V Matúšovom rodokmeni sú menované štyri ženy: Támar, Rachab, Rút a Uriášova žena.",
     count: n => n + " mien"
   }
 };
 
-// eras: [eraSK, eraEN, names: [sk, en, noteSK, noteEN]]
+// eras: [era EN, era SK, ref, names: [sk, en, note_sk, note_en] (notes only on key nodes)]
 const ERAS = [
-["Pred potopou","Before the flood",[
-  ["Adam","Adam","prvý človek; prvé prisľúbenie o potomstve ženy","the first man; the first promise of the woman's seed"],
-  ["Set","Seth","",""],["Enoš","Enosh","",""],["Kénan","Kenan","",""],
-  ["Mahalalel","Mahalalel","",""],["Jered","Jared","",""],
+["Before the flood — Genesis 5", "Pred potopou — Genezis 5", "Genesis 5:3–32", [
+  ["Adam","Adam","prvý človek; prvé prisľúbenie o potomstve ženy (Genezis 3:15)","the first man; the first promise of the woman's seed (Genesis 3:15)"],
+  ["Set","Seth","",""],
+  ["Enoš","Enosh","",""],
+  ["Kénan","Kenan","",""],
+  ["Mahalalel","Mahalalel","",""],
+  ["Jered","Jared","",""],
   ["Henoch","Enoch","chodil s Bohom a nebolo ho — vzatý bez smrti","walked with God and was not — taken without death"],
   ["Matuzalem","Methuselah","najdlhší zaznamenaný život: 969 rokov","the longest recorded life: 969 years"],
   ["Lemech","Lamech","",""],
   ["Noach","Noah","zmluva po potope; záchrana v korábe","the covenant after the flood; salvation in the ark"]
 ]],
-["Po potope","After the flood",[
-  ["Sem","Shem","",""],["Arpachšad","Arphaxad","",""],["Šelach","Shelah","",""],
+["After the flood — Genesis 11", "Po potope — Genezis 11", "Genesis 11:10–26", [
+  ["Sem","Shem","",""],
+  ["Arpachšad","Arphaxad","",""],
+  ["Šelach","Shelah","",""],
   ["Éber","Eber","",""],
   ["Peleg","Peleg","za jeho čias bola zem rozdelená","in his days the earth was divided"],
-  ["Reú","Reu","",""],["Serúg","Serug","",""],["Nachor","Nahor","",""],["Terach","Terah","",""]
+  ["Reú","Reu","",""],
+  ["Serúg","Serug","",""],
+  ["Nachor","Nahor","",""],
+  ["Terach","Terah","",""]
 ]],
-["Patriarchovia po Dávida","Patriarchs to David",[
-  ["Abrahám","Abraham","v tebe budú požehnané všetky národy","in you all nations will be blessed"],
+["Patriarchs to David — Matthew 1:2–6", "Patriarchovia po Dávida — Matúš 1:2–6", "Matthew 1:2–6", [
+  ["Abrahám","Abraham","v tebe budú požehnané všetky národy (Genezis 12:3)","in you all nations will be blessed (Genesis 12:3)"],
   ["Izák","Isaac","syn prisľúbenia","the son of promise"],
   ["Jákob","Jacob","",""],
-  ["Júda","Judah","žezlo neodíde od Júdu — s Támar","the sceptre shall not depart from Judah — with Tamar"],
-  ["Perec","Perez","",""],["Checrón","Hezron","",""],["Rám","Ram","",""],
-  ["Amínadab","Amminadab","",""],["Nachšón","Nahshon","",""],
+  ["Júda","Judah","žezlo neodíde od Júdu (Genezis 49:10) — s Támar","the sceptre shall not depart from Judah (Genesis 49:10) — with Tamar"],
+  ["Perec","Perez","",""],
+  ["Checrón","Hezron","",""],
+  ["Rám","Ram","",""],
+  ["Amínadab","Amminadab","",""],
+  ["Nachšón","Nahshon","",""],
   ["Salmón","Salmon","s Rachab z Jericha","with Rahab of Jericho"],
   ["Bóaz","Boaz","príbuzný vykupiteľ — s Moábčankou Rút","the kinsman-redeemer — with Ruth the Moabitess"],
   ["Obéd","Obed","",""],
-  ["Izaj","Jesse","prút z Izajovho kmeňa","a shoot from the stump of Jesse"],
-  ["Dávid","David","zmluva o večnom tróne","the covenant of an everlasting throne"]
+  ["Izaj","Jesse","prút z Izajovho kmeňa (Izaiáš 11:1)","a shoot from the stump of Jesse (Isaiah 11:1)"],
+  ["Dávid","David","zmluva o večnom tróne (2. Samuelova 7:12–16)","the covenant of an everlasting throne (2 Samuel 7:12–16)"]
 ]],
-["Králi","The kings",[
+["Kings — Matthew 1:6–11", "Králi — Matúš 1:6–11", "Matthew 1:6–11", [
   ["Šalamún","Solomon","staviteľ chrámu","builder of the temple"],
-  ["Rechabeám","Rehoboam","",""],["Abija","Abijah","",""],["Ása","Asa","",""],
-  ["Jóšafat","Jehoshaphat","",""],["Jorám","Joram","",""],["Uzija","Uzziah","",""],
+  ["Rechabeám","Rehoboam","",""],
+  ["Abija","Abijah","",""],
+  ["Ása","Asa","",""],
+  ["Jóšafat","Jehoshaphat","",""],
+  ["Jorám","Joram","",""],
+  ["Uzija","Uzziah","",""],
   ["Jótam","Jotham","",""],
-  ["Acház","Ahaz","jemu bolo dané znamenie o panne","to him the sign of the virgin was given"],
-  ["Chizkija","Hezekiah","",""],["Menašše","Manasseh","",""],["Ámon","Amon","",""],
+  ["Acház","Ahaz","jemu bolo dané znamenie o panne (Izaiáš 7:14)","to him the sign of the virgin was given (Isaiah 7:14)"],
+  ["Chizkija","Hezekiah","",""],
+  ["Menašše","Manasseh","",""],
+  ["Ámon","Amon","",""],
   ["Jošija","Josiah","",""],
   ["Jechonja","Jeconiah","babylonské zajatie — a predsa línia pokračuje","the Babylonian exile — and yet the line continues"]
 ]],
-["Po zajatí","After the exile",[
+["After the exile — Matthew 1:12–16", "Po zajatí — Matúš 1:12–16", "Matthew 1:12–16", [
   ["Šealtíel","Shealtiel","",""],
-  ["Zorobábel","Zerubbabel","viedol návrat a obnovu chrámu","led the return and the temple's rebuilding"],
-  ["Abiúd","Abiud","",""],["Eljakim","Eliakim","",""],["Azór","Azor","",""],
-  ["Sádok","Zadok","",""],["Achim","Achim","",""],["Eliúd","Eliud","",""],
-  ["Eleazár","Eleazar","",""],["Mattán","Matthan","",""],["Jákob","Jacob","",""],
+  ["Zorobábel","Zerubbabel","viedol návrat a obnovu chrámu (Aggeus 2:23)","led the return and the temple's rebuilding (Haggai 2:23)"],
+  ["Abiúd","Abiud","",""],
+  ["Eljakim","Eliakim","",""],
+  ["Azór","Azor","",""],
+  ["Sádok","Zadok","",""],
+  ["Achim","Achim","",""],
+  ["Eliúd","Eliud","",""],
+  ["Eleazár","Eleazar","",""],
+  ["Mattán","Matthan","",""],
+  ["Jákob","Jacob","",""],
   ["Jozef","Joseph","muž Márie, z ktorej sa narodil Ježiš","the husband of Mary, of whom Jesus was born"],
   ["JEŽIŠ","JESUS","nazývaný Kristus — cieľ celej línie","who is called Christ — the goal of the whole line"]
 ]]
 ];
 
-// enrichment by English name: date + verse (book,chap) + prophecy flag
-const INFO = {
-  "Adam": ["na počiatku","in the beginning",1,2,true],
-  "Enoch": ["dávnovek","primeval age",1,5,false],
-  "Methuselah": ["dávnovek","primeval age",1,5,false],
-  "Noah": ["dávnovek","primeval age",1,9,false],
-  "Abraham": ["~2000 pred Kr.","~2000 BC",1,12,true],
-  "Isaac": ["~1900 pred Kr.","~1900 BC",1,21,false],
-  "Jacob": ["~1850 pred Kr.","~1850 BC",1,28,false],
-  "Judah": ["~1800 pred Kr.","~1800 BC",1,49,true],
-  "Boaz": ["~1150 pred Kr.","~1150 BC",8,4,false],
-  "Jesse": ["~1050 pred Kr.","~1050 BC",23,11,true],
-  "David": ["~1010–970 pred Kr.","~1010–970 BC",10,7,true],
-  "Solomon": ["~970–931 pred Kr.","~970–931 BC",11,8,false],
-  "Ahaz": ["~735–715 pred Kr.","~735–715 BC",23,7,true],
-  "Hezekiah": ["~715–686 pred Kr.","~715–686 BC",12,18,false],
-  "Jeconiah": ["597 pred Kr.","597 BC",12,24,false],
-  "Zerubbabel": ["~520 pred Kr.","~520 BC",37,2,true],
-  "Joseph": ["~5 pred Kr.","~5 BC",40,1,false],
-  "JESUS": ["~5 pred Kr.","~5 BC",42,2,true]
-};
-
 let lang = tGetLang();
-
-// ---- layout ----
-const GAP = 60, ERA_GAP = 34, STAGEW = 380, CX = STAGEW / 2, NODE_TOP = 30;
-let layout = [];   // {type:'era'|'person', y, ...}
-function buildLayout() {
-  layout = [];
-  let y = NODE_TOP, total = 0;
-  for (const [eraSK, eraEN, names] of ERAS) {
-    y += ERA_GAP;
-    layout.push({ type: "era", y, sk: eraSK, en: eraEN });
-    for (const [sk, en, nSK, nEN] of names) {
-      y += GAP;
-      layout.push({ type: "person", y, sk, en, noteSK: nSK, noteEN: nEN });
-      total++;
-    }
-  }
-  return { total, height: y + GAP };
-}
-
-function buildTree() {
-  const stage = document.getElementById("stage");
-  stage.innerHTML = "";
-  const meta = buildLayout();
-  stage.style.width = STAGEW + "px";
-  stage.style.height = meta.height + "px";
-
-  const persons = layout.filter(n => n.type === "person");
-  const firstY = persons[0].y, lastY = persons[persons.length - 1].y;
-  const conn = document.createElement("div");
-  conn.className = "tree-conn";
-  conn.style.left = (CX - 0.5) + "px";
-  conn.style.top = firstY + "px";
-  conn.style.height = (lastY - firstY) + "px";
-  stage.appendChild(conn);
-
-  for (const n of layout) {
-    if (n.type === "era") {
-      const el = document.createElement("div");
-      el.className = "era-label";
-      el.textContent = lang === "sk" ? n.sk : n.en;
-      el.style.left = "8px";
-      el.style.top = (n.y - 4) + "px";
-      stage.appendChild(el);
-    } else {
-      const el = document.createElement("div");
-      const info = INFO[n.en];
-      const isJesus = n.en === "JESUS";
-      el.className = "node" + (info || n.noteSK ? " key" : "") + (isJesus ? " jesus" : "");
-      el.textContent = lang === "sk" ? n.sk : n.en;
-      el.style.top = n.y + "px";
-      el.dataset.en = n.en;
-      // position after measuring width
-      stage.appendChild(el);
-      const w = el.offsetWidth;
-      el.style.left = (CX - w / 2) + "px";
-      el.addEventListener("click", (e) => { e.stopPropagation(); selectPerson(n, el); });
-    }
-  }
-  document.getElementById("count").textContent = UI[lang].count(meta.total);
-}
-
-let selEl = null;
-function selectPerson(n, el) {
-  if (selEl) selEl.classList.remove("sel");
-  el.classList.add("sel"); selEl = el;
-  const t = UI[lang];
-  const info = INFO[n.en];
-  const card = document.getElementById("card");
-  card.classList.remove("empty");
-  let html = `<div class="pc-name">${lang === "sk" ? n.sk : n.en}</div>`;
-  if (info) html += `<div class="pc-date">${lang === "sk" ? info[0] : info[1]}</div>`;
-  const note = lang === "sk" ? n.noteSK : n.noteEN;
-  if (note) html += `<div class="pc-note">${note}</div>`;
-  const links = [];
-  if (info) links.push(`<a href="bible.html?b=${info[2]}&c=${info[3]}">${t.readVerse}</a>`);
-  if (info && info[4]) links.push(`<a href="prophecies.html">${t.prophecy}</a>`);
-  if (links.length) html += `<div class="pc-links">${links.join("")}</div>`;
-  card.innerHTML = html;
-}
-
-// ---- pan / zoom ----
-let scale = 1, tx = 0, ty = 0;
-const stage = () => document.getElementById("stage");
-function apply() { stage().style.transform = `translate(${tx}px,${ty}px) scale(${scale})`; }
-function fit() {
-  const vp = document.getElementById("viewport");
-  scale = 1;
-  tx = (vp.clientWidth - STAGEW) / 2;
-  ty = 10;
-  apply();
-}
-function zoomAt(factor, cx, cy) {
-  const ns = Math.min(2.5, Math.max(0.4, scale * factor));
-  const k = ns / scale;
-  tx = cx - (cx - tx) * k;
-  ty = cy - (cy - ty) * k;
-  scale = ns; apply();
-}
-
-function initInteractions() {
-  const vp = document.getElementById("viewport");
-  let dragging = false, sx = 0, sy = 0, moved = 0;
-  vp.addEventListener("pointerdown", (e) => {
-    dragging = true; moved = 0; sx = e.clientX; sy = e.clientY;
-    vp.classList.add("grabbing"); vp.setPointerCapture(e.pointerId);
-  });
-  vp.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
-    const dx = e.clientX - sx, dy = e.clientY - sy;
-    sx = e.clientX; sy = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
-    tx += dx; ty += dy; apply();
-  });
-  const end = () => { dragging = false; vp.classList.remove("grabbing"); };
-  vp.addEventListener("pointerup", end);
-  vp.addEventListener("pointercancel", end);
-  vp.addEventListener("wheel", (e) => {
-    e.preventDefault();
-    const r = vp.getBoundingClientRect();
-    zoomAt(e.deltaY < 0 ? 1.12 : 1 / 1.12, e.clientX - r.left, e.clientY - r.top);
-  }, { passive: false });
-  vp.addEventListener("click", (e) => {
-    if (e.target === vp || e.target.id === "stage") {
-      if (selEl) { selEl.classList.remove("sel"); selEl = null; }
-      const c = document.getElementById("card");
-      c.classList.add("empty"); c.innerHTML = UI[lang].empty;
-    }
-  });
-  document.getElementById("zoom-in").addEventListener("click", () => zoomAt(1.2, vp.clientWidth/2, vp.clientHeight/2));
-  document.getElementById("zoom-out").addEventListener("click", () => zoomAt(1/1.2, vp.clientWidth/2, vp.clientHeight/2));
-  document.getElementById("zoom-reset").addEventListener("click", fit);
-}
+const list = document.getElementById("list");
 
 function render() {
   const t = UI[lang];
@@ -351,18 +144,42 @@ function render() {
   document.getElementById("t-title").textContent = t.title;
   document.getElementById("t-intro").textContent = t.intro;
   document.getElementById("t-footer").textContent = t.footer;
-  document.getElementById("tree-hint").textContent = lang === "sk" ? t.hint : t.hintEN;
-  document.getElementById("zoom-reset").textContent = t.reset;
   document.getElementById("site-nav").innerHTML = tNavHTML("genealogy.html", lang);
-  const card = document.getElementById("card");
-  if (card.classList.contains("empty")) card.innerHTML = t.empty;
-  buildTree();
+  document.getElementById("count").textContent =
+    t.count(ERAS.reduce((s, e) => s + e[3].length, 0));
+
+  list.innerHTML = "";
+  for (const [eraEN, eraSK, ref, names] of ERAS) {
+    const era = document.createElement("div");
+    era.className = "gen-era";
+    era.textContent = lang === "sk" ? eraSK : eraEN;
+    list.appendChild(era);
+
+    const refLine = document.createElement("div");
+    refLine.className = "gen-ref";
+    const shown = lang === "sk" ? tRefSK(ref) : ref;
+    const link = tBibliaLink(ref);
+    refLine.innerHTML = link
+      ? `<a href="${link}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)">${shown}</a>`
+      : shown;
+    list.appendChild(refLine);
+
+    const line = document.createElement("div");
+    line.className = "gen-line";
+    for (const [sk, en, noteSK, noteEN] of names) {
+      const div = document.createElement("div");
+      const note = lang === "sk" ? noteSK : noteEN;
+      div.className = "gen-name" + (note ? " key" : "");
+      div.innerHTML = (lang === "sk" ? sk : en) +
+        (note ? `<span class="gen-note">${note}</span>` : "");
+      line.appendChild(div);
+    }
+    list.appendChild(line);
+  }
 }
 
 tLangSwitcher(l => { lang = l; render(); });
 render();
-initInteractions();
-fit();
 </script>
 
 </body>

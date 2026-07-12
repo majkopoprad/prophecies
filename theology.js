@@ -105,6 +105,7 @@ const T_NAV = [
   ["prayers.html", "Modlitby", "Prayers"],
   ["reference.html", "Zoznamy", "Lists"],
   ["widget.html", "Widget", "Widget"],
+  ["embed.html", "Pre web", "Embed"],
   ["encyclical.html", "Encyklika", "Encyclical"]
 ];
 

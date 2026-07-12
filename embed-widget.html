@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proroctvo dňa</title>
+<style>
+  @font-face { font-family: 'Receipt'; src: url('Receipt.otf') format('opentype'); font-display: swap; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { background: transparent; }
+  body {
+    font-family: 'Receipt', Georgia, 'Times New Roman', serif;
+    color: #666; padding: 14px 16px; font-size: 14px; line-height: 1.5;
+  }
+  .w-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #aaa; }
+  .w-what { font-size: 15px; color: #000; margin: 6px 0 12px; line-height: 1.35; }
+  .w-q { margin: 8px 0; }
+  .w-ref { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #aaa; margin-bottom: 2px; }
+  .w-text { font-size: 12.5px; color: #666; line-height: 1.55; }
+  .w-foot { margin-top: 12px; border-top: 1px solid #e5e5e5; padding-top: 8px; font-size: 11px; letter-spacing: 0.04em; }
+  .w-foot a { color: #666; text-decoration: none; }
+  .w-foot a:hover { color: #000; }
+</style>
+</head>
+<body>
+  <div class="w-label">Proroctvo dňa</div>
+  <div class="w-what" id="what"></div>
+  <div class="w-q"><div class="w-ref" id="otr"></div><div class="w-text" id="ott"></div></div>
+  <div class="w-q"><div class="w-ref" id="ntr"></div><div class="w-text" id="ntt"></div></div>
+  <div class="w-foot"><a href="https://proroctva.sk/" target="_blank" rel="noopener">proroctva.sk →</a></div>
+
+  <script src="embed-data.js"></script>
+  <script>
+    var now = new Date();
+    var dayN = Math.floor((now.getTime() - now.getTimezoneOffset() * 60000) / 86400000);
+    var i = ((dayN % EMBED_DATA.length) + EMBED_DATA.length) % EMBED_DATA.length;
+    var d = EMBED_DATA[i];
+    document.getElementById("what").textContent = d[0];
+    document.getElementById("otr").textContent = d[1] + " · proroctvo";
+    document.getElementById("ott").textContent = d[2];
+    document.getElementById("ntr").textContent = d[3] + " · naplnenie";
+    document.getElementById("ntt").textContent = d[4];
+  </script>
+</body>
+</html>

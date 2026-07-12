@@ -2340,6 +2340,58 @@ const VERSES = {
 "sk": "Mnohých z izraelských synov obráti k Pánovi, ich Bohu. On sám pôjde pred ním v Eliášovom duchu a v jeho sile, aby obrátil srdcia otcov k deťom a neposlušných k múdrosti spravodlivých, a pripravil tak Pánovi dokonalý ľud.",
 "en": "And many of the children of Israel shall he turn to the Lord their God. And he shall go before him in the spirit and power of Elias, to turn the hearts of the fathers to the children, and the disobedient to the wisdom of the just; to make ready a people prepared for the Lord."
 },
+"Matthew 24:30; Acts 1:11": {
+"sk": "Vtedy sa na nebi zjaví znamenie Syna človeka. Všetky kmene zeme budú nariekať a uzrú Syna človeka prichádzať na nebeských oblakoch s veľkou mocou a slávou. / a povedali: Muži galilejskí, čo stojíte a hľadíte do neba? Tento Ježiš, ktorý bol vzatý od vás do neba, príde tak, ako ste ho videli odchádzať do neba.",
+"en": "And then shall appear the sign of the Son of man in heaven: and then shall all the tribes of the earth mourn, and they shall see the Son of man coming in the clouds of heaven with power and great glory. / Which also said, Ye men of Galilee, why stand ye gazing up into heaven? this same Jesus, which is taken up from you into heaven, shall so come in like manner as ye have seen him go into heaven."
+},
+"Daniel 12:2": {
+"sk": "Mnohí z tých, čo spia v prachu zeme, sa zobudia: jedni pre večný život, ale druhí na večné zavrhnutie a hanbu.",
+"en": "And many of them that sleep in the dust of the earth shall awake, some to everlasting life, and some to shame and everlasting contempt."
+},
+"John 5:28–29": {
+"sk": "Nečudujte sa, že prichádza hodina, keď všetci v hroboch počujú jeho hlas a tí, čo robili dobre, budú vzkriesení pre život, kým tí, čo páchali zlo, budú vzkriesení na odsúdenie.",
+"en": "Marvel not at this: for the hour is coming, in the which all that are in the graves shall hear his voice, And shall come forth; they that have done good, unto the resurrection of life; and they that have done evil, unto the resurrection of damnation."
+},
+"Psalm 96:13": {
+"sk": "pred Hospodinom, lebo prichádza, prichádza súdiť zem. On bude spravodlivo súdiť svet a národy podľa svojej pravdy.",
+"en": "Before the Lord: for he cometh, for he cometh to judge the earth: he shall judge the world with righteousness, and the people with his truth."
+},
+"Matthew 25:31–32": {
+"sk": "Keď príde Syn človeka vo svojej sláve a s ním všetci anjeli, zasadne na trón svojej slávy. Vtedy sa pred ním zhromaždia všetky národy. On oddelí jedných od druhých, ako pastier oddeľuje ovce od capov.",
+"en": "When the Son of man shall come in his glory, and all the holy angels with him, then shall he sit upon the throne of his glory: And before him shall be gathered all nations: and he shall separate them one from another, as a shepherd divideth his sheep from the goats:"
+},
+"Isaiah 65:17": {
+"sk": "Lebo hľa, ja stvorím nové nebo a novú zem a na predošlé sa nebude spomínať, ani na myseľ neprídu,",
+"en": "For, behold, I create new heavens and a new earth: and the former shall not be remembered, nor come into mind."
+},
+"Revelation 21:1": {
+"sk": "Videl som nové nebo a novú zem, lebo prvé nebo a prvá zem sa pominuli a ani mora už niet.",
+"en": "And I saw a new heaven and a new earth: for the first heaven and the first earth were passed away; and there was no more sea."
+},
+"Revelation 21:4": {
+"sk": "Zotrie im z očí každú slzu a smrť už viac nebude, ani smútok, ani nárek, ani bolesť už nebude, lebo čo bolo skôr, sa pominulo.",
+"en": "And God shall wipe away all tears from their eyes; and there shall be no more death, neither sorrow, nor crying, neither shall there be any more pain: for the former things are passed away."
+},
+"Zechariah 14:9": {
+"sk": "Hospodin bude kráľom nad celou zemou. V ten deň bude jediný Hospodin a jeho meno jediné.",
+"en": "And the Lord shall be king over all the earth: in that day shall there be one Lord, and his name one."
+},
+"Revelation 11:15": {
+"sk": "Siedmy anjel zatrúbil. A v nebi zazneli mohutné hlasy: Kráľovstvo sveta sa stalo kráľovstvom nášho Pána a jeho Pomazaného a bude kraľovať na veky vekov.",
+"en": "And the seventh angel sounded; and there were great voices in heaven, saying, The kingdoms of this world are become the kingdoms of our Lord, and of his Christ; and he shall reign for ever and ever."
+},
+"Isaiah 11:6–9": {
+"sk": "Vlk bude ako hosť baránka, leopard bude odpočívať vedľa kozľaťa. Teliatko, levíča a vykŕmený vôl budú spolu a malý chlapček ich bude zaháňať. Jalovica sa bude pásť s medveďom, ich mláďatá budú spolu polihovať a lev bude žrať slamu ako vôl. Nemluvňa sa bude hrať nad dierou hada a bábätko rukou siahne do diery vretenice. …",
+"en": "The wolf also shall dwell with the lamb, and the leopard shall lie down with the kid; and the calf and the young lion and the fatling together; and a little child shall lead them. And the cow and the bear shall feed; their young ones shall lie down together: and the lion shall eat straw like the ox. And the sucking child shall play on the hole of the asp, and the weaned child shall put his hand on the cockatrice’ den. …"
+},
+"Romans 8:19–21": {
+"sk": "Lebo stvorenstvo túžobne očakáva zjavenie Božích synov. Stvorenstvo nebolo totiž podrobené pominuteľnosti dobrovoľne, ale skrze toho, ktorý ho podrobil. Trvá však nádej, že aj samo stvorenstvo bude oslobodené z otroctva skazy do slobody a slávy Božích detí.",
+"en": "For the earnest expectation of the creature waiteth for the manifestation of the sons of God. For the creature was made subject to vanity, not willingly, but by reason of him who hath subjected the same in hope, Because the creature itself also shall be delivered from the bondage of corruption into the glorious liberty of the children of God."
+},
+"Philippians 2:10–11": {
+"sk": "aby pri mene Ježiš pokľaklo každé koleno tých, čo sú na nebi, na zemi aj v podsvetí a aby každý jazyk vyznával na slávu Boha Otca: Kristus je Pán.",
+"en": "That at the name of Jesus every knee should bow, of things in heaven, and things in earth, and things under the earth; And that every tongue should confess that Jesus Christ is Lord, to the glory of God the Father."
+},
 "Colossians 2:17": {
 "sk": "To sú tiene budúcich vecí, ale telo je Kristovo.",
 "en": "Which are a shadow of things to come; but the body is of Christ."
@@ -3607,45 +3659,5 @@ const VERSES = {
 "Revelation 1:5": {
 "sk": "a od Ježiša Krista, verného svedka, prvorodeného z mŕtvych a vládcu nad kráľmi zeme. Jemu, ktorý nás miluje, oslobodil nás svojou krvou od našich hriechov",
 "en": "And from Jesus Christ, who is the faithful witness, and the first begotten of the dead, and the prince of the kings of the earth. Unto him that loved us, and washed us from our sins in his own blood,"
-},
-"Genesis 5": {
-"sk": "Toto je rodokmeň Adama. Keď Boh stvoril človeka, utvoril ho na Božiu podobu. Ako muža a ženu ich stvoril, požehnal ich a dal im meno človek, keď ich stvoril. Keď mal Adam stotridsať rokov, narodil sa mu syn na jeho obraz a podobu a dal mu meno Šét. …",
-"en": "This is the book of the generations of Adam. In the day that God created man, in the likeness of God made he him; Male and female created he them; and blessed them, and called their name Adam, in the day when they were created. And Adam lived an hundred and thirty years, and begat a son in his own likeness, after his image; and called his name Seth: …"
-},
-"Genesis 11": {
-"sk": "Na celej zemi bola jednotná reč a jednotné slová. Keď sa ľudia pohli od východu, našli rovinu v krajine Šineár a usadili sa tam. Povedali si medzi sebou: Poďme, narobme si tehál a vypáľme ich. Tehly používali namiesto kameňa a asfalt namiesto malty. …",
-"en": "And the whole earth was of one language, and of one speech. And it came to pass, as they journeyed from the east, that they found a plain in the land of Shinar; and they dwelt there. And they said one to another, Go to, let us make brick, and burn them throughly. And they had brick for stone, and slime had they for morter. …"
-},
-"Matthew 1": {
-"sk": "Rodokmeň Ježiša Krista, syna Dávida, syna Abraháma. Abrahám splodil Izáka, Izák splodil Jákoba, Jákob splodil Júdu a jeho bratov, Júda s Tamarou splodil syna Fáresa a Z áru, Fáres splodil Ezroma, Ezrom splodil Arama, …",
-"en": "The book of the generation of Jesus Christ, the son of David, the son of Abraham. Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren; And Judas begat Phares and Zara of Thamar; and Phares begat Esrom; and Esrom begat Aram; …"
-},
-"Matthew 1:2–16": {
-"sk": "Abrahám splodil Izáka, Izák splodil Jákoba, Jákob splodil Júdu a jeho bratov, Júda s Tamarou splodil syna Fáresa a Z áru, Fáres splodil Ezroma, Ezrom splodil Arama, Aram splodil Aminádaba, Aminádab splodil Nassona, Nasson splodil Salmona. …",
-"en": "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren; And Judas begat Phares and Zara of Thamar; and Phares begat Esrom; and Esrom begat Aram; And Aram begat Aminadab; and Aminadab begat Naasson; and Naasson begat Salmon; …"
-},
-"Genesis 5:3–32": {
-"sk": "Keď mal Adam stotridsať rokov, narodil sa mu syn na jeho obraz a podobu a dal mu meno Šét. Po Šétovom narodení žil Adam osemsto rokov a narodili sa mu synovia a dcéry. Celý vek Adamovho života bol deväťstotridsať rokov, potom zomrel. …",
-"en": "And Adam lived an hundred and thirty years, and begat a son in his own likeness, after his image; and called his name Seth: And the days of Adam after he had begotten Seth were eight hundred years: and he begat sons and daughters: And all the days that Adam lived were nine hundred and thirty years: and he died. …"
-},
-"Genesis 11:10–26": {
-"sk": "Toto je Šémov rodokmeň: Dva roky po potope, keď mal Šém sto rokov, narodil sa mu Arpakšad. Po Arpakšadovom narodení žil Šém päťsto rokov a narodili sa mu synovia a dcéry. Keď mal Arpakšad tridsaťpäť rokov, narodil sa mu Šelach. …",
-"en": "These are the generations of Shem: Shem was an hundred years old, and begat Arphaxad two years after the flood: And Shem lived after he begat Arphaxad five hundred years, and begat sons and daughters. And Arphaxad lived five and thirty years, and begat Salah: …"
-},
-"Matthew 1:2–6": {
-"sk": "Abrahám splodil Izáka, Izák splodil Jákoba, Jákob splodil Júdu a jeho bratov, Júda s Tamarou splodil syna Fáresa a Z áru, Fáres splodil Ezroma, Ezrom splodil Arama, Aram splodil Aminádaba, Aminádab splodil Nassona, Nasson splodil Salmona. …",
-"en": "Abraham begat Isaac; and Isaac begat Jacob; and Jacob begat Judas and his brethren; And Judas begat Phares and Zara of Thamar; and Phares begat Esrom; and Esrom begat Aram; And Aram begat Aminadab; and Aminadab begat Naasson; and Naasson begat Salmon; …"
-},
-"2 Samuel 7:12–16": {
-"sk": "Keď nadíde tvoj čas a ty sa pripojíš k tvojim otcom, vzbudím ti potomka, čo vzíde z teba, a upevním jeho kráľovskú moc. On postaví dom na počesť môjho mena a ja natrvalo upevním jeho kráľovský trón. Budem mu otcom a on mi bude synom. Keď sa previní, potrescem ho palicou a údermi ako kohokoľvek z ľudí. …",
-"en": "And when thy days be fulfilled, and thou shalt sleep with thy fathers, I will set up thy seed after thee, which shall proceed out of thy bowels, and I will establish his kingdom. He shall build an house for my name, and I will stablish the throne of his kingdom for ever. I will be his father, and he shall be my son. If he commit iniquity, I will chasten him with the rod of men, and with the stripes of the children of men: …"
-},
-"Matthew 1:6–11": {
-"sk": "Izaj splodil kráľa Dávida. Dávid splodil s Uriášovou manželkou Šalamúna, Šalamún splodil Roboáma, Roboám splodil Abiju, Abija splodil Asáfa, Asáf splodil Jozafata. Jozafat splodil Joráma, Jorám splodil Oziáša, …",
-"en": "And Jesse begat David the king; and David the king begat Solomon of her that had been the wife of Urias; And Solomon begat Roboam; and Roboam begat Abia; and Abia begat Asa; And Asa begat Josaphat; and Josaphat begat Joram; and Joram begat Ozias; …"
-},
-"Matthew 1:12–16": {
-"sk": "Po babylonskom zajatí Jekoniáš splodil Salatiela, Salatiel splodil Zorobábela, Zorobábel splodil Abiúda, Abiúd splodil Eljakima, Eljakim splodil Azora, Azor splodil Cádoka, Cádok splodil Achíma, Achím splodil Eliúda, …",
-"en": "And after they were brought to Babylon, Jechonias begat Salathiel; and Salathiel begat Zorobabel; And Zorobabel begat Abiud; and Abiud begat Eliakim; and Eliakim begat Azor; And Azor begat Sadoc; and Sadoc begat Achim; and Achim begat Eliud; …"
 }
 };
