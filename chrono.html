@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Odstup storočí – kedy proroctvo zaznelo a kedy sa naplnilo | Proroctva.sk</title>
+<meta name="description" content="Časová os proroctiev: kedy zazneli (Micheáš ~700 pred Kr., Dávid ~1000 pred Kr.) a kedy sa naplnili v Kristovi. Odstup storočí je vidno na prvý pohľad.">
+<link rel="canonical" href="https://proroctva.sk/chrono.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Odstup storočí – kedy proroctvo zaznelo a kedy sa naplnilo | Proroctva.sk">
+<meta property="og:description" content="Kedy proroctvá zazneli a kedy sa naplnili v Kristovi — odstup storočí na jednej osi.">
+<meta property="og:url" content="https://proroctva.sk/chrono.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .chrono-wrap { margin-top: 18px; width: 100%; overflow-x: auto; }
+  svg.chrono { width: 100%; min-width: 640px; height: auto; display: block; }
+  .lane-line { stroke: var(--ink-faint); stroke-width: 1.4; opacity: 0.5; }
+  .lane-line.hot { stroke: #000; opacity: 1; stroke-width: 2.2; }
+  .lane-dot { fill: var(--ink); }
+  .lane-dot.hot { fill: #000; }
+  .lane-label { fill: var(--ink-faint); font-size: 11px; font-family: 'Receipt', Georgia, serif; }
+  .lane-label.hot { fill: var(--ink-strong); }
+  .lane-hit { fill: transparent; cursor: pointer; }
+  .christ-band { fill: var(--select-bg); }
+  .christ-label { fill: var(--ink-strong); font-size: 12px; font-family: 'Receipt', Georgia, serif; }
+  .axis-tick { stroke: var(--rule); stroke-width: 1; }
+  .axis-text { fill: var(--ink-faint); font-size: 10px; font-family: 'Receipt', Georgia, serif; }
+  .cap { margin-top: 10px; min-height: 40px; font-size: 13.5px; color: var(--ink-faint); line-height: 1.6; max-width: 640px; }
+  .cap b { color: var(--ink-strong); font-weight: normal; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">odstup storočí</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="chrono-wrap">
+  <svg class="chrono" id="svg" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid meet"></svg>
+</div>
+<div class="cap" id="cap"></div>
+
+<footer id="t-footer"></footer>
+
+<script src="prophecies-data.js"></script>
+<script src="bible-books.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "the gap of centuries",
+    intro: "When each prophecy was spoken and where it was fulfilled — in Christ. Each book sits at its own date; the line to the Christ band is the gap. Hover a book to see how many centuries lie between the promise and its fulfilment.",
+    footer: "Dates are traditional and approximate. Fulfilment is placed at the life of Christ (~5 BC–AD 30). Each line represents the years between a book's prophecies and their fulfilment.",
+    christ: "Kristus", bc: "BC",
+    hint: "Prejdi myšou po knihe.", hintEN: "Hover a book.",
+    info: (name, yr, gap, n) => `<b>${name}</b> · spoken ~${yr} BC → fulfilled in Christ · a gap of about <b>${gap} years</b> · ${n} ${n===1?"prophecy":"prophecies"}`,
+    count: "spoken → fulfilled"
+  },
+  sk: {
+    title: "odstup storočí",
+    intro: "Kedy každé proroctvo zaznelo a kde sa naplnilo — v Kristovi. Každá kniha stojí na svojom dátume; čiara k pásu „Kristus“ je odstup. Prejdi myšou po knihe a uvidíš, koľko storočí delí prisľúbenie od jeho naplnenia.",
+    footer: "Dátumy sú tradičné a približné. Naplnenie je umiestnené do života Krista (~5 pred Kr. – 30 po Kr.). Každá čiara predstavuje roky medzi proroctvami danej knihy a ich naplnením.",
+    christ: "Kristus", bc: "pred Kr.",
+    hint: "Prejdi myšou po knihe.",
+    info: (name, yr, gap, n) => `<b>${name}</b> · zaznelo ~${yr} pred Kr. → naplnené v Kristovi · odstup približne <b>${gap} rokov</b> · ${n} ${n===1?"proroctvo":(n>=2&&n<=4?"proroctvá":"proroctiev")}`,
+    count: "zaznelo → naplnené"
+  }
+};
+
+// OT book -> approximate date the prophecy was given (years BC)
+const BOOK_BC = {
+  1:1400, 2:1400, 3:1400, 4:1400, 5:1400, 6:1380, 7:1050, 8:1100,
+  9:1000, 10:1000, 11:560, 12:560, 13:450, 14:450, 15:440, 16:430,
+  17:460, 18:1400, 19:1000, 20:950, 21:940, 22:950, 23:700, 24:600,
+  25:586, 26:590, 27:535, 28:740, 29:830, 30:760, 31:586, 32:780,
+  33:700, 34:650, 35:610, 36:630, 37:520, 38:520, 39:430
+};
+
+let lang = tGetLang();
+
+const EN2NUM = {}; BIBLE_BOOKS.forEach(([n, sk, en]) => EN2NUM[en] = n); EN2NUM["Psalm"] = 19;
+const ENAMES = Object.keys(EN2NUM).sort((a, b) => b.length - a.length);
+function refBook(ref) {
+  const seg = ref.split(";")[0].trim();
+  for (const nm of ENAMES) if (seg.startsWith(nm + " ") || seg === nm) return EN2NUM[nm];
+  return 0;
+}
+function bookName(num) { const b = BIBLE_BOOKS[num - 1]; return lang === "sk" ? b[1] : b[2]; }
+
+// count prophecies per OT source book
+const count = {};
+for (const [, items] of PROPHECIES_DATA)
+  for (const [ot] of items) { const b = refBook(ot); if (b && b <= 39) count[b] = (count[b] || 0) + 1; }
+const books = Object.keys(count).map(Number)
+  .filter(b => BOOK_BC[b])
+  .sort((a, b) => BOOK_BC[b] - BOOK_BC[a]); // oldest first (top)
+
+// geometry
+const VW = 1000, GUT = 150, RX = 972, INNER = RX - GUT;
+const Y0 = -1560, Y1 = 130;           // year domain (negative = BC)
+function xYear(year) { return GUT + (year - Y0) / (Y1 - Y0) * INNER; }
+const LANE = 22, TOP = 40;
+const christX0 = xYear(-5), christX1 = xYear(30), christX = (christX0 + christX1) / 2;
+
+function svgEl(tag, a) { const e = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in a) e.setAttribute(k, a[k]); return e; }
+
+function draw() {
+  const t = UI[lang];
+  const svg = document.getElementById("svg");
+  const H = TOP + books.length * LANE + 46;
+  svg.setAttribute("viewBox", `0 0 ${VW} ${H}`);
+  svg.innerHTML = "";
+
+  // Christ band
+  svg.appendChild(svgEl("rect", { class: "christ-band", x: christX0, y: 20, width: (christX1 - christX0), height: H - 60 }));
+  const cl = svgEl("text", { class: "christ-label", x: christX + 2, y: 15, "text-anchor": "middle" });
+  cl.textContent = t.christ; svg.appendChild(cl);
+
+  // axis ticks
+  [-1500, -1000, -500, 0].forEach(yr => {
+    const x = xYear(yr);
+    svg.appendChild(svgEl("line", { class: "axis-tick", x1: x, y1: TOP - 12, x2: x, y2: H - 34 }));
+    const tx = svgEl("text", { class: "axis-text", x: x, y: H - 20, "text-anchor": "middle" });
+    tx.textContent = yr === 0 ? "0" : (Math.abs(yr) + " " + t.bc);
+    svg.appendChild(tx);
+  });
+
+  books.forEach((b, i) => {
+    const y = TOP + i * LANE;
+    const yr = BOOK_BC[b];
+    const x = xYear(-yr);
+    // line from book date to Christ band
+    svg.appendChild(svgEl("line", { class: "lane-line", "data-b": b, x1: x, y1: y, x2: christX0, y2: y }));
+    svg.appendChild(svgEl("circle", { class: "lane-dot", "data-b": b, cx: x, cy: y, r: 2.6 }));
+    // gutter label
+    const lab = svgEl("text", { class: "lane-label", "data-b": b, x: GUT - 8, y: y + 3.5, "text-anchor": "end" });
+    lab.textContent = bookName(b) + " · " + yr + " " + t.bc;
+    svg.appendChild(lab);
+    // hit area
+    const hit = svgEl("rect", { class: "lane-hit", x: 0, y: y - LANE / 2, width: VW, height: LANE, "data-b": b });
+    hit.addEventListener("mouseenter", () => hot(b));
+    hit.addEventListener("click", () => hot(b));
+    svg.appendChild(hit);
+  });
+
+  clearHot();
+}
+
+function clearHot() {
+  const svg = document.getElementById("svg");
+  svg.querySelectorAll(".hot").forEach(e => e.classList.remove("hot"));
+  document.getElementById("cap").innerHTML = lang === "sk" ? UI.sk.hint : UI.en.hintEN;
+}
+function hot(b) {
+  const svg = document.getElementById("svg");
+  svg.querySelectorAll(".hot").forEach(e => e.classList.remove("hot"));
+  svg.querySelectorAll(`[data-b="${b}"]`).forEach(e => e.classList.add("hot"));
+  const yr = BOOK_BC[b];
+  document.getElementById("cap").innerHTML = UI[lang].info(bookName(b), yr, yr, count[b]);
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("chrono.html", lang);
+  draw();
+}
+document.getElementById("svg").addEventListener("mouseleave", clearHot);
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

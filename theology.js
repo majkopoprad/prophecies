@@ -93,6 +93,7 @@ const T_NAV = [
   ["plan.html", "Plán", "Plan"],
   ["prophecies.html", "Proroctvá", "Prophecies"],
   ["map.html", "Mapa", "Map"],
+  ["chrono.html", "Odstup", "The gap"],
   ["typology.html", "Predobrazy", "Types"],
   ["nations.html", "Národy", "Nations"],
   ["harmony.html", "Harmónia", "Harmony"],
