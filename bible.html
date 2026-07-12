@@ -42,6 +42,7 @@
   <select id="book-sel" class="reader-sel"></select>
   <select id="chap-sel" class="reader-sel"></select>
   <div class="trad-pills" id="trad-pills"></div>
+  <span id="marks-toggle" class="marks-toggle"></span>
 </div>
 
 <div class="search-wrap">
@@ -66,7 +67,10 @@ const UI = {
     ot: "Old Testament", nt: "New Testament",
     loading: "loading…",
     resultsCount: n => n + " results (showing first " + Math.min(n, 200) + ")",
-    noResults: "nothing found."
+    noResults: "nothing found.",
+    marks: n => "bookmarks" + (n ? " (" + n + ")" : ""),
+    marksEmpty: "Tap a verse number to highlight and bookmark it. Your bookmarks appear here.",
+    backToReading: "‹ back to reading"
   },
   sk: {
     title: "čítačka biblie",
@@ -76,7 +80,10 @@ const UI = {
     ot: "Starý zákon", nt: "Nový zákon",
     loading: "načítavam…",
     resultsCount: n => n + " výsledkov (zobrazených prvých " + Math.min(n, 200) + ")",
-    noResults: "nič sa nenašlo."
+    noResults: "nič sa nenašlo.",
+    marks: n => "záložky" + (n ? " (" + n + ")" : ""),
+    marksEmpty: "Ťuknutím na číslo verša ho zvýrazníš a uložíš. Tvoje záložky sa objavia tu.",
+    backToReading: "‹ späť na čítanie"
   }
 };
 
@@ -104,6 +111,30 @@ function save() {
     localStorage.setItem("bible-pos",
       JSON.stringify({ book: curBook, chap: curChap, trans: selected }));
   } catch (e) {}
+}
+
+// ---- bookmarks / highlights (verse keys "book.chap.verse") ----
+let marks = new Set();
+try {
+  const m = JSON.parse(localStorage.getItem("bible-marks") || "[]");
+  if (Array.isArray(m)) marks = new Set(m);
+} catch (e) {}
+
+function saveMarks() {
+  try { localStorage.setItem("bible-marks", JSON.stringify([...marks])); } catch (e) {}
+}
+function markKey(b, c, v) { return b + "." + c + "." + v; }
+
+function updateMarksToggle() {
+  const el = document.getElementById("marks-toggle");
+  el.textContent = UI[lang].marks(marks.size);
+}
+
+function toggleMark(key, el) {
+  if (marks.has(key)) { marks.delete(key); if (el) el.classList.remove("marked"); }
+  else { marks.add(key); if (el) el.classList.add("marked"); }
+  saveMarks();
+  updateMarksToggle();
 }
 
 function bookName(num) {
@@ -178,7 +209,9 @@ function renderChapter() {
 
   const parallel = selected.length > 1;
   for (let i = 0; i < maxV; i++) {
-    html += `<div class="verse${parallel ? " parallel" : ""}">` +
+    const key = markKey(curBook, curChap, i + 1);
+    const marked = marks.has(key) ? " marked" : "";
+    html += `<div class="verse${parallel ? " parallel" : ""}${marked}" data-v="${i + 1}">` +
       `<span class="v-num">${i + 1}</span>` +
       cols.map(col => {
         const txt = col[i] || "";
@@ -191,12 +224,66 @@ function renderChapter() {
     `<span class="cal-btn" id="rd-prev">${t.prev}</span>` +
     `<span class="cal-btn" id="rd-next">${t.next}</span></div>`;
 
-  document.getElementById("reader").innerHTML = html;
+  const reader = document.getElementById("reader");
+  reader.innerHTML = html;
+  reader.querySelectorAll(".verse").forEach(row => {
+    const num = row.querySelector(".v-num");
+    num.addEventListener("click", () =>
+      toggleMark(markKey(curBook, curChap, +row.dataset.v), row));
+  });
   document.getElementById("rd-prev").addEventListener("click", () => step(-1));
   document.getElementById("rd-next").addEventListener("click", () => step(1));
   document.getElementById("count").textContent =
     BIBLE_TRANS.filter(x => selected.includes(x[0])).map(x => x[2]).join(" · ");
   save();
+}
+
+function showBookmarks() {
+  const t = UI[lang];
+  const reader = document.getElementById("reader");
+  const results = document.getElementById("results");
+  document.getElementById("search").value = "";
+  reader.style.display = "none";
+  const prim = DATA[selected[0]];
+  const keys = [...marks].map(k => k.split(".").map(Number))
+    .sort((a, b) => a[0]-b[0] || a[1]-b[1] || a[2]-b[2]);
+  if (!keys.length) {
+    results.innerHTML = `<div class="bm-empty">${t.marksEmpty}</div>`;
+    return;
+  }
+  let html = `<div class="reader-foot"><span class="cal-btn" id="bm-back">${t.backToReading}</span></div>`;
+  html += keys.map(([b, c, v]) => {
+    const txt = ((prim[b-1] || [])[c-1] || [])[v-1] || "";
+    return `<div class="bm-item" data-b="${b}" data-c="${c}" data-v="${v}" data-key="${b}.${c}.${v}">` +
+      `<span class="bm-ref">${bookName(b)} ${c}:${v}</span>` +
+      `<span class="bm-text">${txt}</span>` +
+      `<span class="bm-del" title="odstrániť">×</span></div>`;
+  }).join("");
+  results.innerHTML = html;
+  document.getElementById("bm-back").addEventListener("click", exitBookmarks);
+  results.querySelectorAll(".bm-item").forEach(item => {
+    const jump = () => {
+      curBook = +item.dataset.b; curChap = +item.dataset.c;
+      exitBookmarks();
+      document.getElementById("book-sel").value = curBook;
+      buildChapSelect(); renderChapter();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+    item.querySelector(".bm-ref").addEventListener("click", jump);
+    item.querySelector(".bm-text").addEventListener("click", jump);
+    item.querySelector(".bm-del").addEventListener("click", () => {
+      marks.delete(item.dataset.key); saveMarks(); updateMarksToggle();
+      item.remove();
+      if (!document.querySelector(".bm-item"))
+        results.innerHTML = `<div class="bm-empty">${t.marksEmpty}</div>`;
+    });
+  });
+}
+
+function exitBookmarks() {
+  document.getElementById("marks-toggle").classList.remove("active");
+  document.getElementById("results").innerHTML = "";
+  document.getElementById("reader").style.display = "";
 }
 
 function step(dir) {
@@ -272,7 +359,14 @@ function renderChrome() {
   document.getElementById("site-nav").innerHTML = tNavHTML("bible.html", lang);
   buildBookSelect();
   buildPills();
+  updateMarksToggle();
 }
+
+document.getElementById("marks-toggle").addEventListener("click", () => {
+  const el = document.getElementById("marks-toggle");
+  if (el.classList.contains("active")) { exitBookmarks(); }
+  else { el.classList.add("active"); showBookmarks(); }
+});
 
 document.getElementById("book-sel").addEventListener("change", (e) => {
   curBook = +e.target.value; curChap = 1;

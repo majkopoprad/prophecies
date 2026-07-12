@@ -90,6 +90,7 @@ function tQuote(ref, label, lang) {
 const T_NAV = [
   ["index.html", "Domov", "Home"],
   ["bible.html", "Biblia", "Bible"],
+  ["plan.html", "Plán", "Plan"],
   ["prophecies.html", "Proroctvá", "Prophecies"],
   ["typology.html", "Predobrazy", "Types"],
   ["nations.html", "Národy", "Nations"],
@@ -97,6 +98,7 @@ const T_NAV = [
   ["parables.html", "Podobenstvá", "Parables"],
   ["iam.html", "Ja som", "I AM"],
   ["genealogy.html", "Rodokmeň", "Genealogy"],
+  ["timeline.html", "Dejiny", "History"],
   ["readings.html", "Čítania", "Readings"],
   ["prayers.html", "Modlitby", "Prayers"],
   ["reference.html", "Zoznamy", "Lists"],

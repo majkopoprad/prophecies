@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Časová os dejín spásy – od Stvorenia po Zjavenie | Proroctva.sk</title>
+<meta name="description" content="Dejiny spásy na jednej osi: Stvorenie, Abrahám, Mojžiš, Dávid, zajatie, Kristus a Cirkev. Kľúčové udalosti Biblie s dátumami a odkazmi na text.">
+<link rel="canonical" href="https://proroctva.sk/timeline.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Časová os dejín spásy | Proroctva.sk">
+<meta property="og:description" content="Od Stvorenia po Zjavenie – kľúčové udalosti Biblie s dátumami a odkazmi na text.">
+<meta property="og:url" content="https://proroctva.sk/timeline.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .tl { border-left: 1px solid var(--rule); margin-left: 10px; margin-top: 8px; }
+  .tl-item { position: relative; padding: 16px 4px 16px 26px; border-bottom: 1px solid var(--rule); }
+  .tl-item::before {
+    content: "";
+    position: absolute;
+    left: -5px; top: 22px;
+    width: 7px; height: 7px;
+    background: var(--paper);
+    border: 1px solid var(--ink-faint);
+    border-radius: 50%;
+  }
+  .tl-item.key::before { background: var(--ink-strong); border-color: var(--ink-strong); }
+  .tl-date { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .tl-title { font-size: 16px; color: var(--ink); margin-top: 2px; }
+  .tl-item.key .tl-title { color: var(--ink-strong); }
+  .tl-desc { font-size: 13.5px; color: var(--ink-faint); line-height: 1.65; margin-top: 4px; max-width: 620px; }
+  .tl-ref { margin-top: 6px; font-size: 12px; }
+  .tl-ref a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .tl-ref a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">dejiny spásy</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="tl" id="tl"></div>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "history of salvation",
+    intro: "The whole Bible on one line — from the first word of creation to the last promise of Revelation. The marked points are where God bound a covenant. Dates are traditional and approximate.",
+    footer: "A single thread through Scripture. Dates follow common biblical chronology; the earliest are approximate. Each reference opens in the Bible reader.",
+    count: n => n + " milestones"
+  },
+  sk: {
+    title: "dejiny spásy",
+    intro: "Celá Biblia na jednej osi — od prvého slova stvorenia po posledné prisľúbenie Zjavenia. Zvýraznené body sú miesta, kde Boh uzavrel zmluvu. Dátumy sú tradičné a približné.",
+    footer: "Jedna niť naprieč Písmom. Dátumy podľa bežnej biblickej chronológie; tie najstaršie sú približné. Každý odkaz sa otvorí v čítačke Biblie.",
+    count: n => n + " míľnikov"
+  }
+};
+
+// [dateSK, dateEN, titleSK, titleEN, descSK, descEN, book, chap, refLabelSK, refLabelEN, key]
+const DATA = [
+["na počiatku","in the beginning","Stvorenie","Creation",
+ "„Na počiatku stvoril Boh nebo a zem.“ Svetlo, život a človek na Boží obraz.",
+ "\"In the beginning God created the heavens and the earth.\" Light, life and man in God's image.",
+ 1,1,"Genezis 1","Genesis 1",true],
+["prvé stránky","the first pages","Pád človeka","The Fall",
+ "Hriech vstupuje do sveta — a hneď zaznie prvé prisľúbenie Vykupiteľa (Gn 3,15).",
+ "Sin enters the world — and at once the first promise of a Redeemer is spoken (Gen 3:15).",
+ 1,3,"Genezis 3","Genesis 3",true],
+["dávnovek","primeval age","Potopa a Noach","The Flood and Noah",
+ "Súd nad zlom a záchrana v korábe; Boh uzatvára zmluvu so všetkým živým.",
+ "Judgment on evil and rescue in the ark; God makes a covenant with all living things.",
+ 1,9,"Genezis 9","Genesis 9",false],
+["~2000 pred Kr.","~2000 BC","Abrahám","Abraham",
+ "Boh povoláva Abraháma: „V tebe budú požehnané všetky národy.“ Začiatok vyvoleného ľudu.",
+ "God calls Abraham: \"In you all nations will be blessed.\" The chosen people begins.",
+ 1,12,"Genezis 12","Genesis 12",true],
+["~1900 pred Kr.","~1900 BC","Jozef v Egypte","Joseph in Egypt",
+ "Predaný bratmi, no povýšený — zachraňuje rodinu pred hladom a privádza ju do Egypta.",
+ "Sold by his brothers yet raised up, he saves his family from famine and brings them to Egypt.",
+ 1,37,"Genezis 37","Genesis 37",false],
+["~1250 pred Kr.","~1250 BC","Mojžiš a Exodus","Moses and the Exodus",
+ "Vyslobodenie z otroctva, prechod cez more a Zákon na Sinaji — zrod národa.",
+ "Deliverance from slavery, the crossing of the sea and the Law at Sinai — a nation is born.",
+ 2,20,"Exodus 20","Exodus 20",true],
+["~1210 pred Kr.","~1210 BC","Jozua a zasľúbená zem","Joshua and the Promised Land",
+ "Izrael vstupuje do Kanaánu; naplnenie prísľubu daného Abrahámovi.",
+ "Israel enters Canaan; the promise made to Abraham is fulfilled.",
+ 6,1,"Jozua 1","Joshua 1",false],
+["~1200–1050 pred Kr.","~1200–1050 BC","Sudcovia","The Judges",
+ "Obdobie odpadu a záchrany — Boh vzbudzuje osloboditeľov, keď ľud volá.",
+ "A cycle of falling away and rescue — God raises deliverers when the people cry out.",
+ 7,2,"Sudcovia 2","Judges 2",false],
+["~1010 pred Kr.","~1010 BC","Kráľ Dávid","King David",
+ "Pastier sa stáva kráľom; Boh mu prisľubuje večný trón — z jeho rodu príde Mesiáš.",
+ "The shepherd becomes king; God promises him an everlasting throne — the Messiah will come from his line.",
+ 10,7,"2. Samuelova 7","2 Samuel 7",true],
+["~960 pred Kr.","~960 BC","Šalamún a chrám","Solomon and the Temple",
+ "Vrchol kráľovstva; v Jeruzaleme stojí chrám, Božia sláva ho napĺňa.",
+ "The kingdom's height; the Temple stands in Jerusalem and God's glory fills it.",
+ 11,8,"1. Kráľov 8","1 Kings 8",false],
+["931 pred Kr.","931 BC","Rozdelené kráľovstvo","The Divided Kingdom",
+ "Po Šalamúnovi sa krajina delí na Izrael (sever) a Júdu (juh).",
+ "After Solomon the land splits into Israel in the north and Judah in the south.",
+ 11,12,"1. Kráľov 12","1 Kings 12",false],
+["8.–6. stor. pred Kr.","8th–6th c. BC","Proroci","The Prophets",
+ "Izaiáš, Jeremiáš a ďalší volajú k návratu a ohlasujú prichádzajúceho Mesiáša.",
+ "Isaiah, Jeremiah and others call for return and foretell the coming Messiah.",
+ 23,53,"Izaiáš 53","Isaiah 53",true],
+["722 pred Kr.","722 BC","Pád Samárie","The Fall of Samaria",
+ "Asýria odvádza severné kráľovstvo do zajatia; naplnenie varovaní prorokov.",
+ "Assyria carries the northern kingdom into exile; the prophets' warnings come true.",
+ 12,17,"2. Kráľov 17","2 Kings 17",false],
+["586 pred Kr.","586 BC","Babylonské zajatie","The Babylonian Exile",
+ "Jeruzalem padá, chrám je zničený, Júda odvedená do Babylonu.",
+ "Jerusalem falls, the Temple is destroyed, Judah is carried to Babylon.",
+ 12,25,"2. Kráľov 25","2 Kings 25",true],
+["538 pred Kr.","538 BC","Návrat zo zajatia","The Return",
+ "Kýros dovoľuje návrat; chrám je znovu vybudovaný — presne ako predpovedal Izaiáš.",
+ "Cyrus permits the return; the Temple is rebuilt — exactly as Isaiah foretold.",
+ 15,1,"Ezdráš 1","Ezra 1",false],
+["~400 pred Kr. – 5 pred Kr.","~400 BC – 5 BC","Medzizákonné ticho","The Silent Years",
+ "Približne štyri storočia bez proroka — očakávanie zasľúbeného.",
+ "About four centuries with no prophet — waiting for the promised one.",
+ 39,3,"Malachiáš 3","Malachi 3",false],
+["~5 pred Kr.","~5 BC","Narodenie Ježiša","The Birth of Jesus",
+ "V Betleheme sa Slovo stáva telom; Boh s nami — Emanuel.",
+ "In Bethlehem the Word becomes flesh; God with us — Immanuel.",
+ 42,2,"Lukáš 2","Luke 2",true],
+["~27–30 po Kr.","~AD 27–30","Ježišova služba","The Ministry of Jesus",
+ "Ohlasuje Božie kráľovstvo, uzdravuje, učí v podobenstvách, povoláva učeníkov.",
+ "He proclaims the kingdom of God, heals, teaches in parables and calls disciples.",
+ 41,1,"Marek 1","Mark 1",false],
+["~30 po Kr.","~AD 30","Ukrižovanie a vzkriesenie","Crucifixion and Resurrection",
+ "Zomiera za hriechy sveta a tretieho dňa vstáva z mŕtvych — srdce dejín spásy.",
+ "He dies for the sins of the world and rises on the third day — the heart of salvation history.",
+ 42,24,"Lukáš 24","Luke 24",true],
+["~30 po Kr.","~AD 30","Turíce a Cirkev","Pentecost and the Church",
+ "Zoslanie Ducha Svätého; evanjelium sa šíri do celého sveta.",
+ "The Holy Spirit is poured out; the gospel spreads to the whole world.",
+ 44,2,"Skutky 2","Acts 2",true],
+["na konci vekov","at the end of the ages","Nové stvorenie","The New Creation",
+ "Prísľub návratu Krista, nového neba a novej zeme: „Hľa, všetko robím nové.“",
+ "The promise of Christ's return, a new heaven and a new earth: \"Behold, I make all things new.\"",
+ 66,21,"Zjavenie 21","Revelation 21",true]
+];
+
+let lang = tGetLang();
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count(DATA.length);
+  document.getElementById("site-nav").innerHTML = tNavHTML("timeline.html", lang);
+
+  document.getElementById("tl").innerHTML = DATA.map(row => {
+    const [dsk, den, tsk, ten, csk, cen, book, chap, rsk, ren, key] = row;
+    return `<div class="tl-item${key ? " key" : ""}">` +
+      `<div class="tl-date">${lang === "sk" ? dsk : den}</div>` +
+      `<div class="tl-title">${lang === "sk" ? tsk : ten}</div>` +
+      `<div class="tl-desc">${lang === "sk" ? csk : cen}</div>` +
+      `<div class="tl-ref"><a href="bible.html?b=${book}&c=${chap}">${lang === "sk" ? rsk : ren}</a></div>` +
+      `</div>`;
+  }).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

@@ -447,3 +447,46 @@ footer {
   .sr-item { grid-template-columns: 1fr; }
   .sr-ref { grid-column: 1; }
 }
+
+/* ---- Bible reader: bookmarks & highlights ---- */
+.marks-toggle {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  cursor: pointer;
+  transition: color 0.12s;
+  white-space: nowrap;
+}
+.marks-toggle:hover { color: var(--ink-strong); }
+.marks-toggle.active { color: var(--ink-strong); }
+
+.verse .v-num { cursor: pointer; transition: color 0.12s; }
+.verse .v-num:hover { color: var(--ink); }
+.verse.marked { background: var(--select-bg); }
+.verse.marked .v-num { color: var(--ink-strong); }
+.verse.marked .v-num::before {
+  content: "•";
+  margin-right: 2px;
+  color: var(--ink-strong);
+}
+
+.bm-empty { padding: 16px 4px; font-size: 13px; color: var(--ink-faint); }
+.bm-item {
+  display: grid;
+  grid-template-columns: 130px 1fr 24px;
+  gap: 12px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--rule);
+  align-items: baseline;
+}
+.bm-item:hover { background: var(--select-bg); }
+.bm-ref { font-size: 12px; color: var(--ink-faint); white-space: nowrap; cursor: pointer; }
+.bm-item:hover .bm-ref { color: var(--ink-strong); }
+.bm-text { font-size: 13px; color: var(--ink); cursor: pointer; }
+.bm-del { font-size: 14px; color: var(--ink-faint); text-align: right; cursor: pointer; }
+.bm-del:hover { color: var(--ink-strong); }
+
+@media (max-width: 620px) {
+  .bm-item { grid-template-columns: 1fr 24px; }
+  .bm-ref { grid-column: 1; }
+}

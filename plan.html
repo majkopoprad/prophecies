@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Čítacie plány Biblie | Proroctva.sk</title>
+<meta name="description" content="Čítacie plány Biblie s odškrtávaním postupu: Biblia za rok, Nový zákon za 90 dní, evanjeliá za 40 dní a žalmy za mesiac. Každé čítanie sa otvorí v čítačke.">
+<link rel="canonical" href="https://proroctva.sk/plan.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Čítacie plány Biblie | Proroctva.sk">
+<meta property="og:description" content="Biblia za rok, Nový zákon za 90 dní, evanjeliá za 40 dní a žalmy za mesiac – s odškrtávaním postupu.">
+<meta property="og:url" content="https://proroctva.sk/plan.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .plan-pills { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; }
+  .plan-pills span {
+    font-size: 13px; color: var(--ink-faint); cursor: pointer; transition: color 0.12s;
+  }
+  .plan-pills span:hover { color: var(--ink-strong); }
+  .plan-pills span.active { color: var(--ink-strong); }
+
+  .progress-wrap { margin: 20px 0 6px; }
+  .progress-label { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 6px; }
+  .progress-track { height: 2px; background: var(--rule); position: relative; }
+  .progress-fill { height: 2px; background: var(--ink); width: 0; transition: width 0.25s; }
+  .plan-actions { margin-top: 10px; }
+  .plan-reset { font-size: 12px; color: var(--ink-faint); cursor: pointer; }
+  .plan-reset:hover { color: var(--ink-strong); }
+
+  .plan-day {
+    display: grid;
+    grid-template-columns: 22px 70px 1fr;
+    gap: 12px;
+    padding: 9px 4px;
+    border-bottom: 1px solid var(--rule);
+    align-items: baseline;
+  }
+  .plan-day.done .pd-num, .plan-day.done .pd-read { color: var(--ink-faint); }
+  .plan-day.next { background: var(--select-bg); }
+  .pd-check {
+    width: 13px; height: 13px;
+    border: 1px solid var(--ink-faint);
+    border-radius: 2px;
+    cursor: pointer;
+    align-self: center;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .plan-day.done .pd-check { background: var(--ink); border-color: var(--ink); }
+  .pd-num { font-size: 12px; color: var(--ink-faint); }
+  .pd-read { font-size: 14px; color: var(--ink); }
+  .pd-read a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .pd-read a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  .pd-read .sep { color: var(--ink-faint); border: none; }
+  @media (max-width: 620px) {
+    .plan-day { grid-template-columns: 22px 1fr; }
+    .pd-num { grid-column: 2; }
+    .pd-read { grid-column: 2; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">čítacie plány</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="plan-pills" id="plan-pills"></div>
+<div class="progress-wrap">
+  <div class="progress-label" id="progress-label"></div>
+  <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+  <div class="plan-actions"><span class="plan-reset" id="plan-reset"></span></div>
+</div>
+
+<main id="days"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="bible-books.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "reading plans",
+    intro: "Pick a plan and tick off each day. Progress is saved in this browser. Every reading opens in the Bible reader.",
+    footer: "Readings follow the canonical order and the SEB chapter numbering. Progress is stored locally on your device only.",
+    reset: "reset progress",
+    progress: (d, t, p) => d + " / " + t + " days · " + p + "%",
+    day: "Day",
+    count: ""
+  },
+  sk: {
+    title: "čítacie plány",
+    intro: "Vyber si plán a odškrtávaj jednotlivé dni. Postup sa ukladá v tomto prehliadači. Každé čítanie sa otvorí v čítačke Biblie.",
+    footer: "Čítania sledujú kanonické poradie a číslovanie kapitol podľa SEB. Postup je uložený len lokálne v tvojom zariadení.",
+    reset: "vynulovať postup",
+    progress: (d, t, p) => d + " / " + t + " dní · " + p + "%",
+    day: "Deň",
+    count: ""
+  }
+};
+
+// [id, sk, en, days, firstBook, lastBook]
+const PLANS = [
+  ["year", "Biblia za rok", "Bible in a year", 365, 1, 66],
+  ["nt90", "Nový zákon za 90 dní", "New Testament in 90 days", 90, 40, 66],
+  ["gospels40", "Evanjeliá za 40 dní", "The Gospels in 40 days", 40, 40, 43],
+  ["psalms30", "Žalmy za mesiac", "Psalms in a month", 30, 19, 19]
+];
+
+let lang = tGetLang();
+let planId = null;
+try { planId = localStorage.getItem("plan-current"); } catch (e) {}
+if (!PLANS.some(p => p[0] === planId)) planId = "year";
+
+function chapterList(b1, b2) {
+  const out = [];
+  for (let b = b1; b <= b2; b++)
+    for (let c = 1; c <= SEB_CHAPTERS[b - 1]; c++) out.push([b, c]);
+  return out;
+}
+function chunk(list, days) {
+  const N = list.length, base = Math.floor(N / days), extra = N % days;
+  const res = []; let i = 0;
+  for (let d = 0; d < days; d++) {
+    const size = base + (d < extra ? 1 : 0);
+    res.push(list.slice(i, i + size)); i += size;
+  }
+  return res;
+}
+function ranges(dayList) {
+  const out = [];
+  for (const [b, c] of dayList) {
+    const last = out[out.length - 1];
+    if (last && last.b === b && last.c2 === c - 1) last.c2 = c;
+    else out.push({ b, c1: c, c2: c });
+  }
+  return out;
+}
+function bookName(num) {
+  const b = BIBLE_BOOKS[num - 1];
+  return lang === "sk" ? b[1] : b[2];
+}
+
+function loadDone(id) {
+  try { return new Set(JSON.parse(localStorage.getItem("plan-" + id) || "[]")); }
+  catch (e) { return new Set(); }
+}
+function saveDone(id, set) {
+  try { localStorage.setItem("plan-" + id, JSON.stringify([...set])); } catch (e) {}
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("plan-reset").textContent = t.reset;
+  document.getElementById("site-nav").innerHTML = tNavHTML("plan.html", lang);
+
+  // plan pills
+  document.getElementById("plan-pills").innerHTML = PLANS.map(([id, sk, en]) =>
+    `<span data-id="${id}" class="${id === planId ? "active" : ""}">${lang === "sk" ? sk : en}</span>`
+  ).join("");
+  document.querySelectorAll("#plan-pills span").forEach(el => {
+    el.addEventListener("click", () => {
+      planId = el.dataset.id;
+      try { localStorage.setItem("plan-current", planId); } catch (e) {}
+      render();
+    });
+  });
+
+  const plan = PLANS.find(p => p[0] === planId);
+  const [id, , , days, b1, b2] = plan;
+  const daysList = chunk(chapterList(b1, b2), days);
+  const done = loadDone(id);
+
+  const nextDay = daysList.findIndex((_, i) => !done.has(i));
+  const box = document.getElementById("days");
+  box.innerHTML = daysList.map((dayList, i) => {
+    const rs = ranges(dayList).map(r => {
+      const label = r.c1 === r.c2 ? `${bookName(r.b)} ${r.c1}` : `${bookName(r.b)} ${r.c1}–${r.c2}`;
+      return `<a href="bible.html?b=${r.b}&c=${r.c1}">${label}</a>`;
+    }).join('<span class="sep"> · </span>');
+    const cls = "plan-day" + (done.has(i) ? " done" : "") + (i === nextDay ? " next" : "");
+    return `<div class="${cls}" data-i="${i}">` +
+      `<span class="pd-check"></span>` +
+      `<span class="pd-num">${t.day} ${i + 1}</span>` +
+      `<span class="pd-read">${rs}</span></div>`;
+  }).join("");
+
+  box.querySelectorAll(".plan-day").forEach(row => {
+    row.querySelector(".pd-check").addEventListener("click", () => {
+      const i = +row.dataset.i;
+      if (done.has(i)) done.delete(i); else done.add(i);
+      saveDone(id, done);
+      render();
+    });
+  });
+
+  const pct = Math.round(done.size / days * 100);
+  document.getElementById("progress-label").textContent = t.progress(done.size, days, pct);
+  document.getElementById("progress-fill").style.width = pct + "%";
+}
+
+document.getElementById("plan-reset").addEventListener("click", () => {
+  saveDone(planId, new Set());
+  render();
+});
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
