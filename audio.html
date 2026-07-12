@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Audio Biblia – dramatizované čítanie a žalmy | Proroctva.sk</title>
-<meta name="description" content="Audio Biblia na počúvanie: dramatizované čítanie Svätého písma, Nový zákon a nahovorené žalmy (TV Lux). Prehrávanie priamo na stránke, kategorizované, s odkazmi na Spotify.">
+<meta name="description" content="Audio Biblia na počúvanie: dramatizované čítanie Svätého písma (Starý aj Nový zákon) a nahovorené žalmy, produkcia TV Lux. Vlastný prehrávač s automatickým prehrávaním za sebou.">
 <link rel="canonical" href="https://proroctva.sk/audio.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Proroctva.sk">
 <meta property="og:locale" content="sk_SK">
 <meta property="og:title" content="Audio Biblia – dramatizované čítanie a žalmy | Proroctva.sk">
-<meta property="og:description" content="Audio Biblia na počúvanie: dramatizované čítanie Písma, Nový zákon a žalmy. Prehrávanie priamo na stránke.">
+<meta property="og:description" content="Audio Biblia: dramatizované čítanie Písma a žalmy. Vlastný prehrávač s automatickým prehrávaním za sebou.">
 <meta property="og:url" content="https://proroctva.sk/audio.html">
 <meta property="og:image" content="https://proroctva.sk/og.png">
 <meta name="twitter:card" content="summary">
@@ -24,41 +24,59 @@
 <meta name="apple-mobile-web-app-title" content="Proroctva">
 <link rel="stylesheet" href="theology.css">
 <style>
-  .player-box { margin-top: 18px; }
-  .player-frame { width: 100%; border: 0; border-radius: 12px; }
-  .player-bar { display: flex; align-items: baseline; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
-  .player-bar .lbl { font-size: 12px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
-  .all-btn { font-size: 13px; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--ink-faint); }
-  .all-btn:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
-
-  .sp-ico { display: inline-block; vertical-align: middle; color: var(--ink-faint); transition: color 0.12s; }
-  a:hover .sp-ico, .sp-link:hover .sp-ico { color: #1DB954; }
-  .sp-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink-faint); font-size: 12.5px; }
-  .sp-link:hover { color: var(--ink-strong); }
-
-  .ep {
-    display: grid;
-    grid-template-columns: 26px 1fr 64px 22px;
-    gap: 12px;
-    align-items: baseline;
-    padding: 10px 4px;
+  .player {
+    position: sticky; top: 0; z-index: 5;
+    background: var(--paper);
     border-bottom: 1px solid var(--rule);
+    padding: 14px 2px 12px;
+    margin-top: 8px;
   }
-  .ep-play {
-    cursor: pointer; color: var(--ink-faint); font-size: 13px; text-align: center;
-    transition: color 0.12s; align-self: center;
+  .pl-cat { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); }
+  .pl-title { font-size: 17px; color: var(--ink-strong); margin: 3px 0 10px; line-height: 1.3; }
+  .pl-controls { display: flex; align-items: center; gap: 20px; }
+  .pl-btn {
+    font-size: 15px; color: var(--ink); cursor: pointer; user-select: none;
+    transition: color 0.12s; line-height: 1;
   }
-  .ep:hover .ep-play { color: var(--ink-strong); }
-  .ep-title { color: var(--ink); font-size: 14.5px; cursor: pointer; }
-  .ep:hover .ep-title { color: var(--ink-strong); }
-  .ep.playing .ep-title { color: var(--ink-strong); }
-  .ep.playing .ep-play::before { content: "▶ "; }
-  .ep-dur { font-size: 12px; color: var(--ink-faint); text-align: right; white-space: nowrap; }
-  .ep-sp { text-align: right; }
+  .pl-btn:hover { color: var(--ink-strong); }
+  .pl-play { font-size: 22px; }
+  .pl-time { font-size: 12px; color: var(--ink-faint); font-variant-numeric: tabular-nums; margin-left: auto; white-space: nowrap; }
+  .pl-seek-wrap { margin-top: 10px; }
+  input.pl-seek {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 3px; background: var(--rule); outline: none; cursor: pointer;
+  }
+  input.pl-seek::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none; width: 11px; height: 11px;
+    border-radius: 50%; background: var(--ink-strong); cursor: pointer;
+  }
+  input.pl-seek::-moz-range-thumb {
+    width: 11px; height: 11px; border: none; border-radius: 50%; background: var(--ink-strong); cursor: pointer;
+  }
+
+  .trk {
+    display: grid;
+    grid-template-columns: 26px 1fr 60px;
+    gap: 12px; align-items: baseline;
+    padding: 9px 4px; border-bottom: 1px solid var(--rule);
+    cursor: pointer;
+  }
+  .trk:hover { background: var(--select-bg); }
+  .trk-idx { font-size: 11px; color: var(--ink-faint); text-align: right; align-self: center; }
+  .trk-title { font-size: 14.5px; color: var(--ink); }
+  .trk:hover .trk-title { color: var(--ink-strong); }
+  .trk.active .trk-title { color: var(--ink-strong); }
+  .trk.active .trk-idx::before { content: "▶"; }
+  .trk.active .trk-idx { color: var(--ink-strong); font-size: 10px; }
+  .trk-dur { font-size: 12px; color: var(--ink-faint); text-align: right; white-space: nowrap; }
+
+  .credit { margin-top: 8px; font-size: 12px; color: var(--ink-faint); }
+  .credit a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .credit a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
 
   @media (max-width: 620px) {
-    .ep { grid-template-columns: 24px 1fr 22px; }
-    .ep-dur { display: none; }
+    .trk { grid-template-columns: 24px 1fr; }
+    .trk-dur { display: none; }
   }
 </style>
 </head>
@@ -75,132 +93,152 @@
 </header>
 <nav class="site-nav" id="site-nav"></nav>
 <p class="intro" id="t-intro"></p>
-<hr>
 
-<div class="player-box">
-  <iframe id="player" class="player-frame" height="352"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy"></iframe>
-  <div class="player-bar">
-    <span class="all-btn" id="all-btn"></span>
-    <a class="sp-link" id="show-link" href="https://open.spotify.com/show/3tRUyVrzvaDbG8r2oT7PtZ" target="_blank" rel="noopener"></a>
+<div class="player">
+  <div class="pl-cat" id="pl-cat"></div>
+  <div class="pl-title" id="pl-title"></div>
+  <div class="pl-controls">
+    <span class="pl-btn" id="btn-prev" title="predošlá">⏮</span>
+    <span class="pl-btn pl-play" id="btn-play" title="prehrať">▶</span>
+    <span class="pl-btn" id="btn-next" title="ďalšia">⏭</span>
+    <span class="pl-time" id="pl-time">0:00 / 0:00</span>
   </div>
+  <div class="pl-seek-wrap">
+    <input type="range" class="pl-seek" id="seek" min="0" max="1000" value="0" step="1">
+  </div>
+  <audio id="au" preload="metadata"></audio>
 </div>
 
 <main id="list"></main>
 
 <footer id="t-footer"></footer>
 
+<script src="audio-data.js"></script>
 <script src="theology.js"></script>
 <script>
-const SHOW_ID = "3tRUyVrzvaDbG8r2oT7PtZ";
-const SPOTIFY_SVG =
-  '<svg class="sp-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">' +
-  '<circle cx="12" cy="12" r="11" fill="currentColor"/>' +
-  '<g fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round">' +
-  '<path d="M6.4 9.1c3.5-1 7.8-0.7 11 1.2"/>' +
-  '<path d="M7 12.4c2.9-0.8 6.6-0.6 9.2 0.9"/>' +
-  '<path d="M7.6 15.4c2.3-0.6 5.2-0.4 7.4 0.8"/></g></svg>';
-
 const UI = {
   en: {
     title: "audio bible",
-    intro: "The Bible to listen to — a dramatized reading of Holy Scripture, the New Testament and the psalms, produced by TV Lux. Play any part right here; the player holds the whole series. Tap the Spotify icon to open or follow it there.",
-    footer: "Audio: the “Biblia” show by TV Lux on Spotify (dramatized reading, 51 episodes). Playback is provided by Spotify's own player. A selection is grouped by part below; the full list is in the player above.",
-    allEpisodes: "▻ all episodes in the player",
-    follow: "open on Spotify",
-    count: "51 episodes",
-    cats: { nt: "New Testament — dramatized reading", ps: "The Psalms — read aloud", ot: "Old Testament — dramatized stories" }
+    intro: "The Bible to listen to — a dramatized reading of Holy Scripture, Old and New Testament, and the psalms, produced by TV Lux. Press play and it runs on by itself, episode after episode.",
+    footer: "",
+    credit: 'Audio: the “Biblia” show © <a href="https://www.tvlux.sk/" target="_blank" rel="noopener">TV Lux</a> · also on <a href="https://open.spotify.com/show/3tRUyVrzvaDbG8r2oT7PtZ" target="_blank" rel="noopener">Spotify</a>',
+    count: n => n + " episodes",
+    cats: { ot: "Old Testament — dramatized stories", nt: "New Testament — dramatized reading", ps: "The Psalms — read aloud" }
   },
   sk: {
     title: "audio biblia",
-    intro: "Biblia na počúvanie — dramatizované čítanie Svätého písma, Nový zákon a žalmy v produkcii TV Lux. Ktorúkoľvek časť si prehráš priamo tu; v prehrávači je celá relácia. Ťuknutím na Spotify ikonku ju otvoríš alebo sleduješ tam.",
-    footer: "Audio: relácia „Biblia“ od TV Lux na Spotify (dramatizované čítanie, 51 epizód). Prehrávanie zabezpečuje vlastný prehrávač Spotify. Nižšie je výber zoradený po častiach; úplný zoznam je v prehrávači vyššie.",
-    allEpisodes: "▻ všetky epizódy v prehrávači",
-    follow: "otvoriť na Spotify",
-    count: "51 epizód",
-    cats: { nt: "Nový zákon — dramatizované čítanie", ps: "Žalmy — nahovorené", ot: "Starý zákon — dramatizované príbehy" }
+    intro: "Biblia na počúvanie — dramatizované čítanie Svätého písma, Starý aj Nový zákon, a žalmy v produkcii TV Lux. Stlač prehrať a hrá ďalej samo, epizóda za epizódou.",
+    footer: "",
+    credit: 'Audio: relácia „Biblia“ © <a href="https://www.tvlux.sk/" target="_blank" rel="noopener">TV Lux</a> · aj na <a href="https://open.spotify.com/show/3tRUyVrzvaDbG8r2oT7PtZ" target="_blank" rel="noopener">Spotify</a>',
+    count: n => n + " epizód",
+    cats: { ot: "Starý zákon — dramatizované príbehy", nt: "Nový zákon — dramatizované čítanie", ps: "Žalmy — nahovorené" }
   }
 };
 
-// curated, categorised selection: cat -> [ [id, sk title, en title, duration] ]
-const DATA = [
-["nt", [
-  ["4gJQtAOu6gOpO4iFQ6x9VR", "Nový zákon 1", "New Testament 1", ""],
-  ["3rRZst5wYpANMOr7HrQ32A", "Nový zákon 2", "New Testament 2", ""],
-  ["23gjfRKUo5P6zc1UHpEhK0", "Nový zákon 3", "New Testament 3", "40 min"],
-  ["5u2Z3jcfC3QxGuuigUce6s", "Nový zákon 6", "New Testament 6", ""],
-  ["3dYABAZEykMJKRZbrPbccf", "Nový zákon 7", "New Testament 7", "37 min"],
-  ["2drKCJV18xhk3f8H6dgNUZ", "Nový zákon 10", "New Testament 10", ""]
-]],
-["ps", [
-  ["0pVWBwVZKDW5kdM7bJL6cY", "Žalm 27 — Pán je moje svetlo a moja spása", "Psalm 27 — The Lord is my light", ""],
-  ["0Rq7xRqHjqTgoxRjy4pNsD", "Žalm 28 — Prosba a poďakovanie", "Psalm 28 — A plea and thanksgiving", ""],
-  ["3eNcTILVEZbkietJGOI2kY", "Žalm 29 — Chválospev na Pánovo slovo", "Psalm 29 — Hymn to the voice of the Lord", "1 min"],
-  ["3RRassZd7MSga202ffuKVn", "Žalm 32 — Blažený, komu Pán odpustil", "Psalm 32 — Blessed is he whose sin is forgiven", ""],
-  ["3dMiMVVOSNvTwQT7AkV4M1", "Žalm 33 — Chválospev na Pánovu prozreteľnosť", "Psalm 33 — Hymn to God's providence", "3 min"]
-]],
-["ot", [
-  ["2YOWDK4jEL8OzIw96FnjlM", "37 — Daniel a babylonský kráľ", "37 — Daniel and the king of Babylon", ""],
-  ["0zk60MRngzFYVIBLNo2ufV", "38 — Daniel v jame levovej", "38 — Daniel in the lions' den", ""]
-]]
-];
+// flatten to a single ordered playlist
+const FLAT = [];
+for (const [cat, eps] of AUDIO_DATA)
+  for (const [title, url, dur] of eps) FLAT.push({ cat, title, url, dur });
 
 let lang = tGetLang();
-const player = document.getElementById("player");
+let cur = 0, seeking = false;
+const au = document.getElementById("au");
+const seek = document.getElementById("seek");
 
-function showEmbed() {
-  player.src = "https://open.spotify.com/embed/show/" + SHOW_ID + "?utm_source=generator";
-  player.height = 352;
-  document.querySelectorAll(".ep.playing").forEach(e => e.classList.remove("playing"));
+try {
+  const s = JSON.parse(localStorage.getItem("audio-pos") || "{}");
+  if (Number.isInteger(s.idx) && s.idx >= 0 && s.idx < FLAT.length) cur = s.idx;
+  var savedTime = s.time || 0;
+} catch (e) { var savedTime = 0; }
+
+function fmt(t) {
+  if (!isFinite(t)) return "0:00";
+  const m = Math.floor(t / 60), s = Math.floor(t % 60);
+  return m + ":" + String(s).padStart(2, "0");
 }
-function playEpisode(id, el) {
-  player.src = "https://open.spotify.com/embed/episode/" + id + "?utm_source=generator";
-  player.height = 232;
-  document.querySelectorAll(".ep.playing").forEach(e => e.classList.remove("playing"));
-  if (el) el.classList.add("playing");
-  document.querySelector(".player-box").scrollIntoView({ behavior: "smooth", block: "start" });
+function savePos() {
+  try { localStorage.setItem("audio-pos", JSON.stringify({ idx: cur, time: au.currentTime || 0 })); } catch (e) {}
 }
+
+function setCurrentUI() {
+  const t = UI[lang];
+  const item = FLAT[cur];
+  document.getElementById("pl-cat").textContent = t.cats[item.cat];
+  document.getElementById("pl-title").textContent = item.title;
+  document.querySelectorAll(".trk.active").forEach(e => e.classList.remove("active"));
+  const row = document.querySelector('.trk[data-i="' + cur + '"]');
+  if (row) row.classList.add("active");
+}
+
+function load(i, autoplay) {
+  cur = (i + FLAT.length) % FLAT.length;
+  au.src = FLAT[cur].url;
+  setCurrentUI();
+  savePos();
+  if (autoplay) au.play().catch(() => {});
+}
+
+document.getElementById("btn-play").addEventListener("click", () => {
+  if (au.paused) au.play().catch(() => {}); else au.pause();
+});
+document.getElementById("btn-prev").addEventListener("click", () => load(cur - 1, true));
+document.getElementById("btn-next").addEventListener("click", () => load(cur + 1, true));
+
+au.addEventListener("play", () => { document.getElementById("btn-play").textContent = "❚❚"; });
+au.addEventListener("pause", () => { document.getElementById("btn-play").textContent = "▶"; });
+au.addEventListener("ended", () => { if (cur < FLAT.length - 1) load(cur + 1, true); });
+au.addEventListener("loadedmetadata", () => {
+  seek.max = Math.floor(au.duration) || 1000;
+  if (savedTime && savedTime < au.duration) { au.currentTime = savedTime; savedTime = 0; }
+  document.getElementById("pl-time").textContent = fmt(au.currentTime) + " / " + fmt(au.duration);
+});
+au.addEventListener("timeupdate", () => {
+  if (!seeking) seek.value = Math.floor(au.currentTime);
+  document.getElementById("pl-time").textContent = fmt(au.currentTime) + " / " + fmt(au.duration);
+  if (Math.floor(au.currentTime) % 5 === 0) savePos();
+});
+seek.addEventListener("input", () => { seeking = true; document.getElementById("pl-time").textContent = fmt(seek.value) + " / " + fmt(au.duration); });
+seek.addEventListener("change", () => { au.currentTime = seek.value; seeking = false; });
 
 function render() {
   const t = UI[lang];
   tMarkLang(lang);
   document.getElementById("t-title").textContent = t.title;
   document.getElementById("t-intro").textContent = t.intro;
-  document.getElementById("t-footer").textContent = t.footer;
-  document.getElementById("count").textContent = t.count;
-  document.getElementById("all-btn").textContent = t.allEpisodes;
-  document.getElementById("show-link").innerHTML = SPOTIFY_SVG + "<span>" + t.follow + "</span>";
+  document.getElementById("count").textContent = t.count(FLAT.length);
+  document.getElementById("t-footer").innerHTML = `<div class="credit">${t.credit}</div>`;
   document.getElementById("site-nav").innerHTML = tNavHTML("audio.html", lang);
 
   const list = document.getElementById("list");
   list.innerHTML = "";
-  for (const [cat, eps] of DATA) {
+  let flatI = 0;
+  for (const [cat, eps] of AUDIO_DATA) {
     const sec = document.createElement("section");
     const h = document.createElement("h2");
     h.textContent = t.cats[cat];
     sec.appendChild(h);
-    for (const [id, tiSK, tiEN, dur] of eps) {
-      const ep = document.createElement("div");
-      ep.className = "ep";
-      const title = lang === "sk" ? tiSK : tiEN;
-      ep.innerHTML =
-        `<span class="ep-play">▷</span>` +
-        `<span class="ep-title">${title}</span>` +
-        `<span class="ep-dur">${dur}</span>` +
-        `<span class="ep-sp"><a href="https://open.spotify.com/episode/${id}" target="_blank" rel="noopener" title="${t.follow}">${SPOTIFY_SVG}</a></span>`;
-      ep.querySelector(".ep-play").addEventListener("click", () => playEpisode(id, ep));
-      ep.querySelector(".ep-title").addEventListener("click", () => playEpisode(id, ep));
-      sec.appendChild(ep);
+    let n = 0;
+    for (const [title, url, dur] of eps) {
+      const idx = flatI++;
+      n += 1;
+      const row = document.createElement("div");
+      row.className = "trk" + (idx === cur ? " active" : "");
+      row.dataset.i = idx;
+      row.innerHTML =
+        `<span class="trk-idx">${n}</span>` +
+        `<span class="trk-title">${title}</span>` +
+        `<span class="trk-dur">${dur}</span>`;
+      row.addEventListener("click", () => load(idx, true));
+      sec.appendChild(row);
     }
     list.appendChild(sec);
   }
+  setCurrentUI();
 }
 
-document.getElementById("all-btn").addEventListener("click", showEmbed);
 tLangSwitcher(l => { lang = l; render(); });
 render();
-showEmbed();
+load(cur, false);   // ready the last-heard episode without autoplay
 </script>
 
 </body>
