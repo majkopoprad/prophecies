@@ -92,6 +92,7 @@ const T_NAV = [
   ["bible.html", "Biblia", "Bible"],
   ["plan.html", "Plán", "Plan"],
   ["prophecies.html", "Proroctvá", "Prophecies"],
+  ["map.html", "Mapa", "Map"],
   ["typology.html", "Predobrazy", "Types"],
   ["nations.html", "Národy", "Nations"],
   ["harmony.html", "Harmónia", "Harmony"],

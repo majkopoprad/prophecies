@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mapa proroctiev – 351 spojení Starého a Nového zákona | Proroctva.sk</title>
+<meta name="description" content="Oblúkový diagram všetkých 351 mesiášskych proroctiev: jemné oblúky spájajú knihy Starého zákona s ich naplnením v Novom. Prejdi po knihe a rozsvieti sa jej sieť.">
+<link rel="canonical" href="https://proroctva.sk/map.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Mapa proroctiev – 351 spojení Písma | Proroctva.sk">
+<meta property="og:description" content="Oblúkový diagram všetkých 351 proroctiev spájajúcich Starý a Nový zákon.">
+<meta property="og:url" content="https://proroctva.sk/map.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .map-wrap { margin-top: 18px; width: 100%; overflow: hidden; }
+  svg.arcmap { width: 100%; height: auto; display: block; }
+
+  .arc {
+    fill: none;
+    stroke: rgba(120,120,120,0.22);
+    stroke-width: 0.7;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    opacity: 0;
+    animation: arcdraw 0.8s ease-out forwards;
+  }
+  @keyframes arcdraw { to { stroke-dashoffset: 0; opacity: 1; } }
+  .arcmap.focused .arc { stroke: rgba(120,120,120,0.07); }
+  .arc.hot { stroke: #000 !important; stroke-width: 1 !important; opacity: 1 !important; }
+  .arc:hover { stroke: #000; stroke-width: 1.1; }
+
+  .axis-line { stroke: var(--rule); stroke-width: 1; }
+  .tick { stroke: var(--ink-faint); stroke-width: 1; opacity: 0.5; }
+  .tick.hot { stroke: #000; opacity: 1; stroke-width: 1.4; }
+  .blabel { fill: var(--ink-faint); font-size: 11px; font-family: 'Receipt', Georgia, serif; }
+  .hit { fill: transparent; cursor: pointer; }
+
+  .cap {
+    margin-top: 10px;
+    min-height: 42px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    line-height: 1.6;
+    max-width: 640px;
+  }
+  .cap b { color: var(--ink-strong); font-weight: normal; }
+  .cap .cap-refs { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">mapa proroctiev</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="map-wrap">
+  <svg class="arcmap" id="svg" viewBox="0 0 1000 540" preserveAspectRatio="xMidYMid meet" aria-label="arc diagram"></svg>
+</div>
+<div class="cap" id="cap"></div>
+
+<footer id="t-footer"></footer>
+
+<script src="prophecies-data.js"></script>
+<script src="bible-books.js"></script>
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "prophecy map",
+    intro: "Every one of the 351 messianic prophecies drawn as an arc from its Old Testament book to where it is fulfilled in the New. Hover a book along the base — or tap it — to light up its web of connections.",
+    footer: "One arc per prophecy, from the Old Testament reference to the first book of its New Testament fulfilment. Books are spaced by their number of chapters. Data: the 351 prophecies listed on this site.",
+    hint: "Prejdi myšou po knihách na spodnej osi — alebo ťukni.",
+    hintEN: "Hover the books on the base line — or tap one.",
+    bookInfo: (name, n) => `<b>${name}</b> — ${n} ${n === 1 ? "prophecy" : "prophecies"} connected`,
+    ot: "Old Testament", nt: "New Testament",
+    count: "351 arcs"
+  },
+  sk: {
+    title: "mapa proroctiev",
+    intro: "Každé z 351 mesiášskych proroctiev je nakreslené ako oblúk od svojej starozákonnej knihy k miestu, kde sa naplnilo v Novom zákone. Prejdi myšou po knihe na spodnej osi — alebo na ňu ťukni — a rozsvieti sa jej sieť spojení.",
+    footer: "Jeden oblúk na proroctvo, od starozákonného odkazu po prvú knihu jeho novozákonného naplnenia. Knihy sú rozmiestnené podľa počtu kapitol. Dáta: 351 proroctiev uvedených na tomto webe.",
+    hint: "Prejdi myšou po knihách na spodnej osi — alebo ťukni.",
+    bookInfo: (name, n) => `<b>${name}</b> — ${n} ${n === 1 ? "proroctvo" : (n >= 2 && n <= 4 ? "proroctvá" : "proroctiev")} spojených`,
+    ot: "Starý zákon", nt: "Nový zákon",
+    count: "351 oblúkov"
+  }
+};
+
+let lang = tGetLang();
+
+// English book name -> number (with Psalm alias)
+const EN2NUM = {}; BIBLE_BOOKS.forEach(([n, sk, en]) => EN2NUM[en] = n); EN2NUM["Psalm"] = 19;
+const ENAMES = Object.keys(EN2NUM).sort((a, b) => b.length - a.length);
+function refBook(ref) {
+  const seg = ref.split(";")[0].trim();
+  for (const nm of ENAMES) if (seg.startsWith(nm + " ") || seg === nm) return EN2NUM[nm];
+  return 0;
+}
+function bookName(num) {
+  const b = BIBLE_BOOKS[num - 1];
+  return lang === "sk" ? b[1] : b[2];
+}
+
+// geometry
+const VW = 1000, MX = 18, BASE = 500, INNER = VW - 2 * MX;
+const TOTAL = SEB_CHAPTERS.reduce((a, b) => a + b, 0);
+const cumBefore = []; { let s = 0; for (let i = 0; i < 66; i++) { cumBefore[i] = s; s += SEB_CHAPTERS[i]; } }
+function bookX(num) {
+  const i = num - 1;
+  return MX + (cumBefore[i] + SEB_CHAPTERS[i] / 2) / TOTAL * INNER;
+}
+
+// build arc list + per-book counts
+const arcs = [];      // {ot, nt, otRef, ntRef, whatSK, whatEN}
+const bookCount = {};
+for (const [, items] of PROPHECIES_DATA) {
+  for (const [ot, whatEN, whatSK, nt] of items) {
+    const a = refBook(ot), b = refBook(nt);
+    if (!a || !b) continue;
+    arcs.push({ ot: a, nt: b, otRef: ot, ntRef: nt, whatSK, whatEN });
+    bookCount[a] = (bookCount[a] || 0) + 1;
+    bookCount[b] = (bookCount[b] || 0) + 1;
+  }
+}
+const usedBooks = Object.keys(bookCount).map(Number).sort((x, y) => x - y);
+
+const LABELS = [1, 19, 23, 40, 43, 66]; // Genesis, Psalms, Isaiah, Matthew, John, Revelation
+
+function svgEl(tag, attrs) {
+  const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+  for (const k in attrs) el.setAttribute(k, attrs[k]);
+  return el;
+}
+
+function draw() {
+  const t = UI[lang];
+  const svg = document.getElementById("svg");
+  svg.innerHTML = "";
+
+  // baseline
+  svg.appendChild(svgEl("line", { class: "axis-line", x1: MX, y1: BASE, x2: VW - MX, y2: BASE }));
+
+  // arcs
+  arcs.forEach((a, i) => {
+    const x1 = bookX(a.ot), x2 = bookX(a.nt);
+    const lo = Math.min(x1, x2), hi = Math.max(x1, x2);
+    const mx = (lo + hi) / 2;
+    const peak = BASE - (hi - lo) / 2 * 0.98;
+    const p = svgEl("path", {
+      class: "arc",
+      d: `M ${lo.toFixed(1)} ${BASE} Q ${mx.toFixed(1)} ${peak.toFixed(1)} ${hi.toFixed(1)} ${BASE}`,
+      pathLength: "1",
+      "data-ot": a.ot, "data-nt": a.nt, "data-i": i,
+      style: `animation-delay:${(i * 2)}ms`
+    });
+    const title = svgEl("title", {});
+    title.textContent = a.otRef + "  →  " + a.ntRef;
+    p.appendChild(title);
+    p.addEventListener("mouseenter", () => showArc(i));
+    svg.appendChild(p);
+  });
+
+  // book ticks + hit areas
+  usedBooks.forEach(num => {
+    const i = num - 1;
+    const x0 = MX + cumBefore[i] / TOTAL * INNER;
+    const w = SEB_CHAPTERS[i] / TOTAL * INNER;
+    const cx = bookX(num);
+    svg.appendChild(svgEl("line", { class: "tick", "data-b": num, x1: cx, y1: BASE, x2: cx, y2: BASE + 6 }));
+    const hit = svgEl("rect", { class: "hit", x: x0, y: BASE - 10, width: Math.max(w, 3), height: 34, "data-b": num });
+    hit.addEventListener("mouseenter", () => showBook(num));
+    hit.addEventListener("click", () => showBook(num, true));
+    svg.appendChild(hit);
+  });
+
+  // labels for a few key books
+  LABELS.forEach(num => {
+    const tx = svgEl("text", { class: "blabel", x: bookX(num), y: BASE + 20, "text-anchor": "middle" });
+    tx.textContent = bookName(num);
+    svg.appendChild(tx);
+  });
+
+  // OT / NT captions at the ends
+  const otT = svgEl("text", { class: "blabel", x: MX, y: 16, "text-anchor": "start" });
+  otT.textContent = t.ot; svg.appendChild(otT);
+  const ntT = svgEl("text", { class: "blabel", x: VW - MX, y: 16, "text-anchor": "end" });
+  ntT.textContent = t.nt; svg.appendChild(ntT);
+
+  clearHot();
+}
+
+function clearHot() {
+  const svg = document.getElementById("svg");
+  svg.classList.remove("focused");
+  svg.querySelectorAll(".arc.hot").forEach(e => e.classList.remove("hot"));
+  svg.querySelectorAll(".tick.hot").forEach(e => e.classList.remove("hot"));
+  document.getElementById("cap").innerHTML = lang === "sk" ? UI.sk.hint : UI.en.hintEN;
+}
+
+function showBook(num, pin) {
+  const svg = document.getElementById("svg");
+  svg.querySelectorAll(".arc.hot").forEach(e => e.classList.remove("hot"));
+  svg.querySelectorAll(".tick.hot").forEach(e => e.classList.remove("hot"));
+  svg.classList.add("focused");
+  svg.querySelectorAll(`.arc[data-ot="${num}"], .arc[data-nt="${num}"]`).forEach(e => e.classList.add("hot"));
+  svg.querySelectorAll(`.tick[data-b="${num}"]`).forEach(e => e.classList.add("hot"));
+  document.getElementById("cap").innerHTML = UI[lang].bookInfo(bookName(num), bookCount[num] || 0);
+}
+
+function showArc(i) {
+  const a = arcs[i];
+  const svg = document.getElementById("svg");
+  svg.classList.add("focused");
+  svg.querySelectorAll(".arc.hot").forEach(e => e.classList.remove("hot"));
+  svg.querySelector(`.arc[data-i="${i}"]`).classList.add("hot");
+  const what = lang === "sk" ? a.whatSK : a.whatEN;
+  document.getElementById("cap").innerHTML =
+    `<span class="cap-refs">${refSKmaybe(a.otRef)} → ${refSKmaybe(a.ntRef)}</span> · ${what}`;
+}
+function refSKmaybe(ref) { return lang === "sk" ? tRefSK(ref) : ref; }
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("map.html", lang);
+  draw();
+}
+
+// leaving the svg clears the highlight
+document.getElementById("svg").addEventListener("mouseleave", clearHot);
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
