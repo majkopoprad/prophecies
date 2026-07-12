@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audio Biblia – dramatizované čítanie a žalmy | Proroctva.sk</title>
+<meta name="description" content="Audio Biblia na počúvanie: dramatizované čítanie Svätého písma, Nový zákon a nahovorené žalmy (TV Lux). Prehrávanie priamo na stránke, kategorizované, s odkazmi na Spotify.">
+<link rel="canonical" href="https://proroctva.sk/audio.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Audio Biblia – dramatizované čítanie a žalmy | Proroctva.sk">
+<meta property="og:description" content="Audio Biblia na počúvanie: dramatizované čítanie Písma, Nový zákon a žalmy. Prehrávanie priamo na stránke.">
+<meta property="og:url" content="https://proroctva.sk/audio.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .player-box { margin-top: 18px; }
+  .player-frame { width: 100%; border: 0; border-radius: 12px; }
+  .player-bar { display: flex; align-items: baseline; gap: 16px; margin-top: 10px; flex-wrap: wrap; }
+  .player-bar .lbl { font-size: 12px; letter-spacing: 0.06em; color: var(--ink-faint); text-transform: uppercase; }
+  .all-btn { font-size: 13px; color: var(--ink); cursor: pointer; border-bottom: 1px solid var(--ink-faint); }
+  .all-btn:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+
+  .sp-ico { display: inline-block; vertical-align: middle; color: var(--ink-faint); transition: color 0.12s; }
+  a:hover .sp-ico, .sp-link:hover .sp-ico { color: #1DB954; }
+  .sp-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink-faint); font-size: 12.5px; }
+  .sp-link:hover { color: var(--ink-strong); }
+
+  .ep {
+    display: grid;
+    grid-template-columns: 26px 1fr 64px 22px;
+    gap: 12px;
+    align-items: baseline;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .ep-play {
+    cursor: pointer; color: var(--ink-faint); font-size: 13px; text-align: center;
+    transition: color 0.12s; align-self: center;
+  }
+  .ep:hover .ep-play { color: var(--ink-strong); }
+  .ep-title { color: var(--ink); font-size: 14.5px; cursor: pointer; }
+  .ep:hover .ep-title { color: var(--ink-strong); }
+  .ep.playing .ep-title { color: var(--ink-strong); }
+  .ep.playing .ep-play::before { content: "▶ "; }
+  .ep-dur { font-size: 12px; color: var(--ink-faint); text-align: right; white-space: nowrap; }
+  .ep-sp { text-align: right; }
+
+  @media (max-width: 620px) {
+    .ep { grid-template-columns: 24px 1fr 22px; }
+    .ep-dur { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">audio biblia</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div class="player-box">
+  <iframe id="player" class="player-frame" height="352"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+  <div class="player-bar">
+    <span class="all-btn" id="all-btn"></span>
+    <a class="sp-link" id="show-link" href="https://open.spotify.com/show/3tRUyVrzvaDbG8r2oT7PtZ" target="_blank" rel="noopener"></a>
+  </div>
+</div>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const SHOW_ID = "3tRUyVrzvaDbG8r2oT7PtZ";
+const SPOTIFY_SVG =
+  '<svg class="sp-ico" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">' +
+  '<circle cx="12" cy="12" r="11" fill="currentColor"/>' +
+  '<g fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round">' +
+  '<path d="M6.4 9.1c3.5-1 7.8-0.7 11 1.2"/>' +
+  '<path d="M7 12.4c2.9-0.8 6.6-0.6 9.2 0.9"/>' +
+  '<path d="M7.6 15.4c2.3-0.6 5.2-0.4 7.4 0.8"/></g></svg>';
+
+const UI = {
+  en: {
+    title: "audio bible",
+    intro: "The Bible to listen to — a dramatized reading of Holy Scripture, the New Testament and the psalms, produced by TV Lux. Play any part right here; the player holds the whole series. Tap the Spotify icon to open or follow it there.",
+    footer: "Audio: the “Biblia” show by TV Lux on Spotify (dramatized reading, 51 episodes). Playback is provided by Spotify's own player. A selection is grouped by part below; the full list is in the player above.",
+    allEpisodes: "▻ all episodes in the player",
+    follow: "open on Spotify",
+    count: "51 episodes",
+    cats: { nt: "New Testament — dramatized reading", ps: "The Psalms — read aloud", ot: "Old Testament — dramatized stories" }
+  },
+  sk: {
+    title: "audio biblia",
+    intro: "Biblia na počúvanie — dramatizované čítanie Svätého písma, Nový zákon a žalmy v produkcii TV Lux. Ktorúkoľvek časť si prehráš priamo tu; v prehrávači je celá relácia. Ťuknutím na Spotify ikonku ju otvoríš alebo sleduješ tam.",
+    footer: "Audio: relácia „Biblia“ od TV Lux na Spotify (dramatizované čítanie, 51 epizód). Prehrávanie zabezpečuje vlastný prehrávač Spotify. Nižšie je výber zoradený po častiach; úplný zoznam je v prehrávači vyššie.",
+    allEpisodes: "▻ všetky epizódy v prehrávači",
+    follow: "otvoriť na Spotify",
+    count: "51 epizód",
+    cats: { nt: "Nový zákon — dramatizované čítanie", ps: "Žalmy — nahovorené", ot: "Starý zákon — dramatizované príbehy" }
+  }
+};
+
+// curated, categorised selection: cat -> [ [id, sk title, en title, duration] ]
+const DATA = [
+["nt", [
+  ["4gJQtAOu6gOpO4iFQ6x9VR", "Nový zákon 1", "New Testament 1", ""],
+  ["3rRZst5wYpANMOr7HrQ32A", "Nový zákon 2", "New Testament 2", ""],
+  ["23gjfRKUo5P6zc1UHpEhK0", "Nový zákon 3", "New Testament 3", "40 min"],
+  ["5u2Z3jcfC3QxGuuigUce6s", "Nový zákon 6", "New Testament 6", ""],
+  ["3dYABAZEykMJKRZbrPbccf", "Nový zákon 7", "New Testament 7", "37 min"],
+  ["2drKCJV18xhk3f8H6dgNUZ", "Nový zákon 10", "New Testament 10", ""]
+]],
+["ps", [
+  ["0pVWBwVZKDW5kdM7bJL6cY", "Žalm 27 — Pán je moje svetlo a moja spása", "Psalm 27 — The Lord is my light", ""],
+  ["0Rq7xRqHjqTgoxRjy4pNsD", "Žalm 28 — Prosba a poďakovanie", "Psalm 28 — A plea and thanksgiving", ""],
+  ["3eNcTILVEZbkietJGOI2kY", "Žalm 29 — Chválospev na Pánovo slovo", "Psalm 29 — Hymn to the voice of the Lord", "1 min"],
+  ["3RRassZd7MSga202ffuKVn", "Žalm 32 — Blažený, komu Pán odpustil", "Psalm 32 — Blessed is he whose sin is forgiven", ""],
+  ["3dMiMVVOSNvTwQT7AkV4M1", "Žalm 33 — Chválospev na Pánovu prozreteľnosť", "Psalm 33 — Hymn to God's providence", "3 min"]
+]],
+["ot", [
+  ["2YOWDK4jEL8OzIw96FnjlM", "37 — Daniel a babylonský kráľ", "37 — Daniel and the king of Babylon", ""],
+  ["0zk60MRngzFYVIBLNo2ufV", "38 — Daniel v jame levovej", "38 — Daniel in the lions' den", ""]
+]]
+];
+
+let lang = tGetLang();
+const player = document.getElementById("player");
+
+function showEmbed() {
+  player.src = "https://open.spotify.com/embed/show/" + SHOW_ID + "?utm_source=generator";
+  player.height = 352;
+  document.querySelectorAll(".ep.playing").forEach(e => e.classList.remove("playing"));
+}
+function playEpisode(id, el) {
+  player.src = "https://open.spotify.com/embed/episode/" + id + "?utm_source=generator";
+  player.height = 232;
+  document.querySelectorAll(".ep.playing").forEach(e => e.classList.remove("playing"));
+  if (el) el.classList.add("playing");
+  document.querySelector(".player-box").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("all-btn").textContent = t.allEpisodes;
+  document.getElementById("show-link").innerHTML = SPOTIFY_SVG + "<span>" + t.follow + "</span>";
+  document.getElementById("site-nav").innerHTML = tNavHTML("audio.html", lang);
+
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  for (const [cat, eps] of DATA) {
+    const sec = document.createElement("section");
+    const h = document.createElement("h2");
+    h.textContent = t.cats[cat];
+    sec.appendChild(h);
+    for (const [id, tiSK, tiEN, dur] of eps) {
+      const ep = document.createElement("div");
+      ep.className = "ep";
+      const title = lang === "sk" ? tiSK : tiEN;
+      ep.innerHTML =
+        `<span class="ep-play">▷</span>` +
+        `<span class="ep-title">${title}</span>` +
+        `<span class="ep-dur">${dur}</span>` +
+        `<span class="ep-sp"><a href="https://open.spotify.com/episode/${id}" target="_blank" rel="noopener" title="${t.follow}">${SPOTIFY_SVG}</a></span>`;
+      ep.querySelector(".ep-play").addEventListener("click", () => playEpisode(id, ep));
+      ep.querySelector(".ep-title").addEventListener("click", () => playEpisode(id, ep));
+      sec.appendChild(ep);
+    }
+    list.appendChild(sec);
+  }
+}
+
+document.getElementById("all-btn").addEventListener("click", showEmbed);
+tLangSwitcher(l => { lang = l; render(); });
+render();
+showEmbed();
+</script>
+
+</body>
+</html>

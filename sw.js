@@ -9,7 +9,7 @@ const SHELL = [
   "index.html", "prophecies.html", "typology.html", "nations.html",
   "harmony.html", "parables.html", "iam.html", "genealogy.html",
   "widget.html", "encyclical.html", "bible.html", "prayers.html",
-  "reference.html", "readings.html", "plan.html", "timeline.html", "map.html", "chrono.html",
+  "reference.html", "readings.html", "plan.html", "timeline.html", "map.html", "chrono.html", "audio.html",
   "embed.html", "embed-widget.html", "embed-data.js", "prophecies-unfulfilled.js",
   "theology.css", "theology.js", "verses.js", "prophecies-data.js",
   "bible-books.js",
