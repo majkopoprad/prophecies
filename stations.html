@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Krížová cesta – 14 zastavení | Proroctva.sk</title>
+<meta name="description" content="Krížová cesta – štrnásť zastavení umučenia Pána Ježiša s krátkymi rozjímaniami a odkazmi na evanjelium. Pobožnosť na každý piatok a na pôstne obdobie.">
+<link rel="canonical" href="https://proroctva.sk/stations.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Krížová cesta – 14 zastavení | Proroctva.sk">
+<meta property="og:description" content="Štrnásť zastavení umučenia Pána Ježiša s krátkymi rozjímaniami a odkazmi na evanjelium.">
+<meta property="og:url" content="https://proroctva.sk/stations.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .versicle { font-size: 13.5px; color: var(--ink); font-style: italic; margin: 16px 0 8px; max-width: 620px; }
+  .station { padding: 18px 4px; border-bottom: 1px solid var(--rule); }
+  .st-head { display: flex; align-items: baseline; gap: 12px; }
+  .st-num { font-size: 12px; color: var(--ink-faint); min-width: 26px; }
+  .st-title { font-size: 16px; color: var(--ink-strong); }
+  .st-resp { font-size: 12.5px; color: var(--ink-faint); font-style: italic; margin: 8px 0 0 38px; }
+  .st-med { font-size: 14px; color: var(--ink); line-height: 1.7; margin: 8px 0 0 38px; max-width: 620px; }
+  .st-ref { margin: 8px 0 0 38px; font-size: 12px; }
+  .st-ref a { color: var(--ink-faint); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .st-ref a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  @media (max-width: 620px) {
+    .st-resp, .st-med, .st-ref { margin-left: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">krížová cesta</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<p class="versicle" id="t-versicle"></p>
+<hr>
+
+<main id="list"></main>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "the stations of the cross",
+    intro: "Fourteen stations of the Lord's Passion, with a short meditation at each. Pray it walking from station to station, especially on Fridays and through Lent.",
+    versicle: "At each station: “We adore you, O Christ, and we bless you. — Because by your holy cross you have redeemed the world.”",
+    resp: "We adore you, O Christ, and we bless you.",
+    footer: "The traditional fourteen stations; the last, the fifteenth, is the Resurrection. Scripture references open in the Bible reader.",
+    count: "14 + 1"
+  },
+  sk: {
+    title: "krížová cesta",
+    intro: "Štrnásť zastavení umučenia Pána, pri každom krátke rozjímanie. Modli sa ju prechádzajúc od zastavenia k zastaveniu — najmä v piatok a cez pôstne obdobie.",
+    versicle: "Pri každom zastavení: „Klaniame sa ti, Kriste, a dobrorečíme ti. — Lebo si svojím svätým krížom vykúpil svet.“",
+    resp: "Klaniame sa ti, Kriste, a dobrorečíme ti.",
+    footer: "Tradičných štrnásť zastavení; pätnáste je Vzkriesenie. Odkazy na Písmo sa otvoria v čítačke Biblie.",
+    count: "14 + 1"
+  }
+};
+
+// [num, titleSK, titleEN, book, chap, medSK, medEN]
+const DATA = [
+["I.","Pán Ježiš je odsúdený na smrť","Jesus is condemned to death",43,19,
+ "Pilát ho vydáva, hoci nenachádza na ňom vinu. Nevinný prijíma nespravodlivý rozsudok za nás.",
+ "Pilate hands him over though he finds no guilt in him. The innocent one accepts an unjust sentence for us."],
+["II.","Berie kríž na svoje plecia","Jesus takes up his cross",43,19,
+ "Neodmieta drevo kríža, ale ho objíma. Aj mne hovorí: vezmi svoj kríž a nasleduj ma.",
+ "He does not refuse the wood of the cross but embraces it. To me too he says: take up your cross and follow me."],
+["III.","Prvý raz padá pod krížom","Jesus falls the first time",23,53,
+ "Ťarcha ho zráža k zemi. Padá — a predsa vstáva, aby šiel ďalej za mnou.",
+ "The weight brings him to the ground. He falls — yet rises to keep going, for me."],
+["IV.","Stretáva sa so svojou matkou","Jesus meets his mother",43,19,
+ "Pohľady matky a Syna sa stretnú v bolesti. Mária ostáva pri ňom až do konca.",
+ "The eyes of mother and Son meet in sorrow. Mary stays with him to the end."],
+["V.","Šimon Cyrenejský mu pomáha niesť kríž","Simon of Cyrene helps carry the cross",41,15,
+ "Cudzieho človeka prinútia niesť kríž — a stáva sa Kristovým spoločníkom. Aj malá pomoc má cenu.",
+ "A stranger is forced to carry the cross — and becomes Christ's companion. Even small help has worth."],
+["VI.","Veronika mu podáva šatku","Veronica wipes the face of Jesus",23,53,
+ "Odvážny skutok lásky uprostred davu. Kto utiera tvár trpiacim, utiera tvár Kristovi.",
+ "A brave act of love amid the crowd. Whoever wipes the face of the suffering wipes the face of Christ."],
+["VII.","Druhý raz padá pod krížom","Jesus falls the second time",23,53,
+ "Znova padá, vyčerpaný. Nevzdáva sa — pre lásku ku mne vstáva aj druhý raz.",
+ "Again he falls, exhausted. He does not give up — for love of me he rises a second time."],
+["VIII.","Napomína plačúce ženy","Jesus meets the women of Jerusalem",42,23,
+ "„Neplačte nado mnou, ale nad sebou a nad svojimi deťmi.“ Volá k opravdivému pokániu.",
+ "\"Do not weep for me, but for yourselves and for your children.\" He calls to true repentance."],
+["IX.","Tretí raz padá pod krížom","Jesus falls the third time",25,1,
+ "Posledný pád, celkom vysilený. Klesá až na dno — aby ma vytiahol z môjho.",
+ "The last fall, utterly spent. He sinks to the very bottom — to lift me out of mine."],
+["X.","Zvliekajú mu šaty","Jesus is stripped of his garments",43,19,
+ "Oberajú ho aj o šaty; delia sa o ne a hádžu lós. Zbavený všetkého stojí obnažený za nás.",
+ "They take even his clothes, divide them and cast lots. Stripped of everything, he stands bared for us."],
+["XI.","Pribíjajú ho na kríž","Jesus is nailed to the cross",42,23,
+ "Klince prebíjajú ruky a nohy. A on sa modlí: „Otče, odpusť im.“",
+ "Nails pierce his hands and feet. And he prays: \"Father, forgive them.\""],
+["XII.","Pán Ježiš na kríži umiera","Jesus dies on the cross",42,23,
+ "„Dokonané je.“ Odovzdáva ducha Otcovi. V tejto chvíli je otvorená brána spásy.",
+ "\"It is finished.\" He gives up his spirit to the Father. In this moment the gate of salvation opens."],
+["XIII.","Skladajú ho z kríža","Jesus is taken down from the cross",41,15,
+ "Bezvládne telo kladú do náručia matky. Láska ostáva aj pri mŕtvom Kristovi.",
+ "His lifeless body is laid in his mother's arms. Love remains even beside the dead Christ."],
+["XIV.","Pochovávajú ho","Jesus is laid in the tomb",43,19,
+ "Do nového hrobu v skale. Ticho soboty — a v ňom skryté očakávanie tretieho dňa.",
+ "In a new tomb in the rock. The silence of Saturday — holding a hidden hope of the third day."],
+["XV.","Pán Ježiš vstáva z mŕtvych","Jesus rises from the dead",42,24,
+ "Hrob je prázdny. Smrť je premožená — kríž nebol koniec, ale cesta k životu.",
+ "The tomb is empty. Death is conquered — the cross was not the end but the way to life."]
+];
+
+let lang = tGetLang();
+const list = document.getElementById("list");
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-versicle").textContent = t.versicle;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("stations.html", lang);
+
+  list.innerHTML = DATA.map(row => {
+    const [num, tiSK, tiEN, book, chap, medSK, medEN] = row;
+    return `<div class="station">` +
+      `<div class="st-head"><span class="st-num">${num}</span>` +
+      `<span class="st-title">${lang === "sk" ? tiSK : tiEN}</span></div>` +
+      `<div class="st-resp">${t.resp}</div>` +
+      `<div class="st-med">${lang === "sk" ? medSK : medEN}</div>` +
+      `<div class="st-ref"><a href="bible.html?b=${book}&c=${chap}">${lang === "sk" ? "čítaj v evanjeliu" : "read in the gospel"}</a></div>` +
+      `</div>`;
+  }).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

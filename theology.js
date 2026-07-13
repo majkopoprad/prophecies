@@ -87,34 +87,70 @@ function tQuote(ref, label, lang) {
   return html;
 }
 
-const T_NAV = [
-  ["index.html", "Domov", "Home"],
-  ["bible.html", "Biblia", "Bible"],
-  ["audio.html", "Audio", "Audio"],
-  ["plan.html", "Plán", "Plan"],
-  ["prophecies.html", "Proroctvá", "Prophecies"],
-  ["map.html", "Mapa", "Map"],
-  ["chrono.html", "Odstup", "The gap"],
-  ["typology.html", "Predobrazy", "Types"],
-  ["nations.html", "Národy", "Nations"],
-  ["harmony.html", "Harmónia", "Harmony"],
-  ["parables.html", "Podobenstvá", "Parables"],
-  ["iam.html", "Ja som", "I AM"],
-  ["genealogy.html", "Rodokmeň", "Genealogy"],
-  ["timeline.html", "Dejiny", "History"],
-  ["readings.html", "Čítania", "Readings"],
-  ["prayers.html", "Modlitby", "Prayers"],
-  ["reference.html", "Zoznamy", "Lists"],
-  ["widget.html", "Widget", "Widget"],
-  ["embed.html", "Pre web", "Embed"],
-  ["encyclical.html", "Encyklika", "Encyclical"]
+// A standalone home link, then grouped dropdown menus: [labelSK, labelEN, links]
+const T_NAV_HOME = ["index.html", "Domov", "Home"];
+const T_NAV_GROUPS = [
+  ["Čítanie", "Reading", [
+    ["bible.html", "Biblia", "Bible"],
+    ["audio.html", "Audio", "Audio"],
+    ["plan.html", "Plán", "Plan"],
+    ["readings.html", "Čítania", "Readings"]
+  ]],
+  ["Proroctvá", "Prophecy", [
+    ["prophecies.html", "Proroctvá", "Prophecies"],
+    ["map.html", "Mapa", "Map"],
+    ["chrono.html", "Odstup", "The gap"]
+  ]],
+  ["Štúdium", "Study", [
+    ["typology.html", "Predobrazy", "Types"],
+    ["nations.html", "Národy", "Nations"],
+    ["harmony.html", "Harmónia", "Harmony"],
+    ["parables.html", "Podobenstvá", "Parables"],
+    ["iam.html", "Ja som", "I AM"],
+    ["genealogy.html", "Rodokmeň", "Genealogy"],
+    ["timeline.html", "Dejiny", "History"]
+  ]],
+  ["Modlitba", "Prayer", [
+    ["prayers.html", "Modlitby", "Prayers"],
+    ["stations.html", "Krížová cesta", "Stations"],
+    ["conscience.html", "Spovedné zrkadlo", "Examination"],
+    ["reference.html", "Zoznamy", "Lists"]
+  ]],
+  ["Viac", "More", [
+    ["widget.html", "Widget", "Widget"],
+    ["embed.html", "Pre web", "Embed"],
+    ["encyclical.html", "Encyklika", "Encyclical"]
+  ]]
 ];
 
 function tNavHTML(activeFile, lang) {
-  return T_NAV.map(([file, sk, en]) =>
-    `<a href="${file}"${file === activeFile ? ' class="active"' : ""}>` +
-    (lang === "sk" ? sk : en) + `</a>`).join(" ");
+  const homeAct = activeFile === T_NAV_HOME[0] ? ' class="active"' : "";
+  let html = `<a href="${T_NAV_HOME[0]}"${homeAct}>${lang === "sk" ? T_NAV_HOME[1] : T_NAV_HOME[2]}</a>`;
+  for (const [sk, en, links] of T_NAV_GROUPS) {
+    const here = links.some(l => l[0] === activeFile);
+    const items = links.map(([f, s, e]) =>
+      `<a href="${f}"${f === activeFile ? ' class="active"' : ""}>${lang === "sk" ? s : e}</a>`).join("");
+    html += `<span class="nav-group${here ? " here" : ""}">` +
+      `<span class="nav-label">${lang === "sk" ? sk : en}</span>` +
+      `<span class="nav-drop">${items}</span></span>`;
+  }
+  return html;
 }
+
+// open/close dropdowns on tap (hover handles desktop via CSS)
+document.addEventListener("click", (e) => {
+  const label = e.target.closest(".nav-label");
+  const openGroups = document.querySelectorAll(".nav-group.open");
+  if (label) {
+    const g = label.parentElement;
+    const wasOpen = g.classList.contains("open");
+    openGroups.forEach(x => x.classList.remove("open"));
+    if (!wasOpen) g.classList.add("open");
+    e.preventDefault();
+  } else if (!e.target.closest(".nav-drop")) {
+    openGroups.forEach(x => x.classList.remove("open"));
+  }
+});
 
 function tLangSwitcher(onChange) {
   document.getElementById("lang-en").addEventListener("click", () => {

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spovedné zrkadlo – spytovanie svedomia | Proroctva.sk</title>
+<meta name="description" content="Spytovanie svedomia pred svätou spoveďou podľa Desatora – otázky ku každému prikázaniu a päť krokov dobrej spovede.">
+<link rel="canonical" href="https://proroctva.sk/conscience.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Spovedné zrkadlo – spytovanie svedomia | Proroctva.sk">
+<meta property="og:description" content="Spytovanie svedomia pred spoveďou podľa Desatora a päť krokov dobrej spovede.">
+<meta property="og:url" content="https://proroctva.sk/conscience.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .steps { margin: 14px 0 0; max-width: 660px; }
+  .step-row { display: grid; grid-template-columns: 24px 1fr; gap: 12px; padding: 7px 4px; border-bottom: 1px solid var(--rule); }
+  .step-n { font-size: 12px; color: var(--ink-faint); }
+  .step-t { font-size: 14px; color: var(--ink); }
+  .step-t b { color: var(--ink-strong); font-weight: normal; }
+  .cmd-ref { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); margin-top: 2px; }
+  .q { font-size: 14px; color: var(--ink); line-height: 1.6; padding: 7px 4px 7px 22px; border-bottom: 1px solid var(--rule); position: relative; }
+  .q::before { content: "—"; position: absolute; left: 4px; color: var(--ink-faint); }
+  .closing { font-size: 13.5px; color: var(--ink-faint); line-height: 1.7; margin-top: 16px; max-width: 640px; }
+  .closing a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); }
+  .closing a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">spovedné zrkadlo</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+
+<section>
+  <h2 id="t-steps"></h2>
+  <div class="steps" id="steps"></div>
+</section>
+
+<main id="list"></main>
+
+<p class="closing" id="closing"></p>
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const UI = {
+  en: {
+    title: "examination of conscience",
+    intro: "A quiet look into the heart before confession, following the Ten Commandments. Not to accuse, but to see clearly and return to God.",
+    stepsHead: "Five steps of a good confession",
+    steps: [
+      ["Examine your conscience", "call to mind your sins since the last confession"],
+      ["Be sorry for them", "true sorrow, above all for having offended God who is love"],
+      ["Resolve not to sin again", "a firm intention to amend and avoid the near occasions of sin"],
+      ["Confess your sins", "tell them honestly and completely to the priest"],
+      ["Make satisfaction", "carry out the penance and repair the harm you have done"]
+    ],
+    closing: 'Then, with the priest, pray the Act of Contrition — its text is on the <a href="prayers.html">prayers page</a>. God, rich in mercy, is waiting.',
+    footer: "Catholic examination of conscience by the Ten Commandments (Exodus 20). A help, not a checklist — the Spirit searches the heart.",
+    count: "10",
+    cmds: [
+      ["1. I am the Lord your God; you shall have no other gods", [
+        "Do I pray, and put God first in my life?",
+        "Have I doubted or denied the faith, or neglected to deepen it?",
+        "Have I put money, success or myself in the place of God?",
+        "Have I turned to superstition, horoscopes, the occult?"
+      ]],
+      ["2. You shall not take the name of God in vain", [
+        "Have I used God's or the saints' names lightly, in anger or as a curse?",
+        "Have I broken a promise or oath made to God?",
+        "Have I spoken of holy things with contempt?"
+      ]],
+      ["3. Remember to keep holy the Lord's Day", [
+        "Have I missed Mass on Sundays or holy days through my own fault?",
+        "Was I present with attention and reverence, or late and distracted?",
+        "Do I keep Sunday for rest, family and God?"
+      ]],
+      ["4. Honour your father and your mother", [
+        "Do I love, respect and help my parents and family?",
+        "Have I been obedient and grateful, or harsh and cold?",
+        "Do I care for those entrusted to me, and pray for my family?"
+      ]],
+      ["5. You shall not kill", [
+        "Have I harmed anyone in body or soul, by anger, hatred or revenge?",
+        "Do I hold grudges, or refuse to forgive?",
+        "Have I harmed my own health, or led others into sin?",
+        "Have I taken part in, or approved of, abortion or euthanasia?"
+      ]],
+      ["6. You shall not commit adultery", [
+        "Have I been faithful and pure in thought, word and deed?",
+        "Have I misused the gift of sexuality, alone or with others?",
+        "Do I respect my body and the bodies of others as God's temple?"
+      ]],
+      ["7. You shall not steal", [
+        "Have I taken what is not mine, or kept what I should return?",
+        "Am I honest at work and fair in business?",
+        "Do I share with those in need, or cling to my goods?"
+      ]],
+      ["8. You shall not bear false witness", [
+        "Have I lied, or damaged another's good name?",
+        "Have I gossiped, judged rashly or spread others' faults?",
+        "Have I failed to speak the truth when I should have?"
+      ]],
+      ["9. You shall not covet your neighbour's wife", [
+        "Have I entertained impure thoughts or desires willingly?",
+        "Have I looked at or read what feeds lust?",
+        "Do I guard my heart and imagination?"
+      ]],
+      ["10. You shall not covet your neighbour's goods", [
+        "Am I envious of what others have?",
+        "Am I greedy, or ungrateful for what God has given me?",
+        "Do I trust God's providence, or am I anxious about possessions?"
+      ]]
+    ]
+  },
+  sk: {
+    title: "spovedné zrkadlo",
+    intro: "Tichý pohľad do srdca pred svätou spoveďou, podľa Desatora. Nie aby si sa obviňoval, ale aby si videl jasne a vrátil sa k Bohu.",
+    stepsHead: "Päť krokov dobrej spovede",
+    steps: [
+      ["Spytovať si svedomie", "pripomenúť si hriechy od poslednej spovede"],
+      ["Ľutovať hriechy", "úprimná ľútosť, najmä preto, že som urazil Boha, ktorý je láska"],
+      ["Urobiť si predsavzatie", "pevné rozhodnutie polepšiť sa a vyhýbať sa príležitostiam k hriechu"],
+      ["Vyznať hriechy", "úprimne a úplne ich povedať kňazovi"],
+      ["Vykonať pokánie", "splniť uložené pokánie a napraviť spôsobenú škodu"]
+    ],
+    closing: 'Potom sa spolu s kňazom pomodli úkon ľútosti — jeho znenie nájdeš na <a href="prayers.html">stránke Modlitby</a>. Boh, bohatý na milosrdenstvo, čaká.',
+    footer: "Katolícke spytovanie svedomia podľa Desatora (Exodus 20). Pomôcka, nie zoznam na odškrtávanie — srdce skúma Duch.",
+    count: "10",
+    cmds: [
+      ["1. Ja som Pán, tvoj Boh; nebudeš mať iných bohov", [
+        "Modlím sa a dávam Boha na prvé miesto vo svojom živote?",
+        "Pochyboval som o viere, zaprel ju, alebo ju zanedbával prehlbovať?",
+        "Postavil som peniaze, úspech či seba na Božie miesto?",
+        "Obrátil som sa k poverám, horoskopom, okultizmu?"
+      ]],
+      ["2. Nevezmeš Božie meno nadarmo", [
+        "Používal som Božie meno alebo mená svätých ľahkovážne, v hneve či ako kliatbu?",
+        "Porušil som sľub alebo prísahu danú Bohu?",
+        "Hovoril som o svätých veciach s pohŕdaním?"
+      ]],
+      ["3. Pamätaj, že máš svätiť sviatočný deň", [
+        "Vynechal som z vlastnej viny svätú omšu v nedeľu alebo v prikázaný sviatok?",
+        "Bol som na nej pozorne a s úctou, alebo neskoro a rozptýlene?",
+        "Zachovávam nedeľu pre odpočinok, rodinu a Boha?"
+      ]],
+      ["4. Cti svojho otca a svoju matku", [
+        "Milujem, ctím si a pomáham svojim rodičom a rodine?",
+        "Bol som poslušný a vďačný, alebo tvrdý a chladný?",
+        "Starám sa o tých, čo sú mi zverení, a modlím sa za svoju rodinu?"
+      ]],
+      ["5. Nezabiješ", [
+        "Ublížil som niekomu na tele alebo na duši — hnevom, nenávisťou, pomstou?",
+        "Nosím v sebe zášť, alebo odmietam odpustiť?",
+        "Poškodil som vlastné zdravie, alebo zviedol iných na hriech?",
+        "Podieľal som sa na potrate či eutanázii, alebo som ich schvaľoval?"
+      ]],
+      ["6. Nezosmilníš", [
+        "Bol som verný a čistý v myšlienkach, slovách i skutkoch?",
+        "Zneužil som dar pohlavnosti, sám alebo s inými?",
+        "Ctím si svoje telo aj telá iných ako Boží chrám?"
+      ]],
+      ["7. Nepokradneš", [
+        "Vzal som, čo nie je moje, alebo si nechal, čo som mal vrátiť?",
+        "Som poctivý v práci a spravodlivý v obchode?",
+        "Delím sa s núdznymi, alebo lipnem na majetku?"
+      ]],
+      ["8. Nebudeš krivo svedčiť proti svojmu blížnemu", [
+        "Klamal som, alebo poškodil dobré meno iného?",
+        "Ohováral som, unáhlene súdil alebo rozširoval cudzie chyby?",
+        "Zamlčal som pravdu, keď som ju mal povedať?"
+      ]],
+      ["9. Nebudeš žiadať manželku svojho blížneho", [
+        "Zotrvával som dobrovoľne v nečistých myšlienkach a túžbach?",
+        "Pozeral alebo čítal som to, čo živí žiadostivosť?",
+        "Strážim si srdce a predstavivosť?"
+      ]],
+      ["10. Nebudeš žiadať majetok svojho blížneho", [
+        "Závidím iným, čo majú?",
+        "Som lakomý, alebo nevďačný za to, čo mi Boh dal?",
+        "Dôverujem Božej prozreteľnosti, alebo sa úzkostlivo trápim o majetok?"
+      ]]
+    ]
+  }
+};
+
+let lang = tGetLang();
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-steps").textContent = t.stepsHead;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("closing").innerHTML = t.closing;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("site-nav").innerHTML = tNavHTML("conscience.html", lang);
+
+  document.getElementById("steps").innerHTML = t.steps.map(([ti, d], i) =>
+    `<div class="step-row"><span class="step-n">${i + 1}</span>` +
+    `<span class="step-t"><b>${ti}</b> — ${d}</span></div>`).join("");
+
+  document.getElementById("list").innerHTML = t.cmds.map(([cmd, qs]) =>
+    `<section><h2>${cmd}</h2>` +
+    qs.map(q => `<div class="q">${q}</div>`).join("") +
+    `</section>`).join("");
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

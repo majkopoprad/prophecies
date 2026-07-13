@@ -48,6 +48,8 @@
 <nav class="site-nav" id="site-nav"></nav>
 <hr>
 
+<div class="today-strip" id="today-strip"></div>
+
 <section class="daily">
   <h2 id="t-daily"></h2>
   <div id="daily-body"></div>
@@ -78,6 +80,7 @@
 
 <script src="verses.js"></script>
 <script src="prophecies-data.js"></script>
+<script src="meniny.js"></script>
 <script src="theology.js"></script>
 <script>
 const UI = {
@@ -87,6 +90,9 @@ const UI = {
     cal: "Feast calendar",
     tradW: "western", tradO: "orthodox",
     noFeasts: "no feasts this month.",
+    todayNames: "name day:", saintLink: "saint of the day →",
+    dows: ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
+    mons: ["January","February","March","April","May","June","July","August","September","October","November","December"],
     sections: "Sections",
     footer: "Verse texts: Slovak Ecumenical Translation (biblia.sk) / KJV. The daily prophecy walks through all 351 in order — the same one the iPhone widget shows.",
     prophecy: "prophecy", fulfilment: "fulfilment",
@@ -98,6 +104,9 @@ const UI = {
     cal: "Kalendár sviatkov",
     tradW: "západný", tradO: "pravoslávny",
     noFeasts: "v tomto mesiaci nie sú žiadne sviatky.",
+    todayNames: "meniny má", saintLink: "svätec dňa →",
+    dows: ["nedeľa","pondelok","utorok","streda","štvrtok","piatok","sobota"],
+    mons: ["januára","februára","marca","apríla","mája","júna","júla","augusta","septembra","októbra","novembra","decembra"],
     sections: "Sekcie",
     footer: "Texty veršov: Slovenský ekumenický preklad (biblia.sk) / KJV. Proroctvo dňa prechádza všetkých 351 po poradí — to isté ukazuje aj widget na iPhone.",
     prophecy: "proroctvo", fulfilment: "naplnenie",
@@ -138,6 +147,14 @@ const CARDS = [
    "Prayers", "Modlitby",
    "Basic prayers, children's prayers, rosary and chaplet", "Základné a detské modlitby, ruženec a korunka",
    "19"],
+  ["stations.html",
+   "Stations of the Cross", "Krížová cesta",
+   "Fourteen stations with short meditations", "Štrnásť zastavení s krátkymi rozjímaniami",
+   "14"],
+  ["conscience.html",
+   "Examination of conscience", "Spovedné zrkadlo",
+   "Before confession, by the Ten Commandments", "Pred spoveďou, podľa Desatora",
+   "10"],
   ["reference.html",
    "Reference lists", "Zoznamy",
    "Ten Commandments, Beatitudes, virtues, works of mercy", "Desatoro, blahoslavenstvá, čnosti, skutky milosrdenstva",
@@ -194,6 +211,22 @@ function render() {
   document.getElementById("t-sections").textContent = t.sections;
   document.getElementById("t-footer").textContent = t.footer;
   document.getElementById("site-nav").innerHTML = tNavHTML("index.html", lang);
+
+  // ---- today strip: name-day + saint of the day ----
+  {
+    const d = new Date();
+    const iso = d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+    const key = (d.getMonth()+1) + "-" + d.getDate();
+    const names = (typeof MENINY !== "undefined" && MENINY[key]) ? MENINY[key] : "";
+    const nameShown = names ? names.split(",")[0].trim() : "";
+    const dateStr = (lang === "sk")
+      ? `${t.dows[d.getDay()]}, ${d.getDate()}. ${t.mons[d.getMonth()]}`
+      : `${t.dows[d.getDay()]}, ${d.getDate()} ${t.mons[d.getMonth()]}`;
+    let strip = `<b>${dateStr}</b>`;
+    if (nameShown) strip += `<span class="sep">·</span>${t.todayNames} <b>${nameShown}</b>`;
+    strip += `<span class="sep">·</span><a href="https://lc.kbs.sk/?den=${iso}" target="_blank" rel="noopener">${t.saintLink}</a>`;
+    document.getElementById("today-strip").innerHTML = strip;
+  }
 
   // ---- daily prophecy (same arithmetic as the iPhone widget) ----
   const rows = [];
