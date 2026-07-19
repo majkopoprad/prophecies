@@ -99,7 +99,8 @@ const T_NAV_GROUPS = [
   ["Proroctvá", "Prophecy", [
     ["prophecies.html", "Proroctvá", "Prophecies"],
     ["map.html", "Mapa", "Map"],
-    ["chrono.html", "Odstup", "The gap"]
+    ["chrono.html", "Odstup", "The gap"],
+    ["odds.html", "Nemožnosť náhody", "The odds"]
   ]],
   ["Štúdium", "Study", [
     ["typology.html", "Predobrazy", "Types"],
@@ -108,7 +109,8 @@ const T_NAV_GROUPS = [
     ["parables.html", "Podobenstvá", "Parables"],
     ["iam.html", "Ja som", "I AM"],
     ["genealogy.html", "Rodokmeň", "Genealogy"],
-    ["timeline.html", "Dejiny", "History"]
+    ["timeline.html", "Dejiny", "History"],
+    ["numbers.html", "Čísla", "Numbers"]
   ]],
   ["Modlitba", "Prayer", [
     ["prayers.html", "Modlitby", "Prayers"],
@@ -172,4 +174,14 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").catch(() => {});
   });
+}
+
+// ---- analytics: GoatCounter (no cookies, no personal data) ----
+// Counts only on the production domain so local previews stay out of stats.
+if (location.hostname === "proroctva.sk") {
+  const gc = document.createElement("script");
+  gc.async = true;
+  gc.src = "https://gc.zgo.at/count.js";
+  gc.dataset.goatcounter = "https://proroctva.goatcounter.com/count";
+  document.head.appendChild(gc);
 }

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nemožnosť náhody – pravdepodobnosť naplnenia proroctiev | Proroctva.sk</title>
+<meta name="description" content="Peter Stoner vypočítal: šanca, že jeden človek náhodou naplní 8 proroctiev, je 1 : 10¹⁷. Pri 48 proroctvách 1 : 10¹⁵⁷ — viac než atómov v pozorovateľnom vesmíre.">
+<link rel="canonical" href="https://proroctva.sk/odds.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Nemožnosť náhody – pravdepodobnosť naplnenia proroctiev | Proroctva.sk">
+<meta property="og:description" content="Šanca, že jeden človek náhodou naplní 48 proroctiev: 1 : 10¹⁵⁷ — viac než atómov vo vesmíre.">
+<meta property="og:url" content="https://proroctva.sk/odds.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .odds-row { grid-template-columns: 38px 150px 1fr 130px; }
+  .odds-row .f { white-space: nowrap; }
+  .odds-total {
+    padding: 16px 4px 4px 58px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .odds-total b { color: var(--ink-strong); font-weight: normal; }
+
+  .stage-pills { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 18px; }
+  .stage-pills span {
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: color 0.12s;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+  }
+  .stage-pills span:hover { color: var(--ink-strong); }
+  .stage-pills span.active { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+
+  .ruler-wrap { margin-top: 20px; width: 100%; overflow-x: auto; }
+  svg.ruler { width: 100%; min-width: 640px; height: auto; display: block; }
+  .rl-axis { stroke: var(--ink); stroke-width: 1.2; }
+  .rl-tick { stroke: var(--rule); stroke-width: 1; }
+  .rl-mile-line { stroke: var(--ink-faint); stroke-width: 1; opacity: 0.6; }
+  .rl-mile-dot { fill: var(--paper); stroke: var(--ink-faint); stroke-width: 1.2; }
+  .rl-text { fill: var(--ink-faint); font-size: 11px; font-family: 'Receipt', Georgia, serif; }
+  .rl-exp { fill: var(--ink); font-size: 11px; font-family: 'Receipt', Georgia, serif; }
+  .rl-marker { transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
+  .rl-marker line { stroke: #000; stroke-width: 1.6; }
+  .rl-marker circle { fill: #000; }
+  .rl-marker text { fill: var(--ink-strong); font-size: 13px; font-family: 'Receipt', Georgia, serif; }
+  .rl-marker .rl-tag { fill: var(--ink-faint); font-size: 11px; }
+
+  .stage-cap {
+    margin-top: 14px;
+    min-height: 72px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .stage-cap b { color: var(--ink-strong); font-weight: normal; }
+
+  .coin-field { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 5px; max-width: 640px; }
+  .coin {
+    width: 9px; height: 9px;
+    border: 1px solid var(--ink-faint);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.12s, border-color 0.12s;
+  }
+  .coin:hover { border-color: var(--ink-strong); }
+  .coin.picked { background: var(--rule); border-color: var(--rule); }
+  .coin.marked { background: #000; border-color: #000; }
+  .coin-field.done .coin { cursor: default; }
+  .coin-cap {
+    margin-top: 12px;
+    min-height: 56px;
+    font-size: 13.5px;
+    color: var(--ink-faint);
+    line-height: 1.7;
+    max-width: 640px;
+  }
+  .coin-cap b { color: var(--ink-strong); font-weight: normal; }
+  .coin-again {
+    color: var(--ink);
+    cursor: pointer;
+    border-bottom: 1px solid var(--rule);
+  }
+  .coin-again:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">nemožnosť náhody</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count">1 : 10¹⁵⁷</span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<section>
+  <h2 id="t-eight"></h2>
+  <div id="rows"></div>
+  <div class="odds-total" id="total"></div>
+</section>
+
+<section>
+  <h2 id="t-scale"></h2>
+  <div class="stage-pills" id="pills"></div>
+  <div class="ruler-wrap">
+    <svg class="ruler" id="ruler" viewBox="0 0 1000 190" preserveAspectRatio="xMidYMid meet"></svg>
+  </div>
+  <div class="stage-cap" id="stage-cap"></div>
+</section>
+
+<section>
+  <h2 id="t-try"></h2>
+  <p class="intro" id="t-try-intro" style="margin-top:12px"></p>
+  <div class="coin-field" id="coins"></div>
+  <div class="coin-cap" id="coin-cap"></div>
+</section>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+const N_COINS = 500;
+
+// Stoner's eight prophecies with his published estimates (Science Speaks, 1958)
+const EIGHT = [
+  ["Micah 5:2",            "Narodí sa v Betleheme",                    "Born in Bethlehem",                    "1 : 280 000"],
+  ["Malachi 3:1",          "Predchodca mu pripraví cestu",             "A forerunner prepares his way",        "1 : 1 000"],
+  ["Zechariah 9:9",        "Vojde do Jeruzalema na osliatku",          "Enters Jerusalem on a donkey",         "1 : 100"],
+  ["Zechariah 13:6",       "Zradený priateľom, s ranami na rukách",    "Betrayed by a friend, hands wounded",  "1 : 1 000"],
+  ["Zechariah 11:12–13",   "Predaný za tridsať strieborných",          "Sold for thirty pieces of silver",     "1 : 1 000"],
+  ["Zechariah 11:12–13",   "Peniaze skončia na hrnčiarovom poli",      "The money ends on the potter's field", "1 : 100 000"],
+  ["Isaiah 53:7",          "Pred žalobcami mlčí",                      "Silent before his accusers",           "1 : 1 000"],
+  ["Psalm 22:16",          "Ruky a nohy prebodnuté — ukrižovanie",     "Hands and feet pierced — crucifixion", "1 : 10 000"]
+];
+
+// milestones on the log ruler: [exponent, power label, SK, EN, label level]
+const MILES = [
+  [18.9, "10¹⁹",  "zrnká piesku na Zemi",   "grains of sand on Earth",   1],
+  [24,   "10²⁴",  "hviezdy vo vesmíre",     "stars in the universe",     2],
+  [28,   "10²⁸",  "atómy v ľudskom tele",   "atoms in a human body",     3],
+  [50,   "10⁵⁰",  "atómy Zeme",             "atoms of the Earth",        1],
+  [80,   "10⁸⁰",  "atómy vo vesmíre",       "atoms in the universe",     2]
+];
+
+// stages: [key, exponent, power label]
+const STAGES = [ ["s8", 17, "10¹⁷"], ["s16", 45, "10⁴⁵"], ["s48", 157, "10¹⁵⁷"] ];
+
+const UI = {
+  en: {
+    title: "the impossibility of chance",
+    intro: "Could one man fulfil hundreds of prophecies by accident? The mathematician Peter Stoner put numbers to the question. He took just eight of the prophecies, assigned each a deliberately generous probability, and multiplied. The answer stops being a number you can imagine.",
+    eight: "Eight prophecies, estimated conservatively",
+    total: "Multiplied together: <b>1 : 2.8 × 10²⁸</b>. Even divided among every person who has ever lived (~10¹¹), the chance that any one man fulfilled all eight remains about <b>1 : 10¹⁷</b> — and that is eight prophecies out of 351.",
+    scale: "Where that lands in the universe",
+    pills: ["8 prophecies", "16 prophecies", "48 prophecies"],
+    tags: ["8 prophecies", "16 prophecies", "48 prophecies"],
+    caps: {
+      s8: "<b>8 prophecies — 1 : 10¹⁷.</b> Cover the whole of Texas with silver dollars two feet deep. Mark a single one. Blindfold a stranger and let him pick — one try. His chance of finding the marked coin is the chance that one man fulfilled just eight of the prophecies by accident.",
+      s16: "<b>16 prophecies — 1 : 10⁴⁵.</b> Texas is no longer big enough. 10⁴⁵ silver dollars would form a solid ball whose radius is thirty times the distance from the earth to the sun. Mark one coin, stir the ball, and let a blindfolded man pick once.",
+      s48: "<b>48 prophecies — 1 : 10¹⁵⁷.</b> This number overshoots the universe itself: the observable universe holds only about 10⁸⁰ atoms. If every atom of our universe were itself a whole universe of atoms, that would still be only 10¹⁶⁰. Chance stops being an explanation."
+    },
+    tryIt: "Try your luck",
+    tryIntro: "One of these 500 coins is marked. Pick one.",
+    win: "<b>You found it!</b> A chance of 1 : 500 — and you hit it. Now imagine the field had 100 000 000 000 000 000 coins instead of 500. That is 1 : 10¹⁷ — eight prophecies.",
+    lose: "<b>Not this one.</b> The marked coin is shown in black. And this was only 1 : 500. Stoner's odds for eight prophecies are 1 : 100 000 000 000 000 000 — guessing once a second, you would need billions of years.",
+    again: "try again",
+    footer: "Estimates: Peter Stoner, Science Speaks (1958); the calculations were reviewed by a committee of the American Scientific Association. The figures are deliberately conservative. Jesus fulfilled not eight but over three hundred prophecies."
+  },
+  sk: {
+    title: "nemožnosť náhody",
+    intro: "Mohol by jeden človek naplniť stovky proroctiev náhodou? Matematik Peter Stoner dal tejto otázke čísla. Vzal len osem proroctiev, každému priradil zámerne veľkorysú pravdepodobnosť a vynásobil ich. Výsledok prestáva byť číslom, ktoré si vieme predstaviť.",
+    eight: "Osem proroctiev, odhadnutých konzervatívne",
+    total: "Vynásobené spolu: <b>1 : 2,8 × 10²⁸</b>. Aj keď to rozpočítame medzi všetkých ľudí, ktorí kedy žili (~10¹¹), šanca, že práve jeden človek naplnil všetkých osem, ostáva približne <b>1 : 10¹⁷</b> — a to je len osem proroctiev z 351.",
+    scale: "Kam to siaha vo vesmíre",
+    pills: ["8 proroctiev", "16 proroctiev", "48 proroctiev"],
+    tags: ["8 proroctiev", "16 proroctiev", "48 proroctiev"],
+    caps: {
+      s8: "<b>8 proroctiev — 1 : 10¹⁷.</b> Pokry celý Texas striebornými mincami do výšky 60 centimetrov. Jednu jedinú označ. Zaviaž cudzincovi oči a nechaj ho vybrať — jediný pokus. Jeho šanca nájsť označenú mincu je šancou, že jeden človek náhodou naplnil len osem proroctiev.",
+      s16: "<b>16 proroctiev — 1 : 10⁴⁵.</b> Texas už nestačí. 10⁴⁵ strieborných mincí by vytvorilo pevnú guľu s polomerom tridsaťkrát väčším, než je vzdialenosť Zeme od Slnka. Označ jednu mincu, premiešaj guľu a nechaj človeka so zaviazanými očami vybrať raz.",
+      s48: "<b>48 proroctiev — 1 : 10¹⁵⁷.</b> Toto číslo prestrelí samotný vesmír: v celom pozorovateľnom vesmíre je „len“ asi 10⁸⁰ atómov. Keby bol každý atóm nášho vesmíru sám celým vesmírom atómov, stále by ich bolo len 10¹⁶⁰. Náhoda tu prestáva byť vysvetlením."
+    },
+    tryIt: "Skús šťastie",
+    tryIntro: "Jedna z týchto 500 mincí je označená. Vyber jednu.",
+    win: "<b>Našiel si ju!</b> Šanca 1 : 500 — a trafil si. Teraz si predstav, že pole nemá 500 mincí, ale 100 000 000 000 000 000. To je 1 : 10¹⁷ — osem proroctiev.",
+    lose: "<b>Táto nie.</b> Označená minca je čierna. A toto bolo len 1 : 500. Stonerova šanca pre osem proroctiev je 1 : 100 000 000 000 000 000 — pri jednom tipe za sekundu by si potreboval miliardy rokov.",
+    again: "skúsiť znova",
+    footer: "Odhady: Peter Stoner, Science Speaks (1958); prepočty preverila komisia American Scientific Association. Čísla sú zámerne konzervatívne. Ježiš nenaplnil osem, ale vyše tristo proroctiev."
+  }
+};
+
+let lang = tGetLang();
+let stage = "s8";
+let marked = Math.floor(Math.random() * N_COINS);
+let gameDone = false;
+
+// ---- ruler geometry: exponent 0..165 -> x ----
+const RW = 1000, RX0 = 30, RX1 = 985, AXIS_Y = 96, E_MAX = 165;
+function xExp(e) { return RX0 + e / E_MAX * (RX1 - RX0); }
+function svgEl(tag, a) { const el = document.createElementNS("http://www.w3.org/2000/svg", tag); for (const k in a) el.setAttribute(k, a[k]); return el; }
+
+function drawRuler() {
+  const t = UI[lang];
+  const svg = document.getElementById("ruler");
+  svg.innerHTML = "";
+
+  // axis + decade ticks
+  svg.appendChild(svgEl("line", { class: "rl-axis", x1: RX0, y1: AXIS_Y, x2: RX1, y2: AXIS_Y }));
+  for (let e = 0; e <= 160; e += 20) {
+    const x = xExp(e);
+    svg.appendChild(svgEl("line", { class: "rl-tick", x1: x, y1: AXIS_Y - 4, x2: x, y2: AXIS_Y + 4 }));
+    const tx = svgEl("text", { class: "rl-text", x: x, y: AXIS_Y + 18, "text-anchor": "middle" });
+    tx.textContent = e === 0 ? "1" : "10" + String(e).split("").map(d => "⁰¹²³⁴⁵⁶⁷⁸⁹"[+d]).join("");
+    svg.appendChild(tx);
+  }
+
+  // milestones below the axis, staggered on three levels
+  for (const [e, pow, sk, en, lvl] of MILES) {
+    const x = xExp(e);
+    const y = AXIS_Y + 18 + lvl * 17;
+    svg.appendChild(svgEl("line", { class: "rl-mile-line", x1: x, y1: AXIS_Y + 3, x2: x, y2: y - 10 }));
+    svg.appendChild(svgEl("circle", { class: "rl-mile-dot", cx: x, cy: AXIS_Y, r: 3 }));
+    const tx = svgEl("text", { class: "rl-text", x: x, y: y, "text-anchor": e > 140 ? "end" : "middle" });
+    tx.textContent = pow + " " + (lang === "sk" ? sk : en);
+    svg.appendChild(tx);
+  }
+
+  // moving marker (translated to the active stage)
+  const g = svgEl("g", { class: "rl-marker", id: "marker" });
+  g.appendChild(svgEl("line", { x1: 0, y1: AXIS_Y - 2, x2: 0, y2: AXIS_Y - 46 }));
+  g.appendChild(svgEl("circle", { cx: 0, cy: AXIS_Y, r: 4.2 }));
+  const val = svgEl("text", { id: "marker-val", x: 0, y: AXIS_Y - 56, "text-anchor": "middle" });
+  const tag = svgEl("text", { id: "marker-tag", class: "rl-tag", x: 0, y: AXIS_Y - 71, "text-anchor": "middle" });
+  g.appendChild(tag); g.appendChild(val);
+  svg.appendChild(g);
+  placeMarker(false);
+}
+
+function placeMarker() {
+  const t = UI[lang];
+  const i = STAGES.findIndex(s => s[0] === stage);
+  const [, e, pow] = STAGES[i];
+  const g = document.getElementById("marker");
+  const x = xExp(e);
+  g.style.transform = "translateX(" + x + "px)";
+  document.getElementById("marker-val").textContent = "1 : " + pow;
+  document.getElementById("marker-tag").textContent = t.tags[i];
+  // keep labels inside the viewBox at the far right
+  const anchor = x > RW - 70 ? "end" : (x < 70 ? "start" : "middle");
+  document.getElementById("marker-val").setAttribute("text-anchor", anchor);
+  document.getElementById("marker-tag").setAttribute("text-anchor", anchor);
+}
+
+function setStage(s) {
+  stage = s;
+  const t = UI[lang];
+  document.querySelectorAll("#pills span").forEach((p, i) =>
+    p.classList.toggle("active", STAGES[i][0] === s));
+  document.getElementById("stage-cap").innerHTML = t.caps[s];
+  placeMarker();
+}
+
+// ---- the coin game ----
+function drawCoins() {
+  const field = document.getElementById("coins");
+  field.innerHTML = "";
+  field.classList.remove("done");
+  for (let i = 0; i < N_COINS; i++) {
+    const c = document.createElement("span");
+    c.className = "coin";
+    c.addEventListener("click", () => pick(i, c));
+    field.appendChild(c);
+  }
+  document.getElementById("coin-cap").innerHTML = "";
+  gameDone = false;
+}
+
+function pick(i, el) {
+  if (gameDone) return;
+  gameDone = true;
+  const t = UI[lang];
+  const field = document.getElementById("coins");
+  field.classList.add("done");
+  field.children[marked].classList.add("marked");
+  let msg;
+  if (i === marked) { msg = t.win; } else { el.classList.add("picked"); msg = t.lose; }
+  document.getElementById("coin-cap").innerHTML =
+    msg + " <span class=\"coin-again\" id=\"coin-again\">" + t.again + "</span>";
+  document.getElementById("coin-again").addEventListener("click", () => {
+    marked = Math.floor(Math.random() * N_COINS);
+    drawCoins();
+  });
+}
+
+// ---- render ----
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("t-eight").textContent = t.eight;
+  document.getElementById("t-scale").textContent = t.scale;
+  document.getElementById("t-try").textContent = t.tryIt;
+  document.getElementById("t-try-intro").textContent = t.tryIntro;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("total").innerHTML = t.total;
+  document.getElementById("site-nav").innerHTML = tNavHTML("odds.html", lang);
+
+  // the eight rows
+  let rows = "";
+  EIGHT.forEach(([ref, sk, en, odds], i) => {
+    const shown = lang === "sk" ? tRefSK(ref) : ref;
+    const link = tBibliaLink(ref);
+    const refHTML = link
+      ? "<a href=\"" + link + "\" target=\"_blank\" rel=\"noopener\" style=\"color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)\">" + shown + "</a>"
+      : shown;
+    rows += "<div class=\"row odds-row\" style=\"cursor:default\">" +
+      "<span class=\"num\">" + (i + 1) + "</span>" +
+      "<span class=\"p\">" + refHTML + "</span>" +
+      "<span class=\"what\">" + (lang === "sk" ? sk : en) + "</span>" +
+      "<span class=\"f\">" + odds + "</span></div>";
+  });
+  document.getElementById("rows").innerHTML = rows;
+
+  // stage pills
+  const pills = document.getElementById("pills");
+  pills.innerHTML = "";
+  STAGES.forEach(([key], i) => {
+    const s = document.createElement("span");
+    s.textContent = t.pills[i];
+    s.addEventListener("click", () => setStage(key));
+    pills.appendChild(s);
+  });
+
+  drawRuler();
+  setStage(stage);
+  drawCoins();
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>

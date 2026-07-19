@@ -1,6 +1,6 @@
 /* Proroctva.sk service worker — offline-first for a static site.
    Bump CACHE when shipping changes so clients refresh the app shell. */
-const CACHE = "proroctva-v1";
+const CACHE = "proroctva-v2";
 
 // App shell precached on install. Bible data JSON is intentionally left out
 // (large, per-book) and cached on demand by the fetch handler instead.
@@ -9,7 +9,7 @@ const SHELL = [
   "index.html", "prophecies.html", "typology.html", "nations.html",
   "harmony.html", "parables.html", "iam.html", "genealogy.html",
   "widget.html", "encyclical.html", "bible.html", "prayers.html",
-  "reference.html", "readings.html", "stations.html", "conscience.html", "plan.html", "timeline.html", "map.html", "chrono.html", "audio.html", "audio-data.js",
+  "reference.html", "readings.html", "stations.html", "conscience.html", "plan.html", "timeline.html", "map.html", "chrono.html", "odds.html", "numbers.html", "audio.html", "audio-data.js",
   "embed.html", "embed-widget.html", "embed-data.js", "prophecies-unfulfilled.js",
   "theology.css", "theology.js", "verses.js", "prophecies-data.js",
   "bible-books.js", "meniny.js",

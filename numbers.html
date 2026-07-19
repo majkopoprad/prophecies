@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Symbolika biblických čísel – 7, 12, 40 a ďalšie | Proroctva.sk</title>
+<meta name="description" content="Čo znamenajú čísla v Biblii: sedmička ako plnosť, dvanástka ako Boží ľud, štyridsiatka ako skúška, 666, 144 000 a ďalšie — s veršami, kde sa objavujú.">
+<link rel="canonical" href="https://proroctva.sk/numbers.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Proroctva.sk">
+<meta property="og:locale" content="sk_SK">
+<meta property="og:title" content="Symbolika biblických čísel – 7, 12, 40 a ďalšie | Proroctva.sk">
+<meta property="og:description" content="Sedmička ako plnosť, dvanástka ako Boží ľud, štyridsiatka ako skúška — čo znamenajú čísla v Biblii.">
+<meta property="og:url" content="https://proroctva.sk/numbers.html">
+<meta property="og:image" content="https://proroctva.sk/og.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Proroctva">
+<link rel="stylesheet" href="theology.css">
+<style>
+  .num-row {
+    display: grid;
+    grid-template-columns: 118px 1fr;
+    gap: 24px;
+    padding: 24px 4px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .num-big {
+    font-size: 40px;
+    color: var(--ink);
+    line-height: 1.1;
+    text-align: right;
+    letter-spacing: 0.01em;
+    transition: color 0.12s;
+  }
+  .num-row:hover .num-big { color: var(--ink-strong); }
+  .num-big small { font-size: 20px; }
+  .num-title { color: var(--ink-strong); font-size: 16px; }
+  .num-desc {
+    font-size: 13.5px;
+    color: var(--ink);
+    line-height: 1.7;
+    margin-top: 6px;
+    max-width: 560px;
+  }
+  .num-ex { margin-top: 9px; font-size: 12px; color: var(--ink-faint); line-height: 1.9; }
+  .num-ex a {
+    color: var(--ink-faint);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    white-space: nowrap;
+  }
+  .num-ex a:hover { color: var(--ink-strong); border-bottom-color: var(--ink-strong); }
+  .num-ex .dot { margin: 0 7px; color: var(--rule); }
+  @media (max-width: 620px) {
+    .num-row { grid-template-columns: 1fr; gap: 6px; }
+    .num-big { text-align: left; font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1 id="t-title">symbolika čísel</h1>
+  <div class="head-right">
+    <nav class="lang">
+      <span id="lang-en">EN</span><span class="sep"> · </span><span id="lang-sk">SK</span>
+    </nav>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<nav class="site-nav" id="site-nav"></nav>
+<p class="intro" id="t-intro"></p>
+<hr>
+
+<div id="list"></div>
+
+<footer id="t-footer"></footer>
+
+<script src="theology.js"></script>
+<script>
+// [anchor, displayed numeral, {sk:{t,d}, en:{t,d}}, examples [ref, labelSK, labelEN]]
+const NUMS = [
+  ["1", "1", {
+    sk: ["jednota", "Jedinečnosť Boha. „Počuj, Izrael: Pán, náš Boh, je jediný Pán“ — základné vyznanie Izraela, ktoré Ježiš nazval prvým prikázaním. V Novom zákone jedno telo, jeden Pán, jedna viera, jeden krst."],
+    en: ["oneness", "The uniqueness of God. “Hear, O Israel: the Lord our God is one Lord” — Israel's core confession, which Jesus called the first commandment. In the New Testament: one body, one Lord, one faith, one baptism."]
+  }, [
+    ["Deuteronomy 6:4", "Šema", "the Shema"],
+    ["Ephesians 4:5", "jeden Pán, jedna viera", "one Lord, one faith"],
+    ["John 17:21", "aby všetci boli jedno", "that they all may be one"]
+  ]],
+  ["2", "2", {
+    sk: ["svedectvo", "Potvrdenie pravdy. Na výpovedi dvoch svedkov stojí každé slovo; Ježiš posiela učeníkov po dvoch a sľubuje, že kde sú dvaja alebo traja v jeho mene, je medzi nimi. Dve tabule zákona: vzťah k Bohu a k blížnemu."],
+    en: ["witness", "Confirmation of truth. Every matter stands on the testimony of two witnesses; Jesus sends the disciples out two by two and promises to be present where two or three gather in his name. Two tablets of the Law: God and neighbour."]
+  }, [
+    ["Deuteronomy 19:15", "dvaja svedkovia", "two witnesses"],
+    ["Luke 10:1", "po dvoch", "two by two"],
+    ["Matthew 18:20", "kde sú dvaja alebo traja", "where two or three gather"]
+  ]],
+  ["3", "3", {
+    sk: ["Božia plnosť", "Čo je trikrát, je isté a Božie: trojité „Svätý“ serafínov, tri dni v hrobe a vzkriesenie na tretí deň, krst „v mene Otca i Syna i Ducha Svätého“. Číslo, v ktorom sa Boh dáva poznať."],
+    en: ["divine fullness", "What is said three times is certain and of God: the threefold “Holy” of the seraphim, three days in the tomb and rising on the third day, baptism “in the name of the Father and of the Son and of the Holy Spirit.”"]
+  }, [
+    ["Isaiah 6:3", "Svätý, svätý, svätý", "Holy, holy, holy"],
+    ["Matthew 12:40", "tri dni a tri noci", "three days and three nights"],
+    ["1 Corinthians 15:4", "na tretí deň", "on the third day"],
+    ["Matthew 28:19", "Otec, Syn a Duch", "Father, Son and Spirit"]
+  ]],
+  ["3-5", "3½", {
+    sk: ["prerušená plnosť", "Polovica siedmich — skúška, ktorá má dovolený koniec. „Čas, časy a pol času“ u Daniela, štyridsaťdva mesiacov a 1260 dní v Zjavení, tri a pol roka sucha za Eliáša. Zlo smie pôsobiť — ale len dopoly."],
+    en: ["fullness cut short", "Half of seven — a trial with a permitted end. “A time, times and half a time” in Daniel, forty-two months and 1,260 days in Revelation, three and a half years of drought under Elijah. Evil may act — but only to the halfway mark."]
+  }, [
+    ["Daniel 7:25", "čas, časy a pol času", "a time, times and half a time"],
+    ["Revelation 11:2", "42 mesiacov", "forty-two months"],
+    ["Luke 4:25", "tri roky a šesť mesiacov", "three years and six months"]
+  ]],
+  ["4", "4", {
+    sk: ["svet", "Číslo stvorenia a zeme: štyri svetové strany a štyri vetry, štyri rieky vytekajúce z Edenu, štyri živé bytosti pri Božom tróne. Preto aj štyri evanjeliá — jedna zvesť pre celý svet."],
+    en: ["the world", "The number of creation and the earth: four corners and four winds, four rivers flowing out of Eden, four living creatures around God's throne. Hence four gospels — one message for the whole world."]
+  }, [
+    ["Genesis 2:10", "štyri rieky Edenu", "four rivers of Eden"],
+    ["Ezekiel 1:5", "štyri živé bytosti", "four living creatures"],
+    ["Revelation 7:1", "štyri uhly zeme", "four corners of the earth"]
+  ]],
+  ["5", "5", {
+    sk: ["vyučovanie a milosť", "Päť kníh Tóry — základ Božieho vyučovania. Päť chlebov, ktorými Ježiš sýti zástup; päť múdrych panien s olejom v lampách."],
+    en: ["teaching and grace", "The five books of the Torah — the foundation of God's teaching. Five loaves with which Jesus feeds the crowd; five wise virgins with oil in their lamps."]
+  }, [
+    ["Matthew 14:17", "päť chlebov", "five loaves"],
+    ["Matthew 25:2", "päť múdrych panien", "five wise virgins"]
+  ]],
+  ["6", "6", {
+    sk: ["človek", "Stvorený v šiesty deň, pracuje šesť dní. Jeden menej než sedem: blízko dokonalosti, ale bez nej — číslo človeka, ktorý sa chce zaobísť bez Boha."],
+    en: ["man", "Created on the sixth day, working six days. One short of seven: near perfection but never reaching it — the number of man trying to manage without God."]
+  }, [
+    ["Genesis 1:27", "šiesty deň — človek", "the sixth day — man"],
+    ["Exodus 20:9", "šesť dní budeš pracovať", "six days shalt thou labour"]
+  ]],
+  ["7", "7", {
+    sk: ["plnosť a dokonalosť", "Božie číslo celého Písma: sedem dní stvorenia zavŕšených odpočinkom, sedem cirkví, pečatí a poľníc v Zjavení, odpúšťanie „nie sedem ráz, ale sedemdesiatsedem ráz“. Kde je sedem, tam je celok a zmluva."],
+    en: ["fullness and perfection", "God's number throughout Scripture: seven days of creation crowned with rest, seven churches, seals and trumpets in Revelation, forgiving “not seven times, but seventy times seven.” Where seven appears, there is wholeness and covenant."]
+  }, [
+    ["Genesis 2:3", "siedmy deň požehnal", "he blessed the seventh day"],
+    ["Revelation 1:20", "sedem cirkví", "seven churches"],
+    ["Matthew 18:21", "koľkokrát odpustiť?", "how often shall I forgive?"]
+  ]],
+  ["8", "8", {
+    sk: ["nový začiatok", "Deň za hranicou plného týždňa: obriezka na ôsmy deň, osem duší zachránených v korábe — a vzkriesenie „prvého dňa po sobote“, ktorý cirkevní otcovia volali ôsmym dňom, dňom nového stvorenia."],
+    en: ["new beginning", "The day beyond the full week: circumcision on the eighth day, eight souls saved in the ark — and the resurrection on “the first day after the sabbath,” which the church fathers called the eighth day, the day of new creation."]
+  }, [
+    ["Genesis 17:12", "obriezka na ôsmy deň", "circumcised the eighth day"],
+    ["1 Peter 3:20", "osem duší v korábe", "eight souls in the ark"],
+    ["John 20:1", "prvý deň v týždni", "the first day of the week"]
+  ]],
+  ["10", "10", {
+    sk: ["poriadok a zodpovednosť", "Úplnosť Božieho poriadku: Desatoro na dvoch tabuliach, desať rán, ktorými Boh súdi Egypt, desiatok z úrody, desať panien čakajúcich na ženícha."],
+    en: ["order and accountability", "The completeness of God's order: the Ten Commandments on two tablets, the ten plagues judging Egypt, the tithe of the harvest, ten virgins awaiting the bridegroom."]
+  }, [
+    ["Exodus 34:28", "desať slov", "the ten words"],
+    ["Leviticus 27:30", "desiatok patrí Pánovi", "the tithe is the Lord's"],
+    ["Matthew 25:1", "desať panien", "ten virgins"]
+  ]],
+  ["12", "12", {
+    sk: ["Boží ľud", "Ľud v plnom počte: dvanásť Jakubových synov a kmeňov Izraela, dvanásť apoštolov, dvanásť košov zvyšných úlomkov — a nový Jeruzalem s dvanástimi bránami na dvanástich základných kameňoch."],
+    en: ["the people of God", "The people complete: twelve sons of Jacob and tribes of Israel, twelve apostles, twelve baskets of fragments left over — and the new Jerusalem with twelve gates on twelve foundations."]
+  }, [
+    ["Genesis 49:28", "dvanásť kmeňov", "the twelve tribes"],
+    ["Matthew 10:1", "dvanásti apoštoli", "the twelve apostles"],
+    ["Revelation 21:12", "dvanásť brán", "twelve gates"]
+  ]],
+  ["40", "40", {
+    sk: ["skúška a príprava", "Toľko trvá cesta cez púšť k novému: štyridsať dní potopy, štyridsať rokov putovania, Mojžiš štyridsať dní na Sinaji, Ježišov štyridsaťdňový pôst — a štyridsať dní od vzkriesenia po nanebovstúpenie. Odtiaľ je aj štyridsať dní pôstneho obdobia."],
+    en: ["testing and preparation", "The length of the desert road to what is new: forty days of the flood, forty years of wandering, Moses forty days on Sinai, Jesus' forty-day fast — and forty days from resurrection to ascension. Hence the forty days of Lent."]
+  }, [
+    ["Genesis 7:12", "štyridsať dní dažďa", "forty days of rain"],
+    ["Numbers 14:34", "štyridsať rokov púšte", "forty years in the wilderness"],
+    ["Matthew 4:2", "štyridsaťdňový pôst", "the forty-day fast"],
+    ["Acts 1:3", "štyridsať dní po vzkriesení", "forty days after rising"]
+  ]],
+  ["50", "50", {
+    sk: ["sloboda a Duch", "Päťdesiaty rok bol jubilejný: otroci šli domov a dlhy zanikli. Päťdesiat dní po Veľkej noci prichádzajú Turíce — zoslanie Ducha, jubileum nového stvorenia."],
+    en: ["freedom and the Spirit", "The fiftieth year was the jubilee: slaves went home and debts were cancelled. Fifty days after Passover comes Pentecost — the outpouring of the Spirit, the jubilee of the new creation."]
+  }, [
+    ["Leviticus 25:10", "jubilejný rok", "the year of jubilee"],
+    ["Acts 2:1", "deň Turíc", "the day of Pentecost"]
+  ]],
+  ["70", "70", {
+    sk: ["národy a plný čas", "Sedemdesiat národov sveta po potope, sedemdesiat starších Izraela, sedemdesiat rokov vyhnanstva, sedemdesiat týždňov u Daniela — a sedemdesiat učeníkov, ktorých Ježiš posiela ku všetkým národom."],
+    en: ["the nations and full time", "Seventy nations of the world after the flood, seventy elders of Israel, seventy years of exile, seventy weeks in Daniel — and seventy disciples whom Jesus sends towards all the nations."]
+  }, [
+    ["Exodus 24:1", "sedemdesiat starších", "seventy elders"],
+    ["Jeremiah 25:11", "sedemdesiat rokov vyhnanstva", "seventy years of exile"],
+    ["Daniel 9:24", "sedemdesiat týždňov", "seventy weeks"],
+    ["Luke 10:1", "sedemdesiati učeníci", "the seventy disciples"]
+  ]],
+  ["153", "153", {
+    sk: ["úlovok svedka", "Stopäťdesiattri veľkých rýb pri Tiberiadskom mori — číslo presné ako rybárov zápis, znak očitého svedectva. Otcovia v ňom videli súčet všetkých národov: sieť Cirkvi, ktorá sa napriek množstvu nepretrhla."],
+    en: ["the witness's catch", "A hundred and fifty-three great fishes by the Sea of Tiberias — a figure as exact as a fisherman's tally, the mark of an eyewitness. The fathers saw in it the sum of all nations: the Church's net that, for all the multitude, was not broken."]
+  }, [
+    ["John 21:11", "sieť sa nepretrhla", "the net was not broken"]
+  ]],
+  ["666", "666", {
+    sk: ["číslo šelmy", "„Kto má rozum, nech spočíta číslo šelmy; je to číslo človeka.“ Trojnásobná šestka: paródia na trojnásobnú svätosť, ktorá tri razy nedosiahne sedem. Nie kód na lúštenie dátumov, ale portrét moci, ktorá sa robí Bohom."],
+    en: ["the number of the beast", "“Let him that hath understanding count the number of the beast: for it is the number of a man.” A threefold six: a parody of threefold holiness that falls short of seven three times over. Not a cipher for dates, but the portrait of power posing as God."]
+  }, [
+    ["Revelation 13:18", "číslo človeka", "the number of a man"]
+  ]],
+  ["1000", "1 000", {
+    sk: ["nespočítateľnosť", "Boh počíta veľkoryso: vernosť preukazuje tisícim pokoleniam a tisíc rokov je v jeho očiach ako jeden deň. Tisícka v Písme neodmeriava — hovorí „viac, než dokážeš spočítať“."],
+    en: ["beyond counting", "God counts generously: he keeps covenant to a thousand generations, and a thousand years are in his sight as one day. In Scripture a thousand does not measure — it says “more than you can number.”"]
+  }, [
+    ["Deuteronomy 7:9", "tisíc pokolení", "a thousand generations"],
+    ["Psalm 90:4", "tisíc rokov ako včerajšok", "a thousand years as yesterday"],
+    ["2 Peter 3:8", "u Pána ako jeden deň", "with the Lord as one day"]
+  ]],
+  ["144000", "144 000", {
+    sk: ["spečatený ľud", "Dvanásť × dvanásť × tisíc: Boží ľud starej i novej zmluvy v plnom, nespočítateľne veľkom počte. Nie strop pre vyvolených, ale prísľub — nikto z Božích nebude chýbať."],
+    en: ["the sealed people", "Twelve × twelve × a thousand: the people of God of both covenants, complete and beyond counting. Not a ceiling on the elect, but a promise — none of God's own will be missing."]
+  }, [
+    ["Revelation 7:4", "spečatených 144 000", "144,000 sealed"],
+    ["Revelation 14:1", "s Baránkom na Sione", "with the Lamb on mount Sion"]
+  ]]
+];
+
+const UI = {
+  en: {
+    title: "the symbolism of numbers",
+    intro: "Scripture counts differently from arithmetic: its numbers carry meaning. Seven speaks of fullness, twelve of God's people, forty of testing. This symbolism is not a secret code — it is the Bible's own language, and it never replaces the plain sense of the text.",
+    count: NUMS.length + " numbers",
+    footer: "The readings follow the common Christian tradition (the church fathers, the Catechism). A biblical number usually has both a literal and a symbolic level; the symbolism completes the text, it does not override it."
+  },
+  sk: {
+    title: "symbolika čísel",
+    intro: "Písmo počíta inak než matematika: jeho čísla nesú význam. Sedmička hovorí o plnosti, dvanástka o Božom ľude, štyridsiatka o skúške. Táto symbolika nie je tajný kód — je to vlastný jazyk Biblie a nikdy nenahrádza doslovný zmysel textu.",
+    count: NUMS.length + " čísel",
+    footer: "Výklady vychádzajú zo spoločnej kresťanskej tradície (cirkevní otcovia, Katechizmus). Biblické číslo má zvyčajne doslovnú aj symbolickú rovinu; symbolika text dopĺňa, neprepisuje ho."
+  }
+};
+
+let lang = tGetLang();
+
+function exHTML(examples) {
+  return examples.map(([ref, sk, en]) => {
+    const shown = lang === "sk" ? tRefSK(ref) : ref;
+    const label = lang === "sk" ? sk : en;
+    const link = tBibliaLink(ref);
+    const refHTML = link
+      ? `<a href="${link}" target="_blank" rel="noopener">${shown}</a>`
+      : shown;
+    return refHTML + " — " + label;
+  }).join("<span class=\"dot\">·</span>");
+}
+
+function render() {
+  const t = UI[lang];
+  tMarkLang(lang);
+  document.getElementById("t-title").textContent = t.title;
+  document.getElementById("t-intro").textContent = t.intro;
+  document.getElementById("count").textContent = t.count;
+  document.getElementById("t-footer").textContent = t.footer;
+  document.getElementById("site-nav").innerHTML = tNavHTML("numbers.html", lang);
+
+  let html = "";
+  for (const [anchor, num, texts, examples] of NUMS) {
+    const [title, desc] = texts[lang];
+    html += `<div class="num-row" id="n${anchor}">` +
+      `<div class="num-big">${num}</div>` +
+      `<div><div class="num-title">${num} — ${title}</div>` +
+      `<div class="num-desc">${desc}</div>` +
+      `<div class="num-ex">${exHTML(examples)}</div></div></div>`;
+  }
+  document.getElementById("list").innerHTML = html;
+}
+
+tLangSwitcher(l => { lang = l; render(); });
+render();
+</script>
+
+</body>
+</html>
